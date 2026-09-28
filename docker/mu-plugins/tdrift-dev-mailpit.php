@@ -9,6 +9,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// The dev site runs on "localhost", so WordPress's default sender (wordpress@localhost) fails
+// PHPMailer's address check and wp_mail() returns false. Use a valid address instead.
+add_filter( 'wp_mail_from', static fn(): string => 'wordpress@example.test' );
+
 add_action(
 	'phpmailer_init',
 	static function ( $phpmailer ): void {

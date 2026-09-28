@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Phase 6 notifications, WP-CLI, privacy and multisite:
+  - Daily or weekly email digests: each translator gets the outdated translations in their languages, and extra recipients get every language. Filter `tdrift_digest_items`.
+  - Immediate emails when a translation of a chosen post type becomes outdated.
+  - WP-CLI: `wp translation-drift report`, `mark-synced`, `baseline [--dry-run] [--force]` and `recalc`.
+  - Personal data exporters (translations a user marked, and their history) and an eraser that anonymizes the user; suggested privacy policy text.
+  - Multisite: network activation sets up every site, sites created later are set up while the plugin is network-active, and a deleted site's tables are dropped.
 - Phase 5 React UI:
   - REST API `tdrift/v1`: `status` (filters, sorting, pagination), `status/summary`, `group/{id}`, `diff/{translation_id}`, `mark-synced` (single or bulk) and `baseline`, each with a schema and a permission check.
   - Tools → Translation Drift dashboard built on DataViews: summary counts by status, language and post type; a table of posts × languages with filters for status, language, post type, author, translator and last change; search; a bulk "Mark as up to date" action; CSV export; and a "Build baseline" prompt with progress.

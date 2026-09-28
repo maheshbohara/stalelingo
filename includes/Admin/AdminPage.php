@@ -113,7 +113,8 @@ final class AdminPage {
 			return;
 		}
 
-		wp_add_inline_script( self::HANDLE, 'window.tdriftDashboard = ' . wp_json_encode( $this->config() ) . ';', 'before' );
+		// JSON_HEX_TAG keeps user-controlled names (authors, translators) from ever closing the script tag.
+		wp_add_inline_script( self::HANDLE, 'window.tdriftDashboard = ' . wp_json_encode( $this->config(), JSON_HEX_TAG | JSON_HEX_AMP ) . ';', 'before' );
 	}
 
 	/**

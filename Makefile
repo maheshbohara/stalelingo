@@ -11,6 +11,7 @@ PROVIDER ?= polylang
 PHP_VERSION ?= 8.3
 WP_VERSION ?= latest
 N ?= 5000
+TYPES ?= post,page,tdrift_book
 
 DC      := docker compose
 RUN     := $(DC) run --rm -T
@@ -23,7 +24,7 @@ PLUGIN  := wp-content/plugins/translation-drift
 .PHONY: help up down reset setup logs shell composer npm deps build watch \
 	lint lint-php lint-js phpstan phpcompat plugin-check readme-validate \
 	test test-unit test-integration test-integration-ms test-js test-e2e coverage \
-	cron-run seed perf pot zip ci
+	cron-run seed perf pot zip zip-smoke ci
 
 help: ## List targets
 	@grep -hE '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -105,13 +106,16 @@ readme-validate: ## Validate readme.txt and version agreement
 # Tests
 # ---------------------------------------------------------------------------
 
-test: test-unit test-integration test-js test-e2e ## Run every suite
+test: test-unit test-integration test-integration-ms test-js test-e2e ## Run every suite
 
 test-unit: vendor/autoload.php ## PHPUnit unit tests (Brain Monkey, no WordPress)
 	$(PHP) vendor/bin/phpunit -c phpunit.xml.dist
 
 test-integration: vendor/autoload.php build/dashboard/index.js ## PHPUnit integration tests against wordpress_test
 	$(PHP) bash -c 'bin/install-wp-tests.sh && vendor/bin/phpunit -c phpunit-integration.xml.dist'
+
+test-integration-ms: vendor/autoload.php build/dashboard/index.js ## Multisite integration tests (network activation, new and deleted sites)
+	$(PHP) bash -c 'bin/install-wp-tests.sh && WP_MULTISITE=1 vendor/bin/phpunit -c phpunit-integration-ms.xml.dist'
 
 test-js: node_modules/.package-lock.json ## Jest + Testing Library + jest-axe
 	$(NODE) npm run test:js
@@ -134,11 +138,13 @@ coverage: vendor/autoload.php build/dashboard/index.js ## Coverage (pcov) with t
 cron-run: ## Run due WP-Cron events and pending Action Scheduler actions
 	$(WPCLI) bash -c 'wp cron event run --due-now; if wp cli has-command "action-scheduler run"; then wp action-scheduler run; fi'
 
-seed: ## Seed N translation groups per post type (default 5000) for performance runs
-	$(WPCLI) wp eval-file $(PLUGIN)/bin/dev/seed.php $(PROVIDER) $(N)
+seed: ## Seed N translation groups per post type (default 5000; TYPES=post limits the types)
+	$(WPCLI) wp eval-file $(PLUGIN)/bin/dev/seed.php $(PROVIDER) $(N) $(TYPES)
 
-perf: ## Performance run (implemented in Phase 7)
-	@echo "perf: implemented in Phase 7 (release hardening)." && exit 1
+perf: ## Performance run: seeds 5000 posts x 3 languages, then measures baseline, dashboard REST, list table and EXPLAIN
+	$(MAKE) seed N=$(N) TYPES=post
+	$(WPCLI) php -d memory_limit=1G /usr/local/bin/wp eval-file $(PLUGIN)/bin/dev/perf.php
+	@echo "The dev site now holds the performance data; 'make reset' restores the small seed."
 
 pot: ## Generate languages/translation-drift.pot
 	# The dashboard bundle (DataViews) is large; the JS parser needs more than the default 128 MB.
@@ -149,5 +155,11 @@ pot: ## Generate languages/translation-drift.pot
 zip: deps ## Build the WordPress.org zip in dist/
 	$(NODE) npm run build
 	$(PHP) bash bin/zip.sh
+
+zip-smoke: zip ## Install the release zip on a clean WordPress (:8081) and run the smoke e2e test against it
+	$(DC) --profile zip up -d --wait db wordpress-zip
+	$(DC) --profile zip run --rm -T wpcli-zip bash /tools/zip-smoke.sh
+	$(DC) --profile zip run --rm -T playwright-zip npx playwright test smoke.spec.ts
+	$(DC) --profile zip stop wordpress-zip
 
 ci: lint phpstan phpcompat test-unit test-integration test-js readme-validate plugin-check ## What CI runs before e2e

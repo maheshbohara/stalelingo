@@ -26,6 +26,16 @@ final class PluginTest extends TestCase {
 	protected function set_up(): void {
 		parent::set_up();
 		( new \ReflectionProperty( Plugin::class, 'booted' ) )->setValue( null, false );
+		Functions\when( 'is_multisite' )->justReturn( false );
+	}
+
+	public function test_boot_registers_privacy_tools_without_a_provider(): void {
+		Functions\when( 'is_admin' )->justReturn( false );
+
+		Plugin::boot();
+
+		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_exporters', \TranslationDrift\Privacy::class . '->register_exporters()' ) );
+		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_erasers', \TranslationDrift\Privacy::class . '->register_erasers()' ) );
 	}
 
 	public function test_boot_registers_admin_services_in_admin(): void {

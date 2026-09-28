@@ -98,6 +98,48 @@ class EventRepository {
 	}
 
 	/**
+	 * Events caused by a user, oldest first, for the personal data exporter.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $user_id User ID.
+	 * @param int $limit   Rows per page.
+	 * @param int $offset  Rows to skip.
+	 * @return list<object>
+	 */
+	public function for_user( int $user_id, int $limit, int $offset = 0 ): array {
+		global $wpdb;
+
+		if ( $user_id <= 0 ) {
+			return array();
+		}
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare( 'SELECT * FROM %i WHERE user_id = %d ORDER BY id LIMIT %d OFFSET %d', $this->table(), $user_id, $limit, $offset )
+		);
+
+		return array_values( array_filter( (array) $rows, 'is_object' ) );
+	}
+
+	/**
+	 * Removes a user from the events they caused, for the personal data eraser.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $user_id User ID.
+	 * @return int Rows anonymized.
+	 */
+	public function anonymize_user( int $user_id ): int {
+		global $wpdb;
+
+		if ( $user_id <= 0 ) {
+			return 0;
+		}
+
+		return (int) $wpdb->update( $this->table(), array( 'user_id' => 0 ), array( 'user_id' => $user_id ), array( '%d' ), array( '%d' ) );
+	}
+
+	/**
 	 * Deletes events older than the retention period.
 	 *
 	 * @since 0.1.0

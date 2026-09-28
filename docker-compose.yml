@@ -146,6 +146,71 @@ services:
       - .:/app
     ipc: host
 
+  # Clean WordPress for the release smoke test (`make zip-smoke`): no plugin bind mount and
+  # no dev mu-plugins. The plugin is installed from the zip in dist/, as a site owner would.
+  wordpress-zip:
+    image: wordpress:php${PHP_VERSION:-8.3}-apache
+    profiles: [ zip ]
+    depends_on:
+      db:
+        condition: service_healthy
+    command:
+      - bash
+      - -c
+      - >-
+        sed -ri "s/^Listen 80$$/Listen 8081/" /etc/apache2/ports.conf &&
+        sed -ri "s/<VirtualHost \*:80>/<VirtualHost *:8081>/" /etc/apache2/sites-available/000-default.conf &&
+        exec docker-entrypoint.sh apache2-foreground
+    ports:
+      - "8081:8081"
+    environment: &wp-zip-env
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wordpress_zip
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG_LOG', true );
+        define( 'WP_DEBUG_DISPLAY', false );
+        define( 'WP_HOME', 'http://localhost:8081' );
+        define( 'WP_SITEURL', 'http://localhost:8081' );
+    volumes:
+      - wp_zip_data:/var/www/html
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /var/www/html/wp-config.php" ]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  wpcli-zip:
+    image: wordpress:cli
+    profiles: [ zip ]
+    user: "33:33"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *wp-zip-env
+      HOME: /tmp
+    working_dir: /var/www/html
+    volumes:
+      - wp_zip_data:/var/www/html
+      - ./dist:/dist:ro
+      # Test tooling only (languages and seed scripts); nothing here reaches the site's plugin folder.
+      - ./bin:/tools:ro
+
+  playwright-zip:
+    image: mcr.microsoft.com/playwright:v1.63.0-noble
+    profiles: [ zip ]
+    network_mode: "service:wordpress-zip"
+    working_dir: /app
+    environment:
+      WP_BASE_URL: http://localhost:8081
+      CI: ${CI:-}
+    volumes:
+      - .:/app
+    ipc: host
+
   mailpit:
     image: axllent/mailpit:v1.29
     ports:
@@ -157,6 +222,7 @@ services:
 volumes:
   db_data:
   wp_data:
+  wp_zip_data:
   wp_tests:
   composer_cache:
   npm_cache:

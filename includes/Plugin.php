@@ -85,9 +85,20 @@ final class Plugin {
 			$container->post_hooks()->register();
 		}
 
+		// Stored data (user IDs) can be exported and erased even while no multilingual plugin is active.
+		$container->privacy()->register();
+		if ( is_multisite() ) {
+			Multisite::register();
+		}
+
 		if ( $container->has_provider() ) {
 			$container->admin_bar()->register();
+			$container->notifier()->register();
 			add_action( 'rest_api_init', array( self::class, 'register_rest_routes' ) );
+
+			if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( '\WP_CLI' ) ) {
+				\WP_CLI::add_command( 'translation-drift', $container->cli_command() );
+			}
 		}
 
 		if ( is_admin() ) {

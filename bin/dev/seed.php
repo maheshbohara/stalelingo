@@ -2,8 +2,8 @@
 /**
  * Development only: seeds translated content.
  *
- * Run with `wp eval-file bin/dev/seed.php <provider> <count>`. For every
- * post type (post, page, tdrift_book) it creates <count> English sources with
+ * Run with `wp eval-file bin/dev/seed.php <provider> <count> [<types>]`. For every
+ * post type (post, page, tdrift_book, or the comma-separated <types>) it creates <count> English sources with
  * French translations for all of them and Spanish translations for half, so
  * the site has both translated and missing languages. FR/ES translations are
  * authored by translator-fr / translator-es.
@@ -19,6 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 $provider = $args[0] ?? 'polylang';
 $count    = max( 1, (int) ( $args[1] ?? 6 ) );
+$types    = array_values( array_intersect( array( 'post', 'page', 'tdrift_book' ), explode( ',', (string) ( $args[2] ?? 'post,page,tdrift_book' ) ) ) );
 
 /**
  * Sets a post's language and links it to its translation group.
@@ -79,7 +80,7 @@ $texts = array(
 );
 
 $created = 0;
-foreach ( array( 'post', 'page', 'tdrift_book' ) as $post_type ) {
+foreach ( $types as $post_type ) {
 	$existing = get_posts(
 		array(
 			'post_type'   => $post_type,

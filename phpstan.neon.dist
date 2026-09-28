@@ -10,6 +10,7 @@ parameters:
 		- vendor/wpsyntex/polylang-stubs/polylang-stubs.php
 		- vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
 		- vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+		- vendor/php-stubs/wp-cli-stubs/wp-cli-tools-stubs.php
 		- tests/stubs/wpml.php
 		- tests/stubs/elementor.php
 		- tests/stubs/action-scheduler.php

@@ -49,6 +49,13 @@ class BaselineJob {
 	public const DEFAULT_BATCH_SIZE = 50;
 
 	/**
+	 * Post statuses the walks visit.
+	 *
+	 * @since 0.1.0
+	 */
+	public const STATUSES = array( 'publish', 'future', 'draft', 'pending', 'private' );
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.1.0
@@ -124,24 +131,7 @@ class BaselineJob {
 	 */
 	public function run_baseline_batch( int $after_id = 0, bool $force = false ): int {
 		$ids = $this->next_ids( $after_id );
-
-		foreach ( $ids as $post_id ) {
-			if ( $this->provider->get_source( $post_id ) !== $post_id ) {
-				continue;
-			}
-
-			foreach ( $this->provider->get_group( $post_id ) as $translation_id ) {
-				if ( $translation_id === $post_id ) {
-					continue;
-				}
-				$row = $this->sync->find_by_translation( $translation_id );
-				if ( $force || null === $row || null === $row->field_hashes ) {
-					$this->syncer->mark_synced( $translation_id, 0, SyncService::CONTEXT_BASELINE );
-				}
-			}
-
-			$this->drift->recalculate_source( $post_id );
-		}
+		$this->baseline_posts( $ids, $force );
 
 		$processed = $this->state()['processed'] + count( $ids );
 		if ( count( $ids ) < $this->batch_size() ) {
@@ -179,6 +169,173 @@ class BaselineJob {
 	}
 
 	/**
+	 * Builds the whole baseline in this request, batch by batch, without queueing jobs. For WP-CLI.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param bool          $force Reset existing sync points too.
+	 * @param callable|null $tick  Called with the number of posts after each batch.
+	 * @return array{posts: int, marked: int} Posts examined and translations marked up to date.
+	 */
+	public function run_baseline_now( bool $force = false, ?callable $tick = null ): array {
+		$this->save_state( 'running', 0 );
+		$posts  = 0;
+		$marked = 0;
+		$after  = 0;
+		do {
+			$ids     = $this->next_ids( $after );
+			$marked += $this->baseline_posts( $ids, $force );
+			$posts  += count( $ids );
+			$after   = (int) end( $ids );
+			if ( null !== $tick ) {
+				$tick( count( $ids ) );
+			}
+			$more = count( $ids ) === $this->batch_size();
+		} while ( $more );
+
+		$this->save_state( 'done', $posts );
+
+		return array(
+			'posts'  => $posts,
+			'marked' => $marked,
+		);
+	}
+
+	/**
+	 * What a baseline build would do, without changing anything. For `baseline --dry-run`.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param bool $force Count translations that already have a sync point too.
+	 * @return array{posts: int, sources: int, translations: int} Posts examined, sources found and
+	 *                                                            translations that would be marked.
+	 */
+	public function plan_baseline( bool $force = false ): array {
+		$plan  = array(
+			'posts'        => 0,
+			'sources'      => 0,
+			'translations' => 0,
+		);
+		$after = 0;
+		do {
+			$ids            = $this->next_ids( $after );
+			$plan['posts'] += count( $ids );
+			$after          = (int) end( $ids );
+			foreach ( $ids as $post_id ) {
+				if ( $this->provider->get_source( $post_id ) !== $post_id ) {
+					continue;
+				}
+				++$plan['sources'];
+				foreach ( $this->provider->get_group( $post_id ) as $translation_id ) {
+					if ( $translation_id !== $post_id && $this->needs_baseline( $translation_id, $force ) ) {
+						++$plan['translations'];
+					}
+				}
+			}
+			$more = count( $ids ) === $this->batch_size();
+		} while ( $more );
+
+		return $plan;
+	}
+
+	/**
+	 * Recalculates every source in this request, without queueing jobs. For WP-CLI.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param callable|null $tick Called with the number of posts after each batch.
+	 * @return int Sources recalculated.
+	 */
+	public function recalculate_now( ?callable $tick = null ): int {
+		$sources = 0;
+		$after   = 0;
+		do {
+			$ids   = $this->next_ids( $after );
+			$after = (int) end( $ids );
+			foreach ( $ids as $post_id ) {
+				if ( $this->provider->get_source( $post_id ) === $post_id ) {
+					$this->drift->recalculate_source( $post_id );
+					++$sources;
+				}
+			}
+			if ( null !== $tick ) {
+				$tick( count( $ids ) );
+			}
+			$more = count( $ids ) === $this->batch_size();
+		} while ( $more );
+
+		return $sources;
+	}
+
+	/**
+	 * Tracked posts (sources and translations) that a full walk visits.
+	 *
+	 * @since 0.1.0
+	 */
+	public function count_posts(): int {
+		$post_types = $this->tracked->post_types();
+		if ( array() === $post_types ) {
+			return 0;
+		}
+
+		global $wpdb;
+
+		$types = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $types is one %s per post type.
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type IN ({$types}) AND post_status IN (%s, %s, %s, %s, %s)",
+				...array_merge( $post_types, self::STATUSES )
+			)
+		);
+		// phpcs:enable
+
+		return (int) $count;
+	}
+
+	/**
+	 * Marks the translations of the sources among these posts and recalculates them.
+	 *
+	 * @param list<int> $ids   Post IDs.
+	 * @param bool      $force Reset existing sync points too.
+	 * @return int Translations marked up to date.
+	 */
+	private function baseline_posts( array $ids, bool $force ): int {
+		$marked = 0;
+		foreach ( $ids as $post_id ) {
+			if ( $this->provider->get_source( $post_id ) !== $post_id ) {
+				continue;
+			}
+
+			foreach ( $this->provider->get_group( $post_id ) as $translation_id ) {
+				if ( $translation_id !== $post_id && $this->needs_baseline( $translation_id, $force )
+					&& $this->syncer->mark_synced( $translation_id, 0, SyncService::CONTEXT_BASELINE ) ) {
+					++$marked;
+				}
+			}
+
+			$this->drift->recalculate_source( $post_id );
+		}
+
+		return $marked;
+	}
+
+	/**
+	 * Whether the baseline marks this translation: it has no sync point yet, or the build is forced.
+	 *
+	 * @param int  $translation_id Translation post ID.
+	 * @param bool $force          Forced build.
+	 */
+	private function needs_baseline( int $translation_id, bool $force ): bool {
+		if ( $force ) {
+			return true;
+		}
+		$row = $this->sync->find_by_translation( $translation_id );
+
+		return null === $row || null === $row->field_hashes;
+	}
+
+	/**
 	 * Posts per batch.
 	 *
 	 * @since 0.1.0
@@ -209,7 +366,7 @@ class BaselineJob {
 		global $wpdb;
 
 		$types    = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
-		$statuses = array( 'publish', 'future', 'draft', 'pending', 'private' );
+		$statuses = self::STATUSES;
 
 		// A read-only query on the core posts table: unlike WP_Query, it is unaffected by the
 		// multilingual plugin's language filters, and it pages by ID cheaply on large sites.

@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 use TranslationDrift\Admin\Actions;
 use TranslationDrift\Admin\AdminBar;
 use TranslationDrift\Admin\EditorPanel;
+use TranslationDrift\Cli\Command;
 use TranslationDrift\Admin\ListTable;
 use TranslationDrift\Admin\Metabox;
 use TranslationDrift\Domain\DriftEvaluator;
@@ -22,6 +23,7 @@ use TranslationDrift\Domain\Normalizer;
 use TranslationDrift\Domain\SnapshotCodec;
 use TranslationDrift\Integrations\Acf;
 use TranslationDrift\Integrations\Elementor;
+use TranslationDrift\Notifications\Notifier;
 use TranslationDrift\Providers\PolylangProvider;
 use TranslationDrift\Providers\ProviderDetector;
 use TranslationDrift\Providers\TranslationProvider;
@@ -353,6 +355,36 @@ final class Container {
 	 */
 	public function admin_bar(): AdminBar {
 		return $this->get( 'admin_bar', fn() => new AdminBar( $this->sync_repository(), $this->permissions() ) );
+	}
+
+	/**
+	 * Email digests and immediate notifications.
+	 *
+	 * @since 0.1.0
+	 */
+	public function notifier(): Notifier {
+		return $this->get( 'notifier', fn() => new Notifier( $this->settings(), $this->require_provider(), $this->sync_repository() ) );
+	}
+
+	/**
+	 * Personal data exporters and eraser.
+	 *
+	 * @since 0.1.0
+	 */
+	public function privacy(): Privacy {
+		return $this->get( 'privacy', fn() => new Privacy( $this->sync_repository(), $this->event_repository() ) );
+	}
+
+	/**
+	 * The `wp translation-drift` command.
+	 *
+	 * @since 0.1.0
+	 */
+	public function cli_command(): Command {
+		return $this->get(
+			'cli_command',
+			fn() => new Command( $this->require_provider(), $this->tracked_fields(), $this->sync_repository(), $this->sync_service(), $this->baseline() )
+		);
 	}
 
 	/**

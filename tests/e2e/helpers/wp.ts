@@ -82,15 +82,31 @@ export async function findSource(
 	postType = 'post',
 	skipIds: number[] = []
 ): Promise< E2eSource > {
-	const items = await rest< E2eSource[] >(
-		page,
-		`/tdrift/v1/status?status=${ status }&lang=${ lang }&post_type=${ postType }&per_page=100`
-	);
-	const found = items.find(
-		( item ) =>
-			item.translations[ lang ]?.status === status &&
-			! skipIds.includes( item.id )
-	);
+	const matching = async ( wanted: string ) =>
+		(
+			await rest< E2eSource[] >(
+				page,
+				`/tdrift/v1/status?status=${ wanted }&lang=${ lang }&post_type=${ postType }&per_page=100`
+			)
+		).find(
+			( item ) =>
+				item.translations[ lang ]?.status === wanted &&
+				! skipIds.includes( item.id )
+		);
+
+	let found = await matching( status );
+	if ( ! found && status === 'in_sync' ) {
+		// Earlier runs may have left every seeded translation outdated: bring one back.
+		const outdated = await matching( 'outdated' );
+		const id = outdated?.translations[ lang ]?.translation_id;
+		if ( outdated && id ) {
+			await rest( page, '/tdrift/v1/mark-synced', {
+				method: 'POST',
+				data: { ids: [ id ] },
+			} );
+			found = await matching( status );
+		}
+	}
 	expect(
 		found,
 		`a ${ postType } whose ${ lang } translation is ${ status }`

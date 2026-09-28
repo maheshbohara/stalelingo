@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!-- Multisite integration tests: run with WP_MULTISITE=1 (make test-integration-ms). -->
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+	bootstrap="tests/integration/bootstrap.php"
+	colors="true"
+	beStrictAboutTestsThatDoNotTestAnything="true"
+	failOnWarning="true"
+>
+	<testsuites>
+		<testsuite name="integration-multisite">
+			<directory suffix="Test.php">tests/integration</directory>
+		</testsuite>
+	</testsuites>
+	<groups>
+		<include>
+			<group>ms-required</group>
+		</include>
+	</groups>
+	<coverage includeUncoveredFiles="true" processUncoveredFiles="false">
+		<include>
+			<directory suffix=".php">includes</directory>
+		</include>
+	</coverage>
+</phpunit>

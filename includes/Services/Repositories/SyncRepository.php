@@ -146,6 +146,111 @@ class SyncRepository {
 	}
 
 	/**
+	 * Rows with one of the given statuses and an existing translation, newest source change first.
+	 *
+	 * Trashed sources are left out.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param list<Status>      $statuses Statuses.
+	 * @param list<string>|null $langs    Languages, or null for all.
+	 * @param int               $limit    Maximum rows; 0 for no limit.
+	 * @return list<SyncRow>
+	 */
+	public function find_with_status( array $statuses, ?array $langs = null, int $limit = 0 ): array {
+		global $wpdb;
+
+		$statuses = array_values( array_map( static fn( Status $s ): string => $s->value, $statuses ) );
+		if ( array() === $statuses || ( null !== $langs && array() === $langs ) ) {
+			return array();
+		}
+
+		$lang_list = $langs ?? array( '' );
+		$status_in = implode( ', ', array_fill( 0, count( $statuses ), '%s' ) );
+		$lang_in   = implode( ', ', array_fill( 0, count( $lang_list ), '%s' ) );
+		$values    = array_merge(
+			array( $this->table(), $wpdb->posts ),
+			$statuses,
+			array( null === $langs ? 1 : 0 ),
+			$lang_list,
+			array( $limit > 0 ? $limit : PHP_INT_MAX )
+		);
+
+		// phpcs:disable WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $status_in and $lang_in are one placeholder per value.
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT s.* FROM %i s INNER JOIN %i p ON p.ID = s.source_id
+				WHERE p.post_status <> 'trash' AND s.translation_id > 0
+				AND s.status IN ({$status_in})
+				AND ( %d = 1 OR s.lang IN ({$lang_in}) )
+				ORDER BY s.source_modified_at DESC, s.id DESC
+				LIMIT %d",
+				...$values
+			)
+		);
+		// phpcs:enable
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- As at the top of the file.
+
+		$result = array();
+		foreach ( (array) $rows as $row ) {
+			if ( is_object( $row ) ) {
+				$result[] = SyncRow::from_db( $row );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Rows marked up to date by a user, for the personal data exporter.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $user_id User ID.
+	 * @param int $limit   Rows per page.
+	 * @param int $offset  Rows to skip.
+	 * @return list<SyncRow>
+	 */
+	public function for_synced_by( int $user_id, int $limit, int $offset = 0 ): array {
+		global $wpdb;
+
+		if ( $user_id <= 0 ) {
+			return array();
+		}
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare( 'SELECT * FROM %i WHERE synced_by = %d ORDER BY id LIMIT %d OFFSET %d', $this->table(), $user_id, $limit, $offset )
+		);
+
+		$result = array();
+		foreach ( (array) $rows as $row ) {
+			if ( is_object( $row ) ) {
+				$result[] = SyncRow::from_db( $row );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Removes a user from the sync points they marked, for the personal data eraser.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $user_id User ID.
+	 * @return int Rows anonymized.
+	 */
+	public function anonymize_user( int $user_id ): int {
+		global $wpdb;
+
+		if ( $user_id <= 0 ) {
+			return 0;
+		}
+
+		return (int) $wpdb->update( $this->table(), array( 'synced_by' => 0 ), array( 'synced_by' => $user_id ), array( '%d' ), array( '%d' ) );
+	}
+
+	/**
 	 * Rows of many sources, grouped by source then language: one query for a dashboard page.
 	 *
 	 * @since 0.1.0

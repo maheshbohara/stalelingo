@@ -11,6 +11,7 @@ namespace TranslationDrift;
 
 defined( 'ABSPATH' ) || exit;
 
+use TranslationDrift\Notifications\Notifier;
 use TranslationDrift\Services\BaselineJob;
 use TranslationDrift\Services\PostHooks;
 
@@ -34,6 +35,7 @@ final class Deactivator {
 			PostHooks::PRUNE_HOOK,
 			BaselineJob::BASELINE_HOOK,
 			BaselineJob::RECALC_HOOK,
+			Notifier::DIGEST_HOOK,
 		);
 	}
 

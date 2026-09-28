@@ -37,6 +37,25 @@ export function getStatusLabel( status: DriftStatus ): string {
 }
 
 /**
+ * Returns a symbol that tells statuses apart without color (matches the PHP badges).
+ *
+ * @param status Drift status.
+ * @return Symbol.
+ */
+export function getStatusSymbol( status: DriftStatus ): string {
+	switch ( status ) {
+		case 'in_sync':
+			return '✓';
+		case 'outdated':
+			return '!';
+		case 'missing':
+			return '–';
+		case 'untracked':
+			return '?';
+	}
+}
+
+/**
  * Type guard for values coming from the REST API.
  *
  * @param value Unknown value.

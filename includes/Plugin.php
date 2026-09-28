@@ -87,19 +87,32 @@ final class Plugin {
 
 		if ( $container->has_provider() ) {
 			$container->admin_bar()->register();
+			add_action( 'rest_api_init', array( self::class, 'register_rest_routes' ) );
 		}
 
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( Activator::class, 'ensure_schedules' ) );
-			( new AdminPage() )->register();
+			( new AdminPage( $container ) )->register();
 			( new SettingsPage( $container ) )->register();
 			( new DependencyNotice( $container->detector() ) )->register();
 
 			if ( $container->has_provider() ) {
 				$container->list_table()->register();
 				$container->metabox()->register();
+				$container->editor_panel()->register();
 				$container->actions()->register();
 			}
+		}
+	}
+
+	/**
+	 * Registers the `tdrift/v1` REST routes.
+	 *
+	 * @since 0.1.0
+	 */
+	public static function register_rest_routes(): void {
+		foreach ( self::container()->rest_controllers() as $controller ) {
+			$controller->register_routes();
 		}
 	}
 }

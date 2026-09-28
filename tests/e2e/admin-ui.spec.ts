@@ -4,6 +4,11 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+/**
+ * Internal dependencies
+ */
+import { findSource, openDashboard, rest, runCronUntil } from './helpers/wp';
+
 test.describe( 'Admin UI', () => {
 	test( 'settings page saves and passes axe', async ( { page } ) => {
 		await page.goto(
@@ -16,8 +21,10 @@ test.describe( 'Admin UI', () => {
 			} )
 		).toBeVisible();
 
+		// WPML adds its own notices (site key) inside .wrap; they aren't this plugin's markup.
 		const results = await new AxeBuilder( { page } )
 			.include( '#wpbody-content .wrap' )
+			.exclude( '.otgs-notice' )
 			.analyze();
 		expect( results.violations ).toEqual( [] );
 
@@ -34,6 +41,16 @@ test.describe( 'Admin UI', () => {
 	test( 'list table shows statuses, filters and bulk-marks', async ( {
 		page,
 	} ) => {
+		// Make sure an outdated post exists, however many runs came before.
+		test.setTimeout( 120_000 );
+		await openDashboard( page );
+		const source = await findSource( page, 'fr', 'in_sync' );
+		await rest( page, `/wp/v2/posts/${ source.id }`, {
+			method: 'POST',
+			data: { title: `${ source.title } (list e2e)` },
+		} );
+		await runCronUntil( page, source.id, 'fr', 'outdated' );
+
 		await page.goto( '/wp-admin/edit.php?post_type=post&lang=en' );
 
 		const outdated = page

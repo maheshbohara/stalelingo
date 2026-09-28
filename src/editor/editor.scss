@@ -1,0 +1,41 @@
+// Block editor panel. The sidebar is narrow, so diffs use the single-column layout.
+
+.tdrift-editor-panel {
+
+	.tdrift-editor-status {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	.tdrift-editor-fields {
+		margin: 0 0 8px 18px;
+		list-style: disc;
+	}
+
+	.tdrift-editor-translations {
+		margin: 0 0 8px;
+
+		li {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+	}
+
+	.tdrift-diff-field {
+		margin-bottom: 16px;
+	}
+
+	.tdrift-diff-label {
+		font-size: 13px;
+	}
+
+	.tdrift-diff-table table.diff {
+		font-size: 12px;
+	}
+
+	.description {
+		color: #757575;
+	}
+}

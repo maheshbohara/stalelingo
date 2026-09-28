@@ -12,6 +12,9 @@ namespace TranslationDrift\Admin;
 defined( 'ABSPATH' ) || exit;
 
 use TranslationDrift\Capabilities;
+use TranslationDrift\Container;
+use TranslationDrift\Plugin;
+use TranslationDrift\Rest\Controller;
 
 /**
  * Registers the dashboard screen and loads its assets on that screen only.
@@ -41,6 +44,16 @@ final class AdminPage {
 	 * @var string
 	 */
 	private string $hook_suffix = '';
+
+	/**
+	 * Constructor.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param Container|null $container Service container; defaults to the shared one.
+	 */
+	public function __construct( private ?Container $container = null ) {
+	}
 
 	/**
 	 * Registers hooks.
@@ -96,27 +109,94 @@ final class AdminPage {
 			return;
 		}
 
-		$asset_file = TDRIFT_DIR . 'build/dashboard/index.asset.php';
-		if ( ! is_readable( $asset_file ) ) {
+		if ( ! Assets::enqueue_bundle( self::HANDLE, 'dashboard/index', array( 'wp-components' ) ) ) {
 			return;
 		}
 
-		$asset   = require $asset_file;
-		$deps    = is_array( $asset ) && is_array( $asset['dependencies'] ?? null ) ? array_values( array_filter( $asset['dependencies'], 'is_string' ) ) : array();
-		$version = is_array( $asset ) && is_string( $asset['version'] ?? null ) ? $asset['version'] : TDRIFT_VERSION;
+		wp_add_inline_script( self::HANDLE, 'window.tdriftDashboard = ' . wp_json_encode( $this->config() ) . ';', 'before' );
+	}
 
-		wp_enqueue_script(
-			self::HANDLE,
-			TDRIFT_URL . 'build/dashboard/index.js',
-			$deps,
-			$version,
-			array( 'in_footer' => true )
+	/**
+	 * Settings the dashboard needs before its first request: filter choices and links.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function config(): array {
+		$container = $this->container ?? Plugin::container();
+		$config    = array(
+			'ready'          => $container->has_provider(),
+			'namespace'      => Controller::REST_NAMESPACE,
+			'settingsUrl'    => admin_url( 'options-general.php?page=' . SettingsPage::SLUG ),
+			'languages'      => array(),
+			// Hidden column by default: nearly every row is a source there.
+			'sourceLanguage' => '',
+			'postTypes'      => array(),
+			'authors'        => array(),
+			'translators'    => array(),
 		);
-		wp_set_script_translations( self::HANDLE, 'translation-drift' );
 
-		if ( is_readable( TDRIFT_DIR . 'build/dashboard/index.css' ) ) {
-			wp_enqueue_style( self::HANDLE, TDRIFT_URL . 'build/dashboard/index.css', array( 'wp-components' ), $version );
+		$provider = $container->provider();
+		if ( null === $provider ) {
+			return $config;
 		}
+
+		$source                   = $container->settings()->get( 'source_language' );
+		$config['sourceLanguage'] = is_string( $source ) && '' !== $source ? $source : $provider->get_default_language();
+
+		$names = $provider->get_language_names();
+		foreach ( $provider->get_languages() as $code ) {
+			$config['languages'][] = array(
+				'code' => $code,
+				'name' => $names[ $code ] ?? strtoupper( $code ),
+			);
+		}
+
+		$post_types = $container->tracked_fields()->post_types();
+		foreach ( $post_types as $type ) {
+			$object                = get_post_type_object( $type );
+			$config['postTypes'][] = array(
+				'slug'  => $type,
+				'label' => null === $object ? $type : (string) $object->labels->name,
+			);
+		}
+
+		if ( array() !== $post_types ) {
+			$authors = get_users(
+				array(
+					'has_published_posts' => $post_types,
+					'fields'              => array( 'ID', 'display_name' ),
+					'orderby'             => 'display_name',
+					'number'              => 200,
+				)
+			);
+			foreach ( $authors as $author ) {
+				$config['authors'][] = array(
+					'id'   => (int) $author->ID,
+					'name' => (string) $author->display_name,
+				);
+			}
+		}
+
+		$langs_by_user = array();
+		foreach ( (array) $container->settings()->get( 'translators' ) as $lang => $users ) {
+			foreach ( array_map( 'intval', (array) $users ) as $user_id ) {
+				$langs_by_user[ $user_id ][] = (string) $lang;
+			}
+		}
+		foreach ( $langs_by_user as $user_id => $langs ) {
+			$user = get_userdata( $user_id );
+			if ( $user instanceof \WP_User ) {
+				$config['translators'][] = array(
+					'id'    => $user_id,
+					'name'  => $user->display_name,
+					'langs' => $langs,
+				);
+			}
+		}
+
+		return $config;
 	}
 
 	/**

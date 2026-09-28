@@ -1,4 +1,110 @@
+// Tools → Translation Drift.
+
+// DataViews ships its own styles; they are bundled here, like the script.
+@use "@wordpress/dataviews/build-style/style";
+
 .tdrift-dashboard-body {
 	margin-top: 16px;
-	max-width: 960px;
+
+	> .components-notice {
+		margin: 0 0 16px;
+	}
+
+	// DataViews sits on the admin background; give it a panel like core list screens.
+	.dataviews-wrapper {
+		background: #fff;
+		border: 1px solid #c3c4c7;
+	}
+}
+
+.tdrift-summary {
+	margin-bottom: 16px;
+}
+
+.tdrift-summary-totals {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 16px;
+	padding: 0;
+	list-style: none;
+
+	li {
+		margin: 0;
+	}
+}
+
+.tdrift-total {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	min-width: 120px;
+	padding: 8px 12px;
+	border: 1px solid #c3c4c7;
+	border-left-width: 4px;
+	border-radius: 2px;
+	background: #fff;
+	color: #1e1e1e;
+	cursor: pointer;
+	font-family: inherit;
+	text-align: left;
+
+	&:hover {
+		background: #f6f7f7;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #2271b1);
+		outline: 2px solid transparent;
+	}
+}
+
+.tdrift-total-count {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.tdrift-total-in-sync {
+	border-left-color: #00a32a;
+}
+
+.tdrift-total-outdated {
+	border-left-color: #d63638;
+}
+
+.tdrift-total-missing {
+	border-left-color: #8c8f94;
+	border-left-style: dashed;
+}
+
+.tdrift-total-untracked {
+	border-left-color: #dba617;
+}
+
+.tdrift-summary-tables {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: flex-start;
+}
+
+.tdrift-counts {
+	width: auto;
+	min-width: 320px;
+
+	caption {
+		padding: 0 0 4px;
+		font-weight: 600;
+		text-align: left;
+	}
+
+	td {
+		text-align: right;
+	}
+}
+
+.tdrift-source-cell {
+	color: #50575e;
+	font-style: italic;
 }

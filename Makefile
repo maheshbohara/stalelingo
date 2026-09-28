@@ -141,7 +141,8 @@ perf: ## Performance run (implemented in Phase 7)
 	@echo "perf: implemented in Phase 7 (release hardening)." && exit 1
 
 pot: ## Generate languages/translation-drift.pot
-	$(WPCLI) wp i18n make-pot $(PLUGIN) $(PLUGIN)/languages/translation-drift.pot \
+	# The dashboard bundle (DataViews) is large; the JS parser needs more than the default 128 MB.
+	$(WPCLI) php -d memory_limit=1G /usr/local/bin/wp i18n make-pot $(PLUGIN) $(PLUGIN)/languages/translation-drift.pot \
 		--slug=translation-drift --domain=translation-drift \
 		--exclude=node_modules,vendor,tests,dist,docker,bin,coverage,test-results,src
 

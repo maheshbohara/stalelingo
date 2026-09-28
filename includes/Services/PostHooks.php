@@ -161,12 +161,19 @@ class PostHooks {
 	 * Removes the records of a deleted source or translation.
 	 *
 	 * A deleted translation leaves a `missing` row once its source is recalculated.
+	 * A deleted revision is snapshotted first when a sync point refers to it, so diffs keep working.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
 	public function on_delete_post( int $post_id ): void {
+		$post = get_post( $post_id );
+		if ( $post instanceof \WP_Post && 'revision' === $post->post_type ) {
+			$this->syncer->preserve_revision( $post );
+			return;
+		}
+
 		$as_translation = $this->sync->find_by_translation( $post_id );
 
 		$ids = array_merge(

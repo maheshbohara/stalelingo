@@ -56,10 +56,29 @@ class Fingerprinter {
 	 * @param bool|null $strict Normalization mode; null uses the strict-mode setting.
 	 */
 	public function fingerprint( \WP_Post $post, ?bool $strict = null ): Fingerprint {
+		$values = $this->values( $post, $this->fields->fields( $post->post_type ), $strict );
+		ksort( $values, SORT_STRING );
+
+		return new Fingerprint( $values, $this->hasher->hash_all( $values ) );
+	}
+
+	/**
+	 * Normalized values of the given fields of a post, for hashing or diffing.
+	 *
+	 * The post may be a revision: the fields are read from it as given, whatever its post type.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param \WP_Post     $post   Post or revision.
+	 * @param list<string> $fields Field keys.
+	 * @param bool|null    $strict Normalization mode; null uses the strict-mode setting.
+	 * @return array<string, string|null> Normalized values; null when a field has no value.
+	 */
+	public function values( \WP_Post $post, array $fields, ?bool $strict = null ): array {
 		$strict = $strict ?? $this->settings->strict();
 		$values = array();
 
-		foreach ( $this->fields->fields( $post->post_type ) as $field ) {
+		foreach ( $fields as $field ) {
 			$raw        = $this->raw_value( $post, $field );
 			$normalized = null === $raw ? null : $this->normalize( $field, $raw, $strict );
 
@@ -81,9 +100,7 @@ class Fingerprinter {
 			$values[ $field ] = is_scalar( $normalized ) ? (string) $normalized : null;
 		}//end foreach
 
-		ksort( $values, SORT_STRING );
-
-		return new Fingerprint( $values, $this->hasher->hash_all( $values ) );
+		return $values;
 	}
 
 	/**

@@ -118,6 +118,36 @@ class SyncService {
 	}
 
 	/**
+	 * Keeps the diff of sync points that refer to a revision about to be deleted.
+	 *
+	 * Sites that limit revisions delete old ones on every save, including the one a
+	 * sync point was recorded against. Before that happens, its title, content and
+	 * excerpt are snapshotted and the sync point stops referring to the revision.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param \WP_Post $revision Revision being deleted.
+	 * @return int Sync points updated.
+	 */
+	public function preserve_revision( \WP_Post $revision ): int {
+		$rows = 'revision' === $revision->post_type ? $this->sync->find_by_revision( $revision->ID ) : array();
+		if ( array() === $rows ) {
+			return 0;
+		}
+
+		$values = array_filter(
+			$this->fingerprinter->values( $revision, DiffService::REVISIONED_FIELDS, false ),
+			static fn( $value ): bool => null !== $value
+		);
+		foreach ( $rows as $row ) {
+			$this->snapshots->add( $row->id, $values );
+			$this->sync->clear_revision( $row->id );
+		}
+
+		return count( $rows );
+	}
+
+	/**
 	 * Values to snapshot: fields that post revisions don't cover, or every field when revisions are off.
 	 *
 	 * @param Fingerprint $fingerprint Source fingerprint.
@@ -125,7 +155,7 @@ class SyncService {
 	 * @return array<string, string>
 	 */
 	private function snapshot_values( Fingerprint $fingerprint, int $revision_id ): array {
-		$revisioned = array( 'title', 'content', 'excerpt' );
+		$revisioned = DiffService::REVISIONED_FIELDS;
 		$values     = array();
 
 		foreach ( $fingerprint->values as $field => $value ) {

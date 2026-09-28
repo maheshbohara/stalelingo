@@ -7,6 +7,11 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Phase 5 React UI:
+  - REST API `tdrift/v1`: `status` (filters, sorting, pagination), `status/summary`, `group/{id}`, `diff/{translation_id}`, `mark-synced` (single or bulk) and `baseline`, each with a schema and a permission check.
+  - Tools → Translation Drift dashboard built on DataViews: summary counts by status, language and post type; a table of posts × languages with filters for status, language, post type, author, translator and last change; search; a bulk "Mark as up to date" action; CSV export; and a "Build baseline" prompt with progress.
+  - Diff modal showing what changed in the source, field by field, with links to open the source and the translation.
+  - Block editor panel: a translation's status with an inline diff and "Mark as up to date", and the affected translations on a source.
 - Phase 4 admin UI:
   - Settings screen: post types, fields, extra custom fields, ACF and Elementor, source language, strict mode, auto-clear, translators per language, email digest options, immediate-email post types, delete data on uninstall, and a Build baseline tool.
   - Posts list: a translation status column with a labelled badge per language, a status filter, and a bulk "Mark translations as up to date" action.
@@ -31,6 +36,7 @@ All notable changes to this project are documented here. The format follows
   - Dev setup builds the baseline and edits some sources, so the site starts with in-sync, outdated and missing translations.
 
 ### Fixed
+- Diffs keep working on sites that limit post revisions: a revision is snapshotted before WordPress deletes it.
 - Saving settings for the first time no longer mangles list values.
 - Inline HTML tags no longer insert spaces into normalized text.
 - The daily maintenance job is scheduled on sites that activated before it existed.

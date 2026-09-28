@@ -44,6 +44,15 @@ interface TranslationProvider {
 	public function get_languages(): array;
 
 	/**
+	 * Display names of the site's languages, keyed by code.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_language_names(): array;
+
+	/**
 	 * The provider's default language code.
 	 *
 	 * @since 0.1.0

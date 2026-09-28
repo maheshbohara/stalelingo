@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-28T08:23:29+00:00\n"
+"POT-Creation-Date: 2026-09-28T10:06:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: translation-drift\n"
@@ -39,6 +39,7 @@ msgid "Sorry, you are not allowed to update this translation."
 msgstr ""
 
 #: includes/Admin/Actions.php:147
+#: includes/Rest/Controller.php:62
 msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
@@ -47,6 +48,9 @@ msgid "This translation can’t be opened from here. Create it from the source p
 msgstr ""
 
 #: includes/Admin/Actions.php:195
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
+#: build/editor/index.js:8
 msgid "Translation marked as up to date."
 msgstr ""
 
@@ -62,15 +66,16 @@ msgid_plural "%s outdated translations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/AdminPage.php:62
-#: includes/Admin/AdminPage.php:63
-#: includes/Admin/AdminPage.php:133
+#: includes/Admin/AdminPage.php:75
+#: includes/Admin/AdminPage.php:76
+#: includes/Admin/AdminPage.php:213
 #: includes/Admin/Metabox.php:75
 #: includes/Admin/SettingsPage.php:86
+#: build/editor/index.js:8
 msgid "Translation Drift"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:129
+#: includes/Admin/AdminPage.php:209
 #: includes/Admin/SettingsPage.php:246
 msgid "Sorry, you are not allowed to access this page."
 msgstr ""
@@ -102,7 +107,8 @@ msgstr ""
 
 #. translators: %d: number of translations.
 #: includes/Admin/ListTable.php:295
-#, php-format
+#: build/dashboard/index.js:202
+#, php-format,js-format
 msgid "%d translation marked as up to date."
 msgid_plural "%d translations marked as up to date."
 msgstr[0] ""
@@ -125,10 +131,12 @@ msgid "This is the source. Changing its tracked fields marks its translations as
 msgstr ""
 
 #: includes/Admin/Metabox.php:120
+#: build/editor/index.js:8
 msgid "Translation status will appear once the baseline reaches this post."
 msgstr ""
 
 #: includes/Admin/Metabox.php:139
+#: build/editor/index.js:6
 msgid "Not tracked yet. It will be once the baseline reaches it, or when you mark it as up to date."
 msgstr ""
 
@@ -154,6 +162,10 @@ msgid "Last marked up to date %s ago."
 msgstr ""
 
 #: includes/Admin/Metabox.php:171
+#: build/dashboard/index.js:197
+#: build/dashboard/index.js:200
+#: build/editor/index.js:4
+#: build/editor/index.js:8
 msgid "Mark as up to date"
 msgstr ""
 
@@ -198,6 +210,7 @@ msgid "Page builders and fields"
 msgstr ""
 
 #: includes/Admin/SettingsPage.php:128
+#: build/dashboard/index.js:203
 msgid "Source language"
 msgstr ""
 
@@ -263,6 +276,7 @@ msgid "Also mark translations that are currently outdated as up to date"
 msgstr ""
 
 #: includes/Admin/SettingsPage.php:294
+#: build/dashboard/index.js:203
 msgid "Build baseline"
 msgstr ""
 
@@ -357,28 +371,40 @@ msgid "Delete all Translation Drift data when the plugin is deleted"
 msgstr ""
 
 #: includes/Admin/StatusView.php:35
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
 msgid "Up to date"
 msgstr ""
 
 #: includes/Admin/StatusView.php:36
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
 msgid "Outdated"
 msgstr ""
 
 #: includes/Admin/StatusView.php:37
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
 msgid "Missing"
 msgstr ""
 
 #: includes/Admin/StatusView.php:38
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
 msgid "Not tracked yet"
 msgstr ""
 
 #. translators: 1: language code, e.g. FR. 2: translation status, e.g. Outdated.
 #: includes/Admin/StatusView.php:69
-#, php-format
+#: build/dashboard/index.js:198
+#: build/editor/index.js:5
+#, php-format,js-format
 msgid "%1$s: %2$s"
 msgstr ""
 
 #: includes/Admin/StatusView.php:94
+#: build/dashboard/index.js:200
+#: build/dashboard/index.js:203
 msgid "Title"
 msgstr ""
 
@@ -414,6 +440,546 @@ msgstr ""
 msgid "Custom field “%s”"
 msgstr ""
 
-#: build/dashboard/index.js:1
-msgid "Translation status will appear here once the baseline has been built."
+#: includes/Rest/BaselineController.php:58
+msgid "Also reset translations that already have a sync point, including outdated ones."
+msgstr ""
+
+#: includes/Rest/BaselineController.php:116
+msgid "Baseline progress."
+msgstr ""
+
+#: includes/Rest/BaselineController.php:144
+msgid "Whether this request queued a new build (false when one was already queued)."
+msgstr ""
+
+#: includes/Rest/Controller.php:80
+#: includes/Rest/GroupController.php:110
+msgid "Invalid post ID."
+msgstr ""
+
+#: includes/Rest/DiffController.php:60
+msgid "Translation post ID."
+msgstr ""
+
+#: includes/Rest/DiffController.php:62
+msgid "Show old and new text in two columns."
+msgstr ""
+
+#: includes/Rest/DiffController.php:102
+msgid "This post is not a tracked translation."
+msgstr ""
+
+#: includes/Rest/DiffController.php:175
+#: includes/Rest/ItemPresenter.php:278
+msgid "Source post ID."
+msgstr ""
+
+#: includes/Rest/DiffController.php:179
+msgid "Name of the user who last marked the translation up to date."
+msgstr ""
+
+#: includes/Rest/DiffController.php:183
+msgid "Changed fields with their diffs."
+msgstr ""
+
+#: includes/Rest/DiffController.php:191
+msgid "False when no copy of the old value was stored."
+msgstr ""
+
+#: includes/Rest/DiffController.php:195
+msgid "Whether the stored old value was cut short."
+msgstr ""
+
+#: includes/Rest/DiffController.php:199
+msgid "Diff table (HTML); empty when only formatting changed."
+msgstr ""
+
+#: includes/Rest/DiffController.php:205
+msgid "The source post."
+msgstr ""
+
+#: includes/Rest/DiffController.php:206
+msgid "The translation post."
+msgstr ""
+
+#: includes/Rest/GroupController.php:76
+msgid "ID of any post in the group."
+msgstr ""
+
+#: includes/Rest/GroupController.php:175
+msgid "The requested post."
+msgstr ""
+
+#: includes/Rest/GroupController.php:179
+msgid "Whether the post type is tracked."
+msgstr ""
+
+#: includes/Rest/GroupController.php:183
+msgid "Whether the post is the source of its group, a translation, or neither."
+msgstr ""
+
+#: includes/Rest/GroupController.php:188
+msgid "Language code of the post."
+msgstr ""
+
+#: includes/Rest/GroupController.php:192
+msgid "Language name of the post."
+msgstr ""
+
+#: includes/Rest/GroupController.php:196
+msgid "The source, for a translation."
+msgstr ""
+
+#: includes/Rest/GroupController.php:212
+msgid "Status of the post, for a tracked translation."
+msgstr ""
+
+#: includes/Rest/GroupController.php:217
+msgid "Status of each translation, for a source."
+msgstr ""
+
+#: includes/Rest/GroupController.php:222
+msgid "Whether the current user may mark this translation as up to date."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:222
+msgid "Language code."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:226
+msgid "Language name."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:230
+msgid "Translation status."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:235
+msgid "Translation status, human-readable."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:239
+msgid "Translation post ID, 0 when the translation is missing."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:242
+msgid "Fields changed in the source since the translation was last marked up to date."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:244
+msgid "When the translation was last marked up to date (UTC)."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:249
+msgid "Edit link, when the current user may edit the translation."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:254
+msgid "Link that starts a missing translation."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:259
+msgid "Whether the current user may mark the translation as up to date."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:282
+msgid "Source title."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:286
+msgid "Post type."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:290
+msgid "Post type name."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:294
+msgid "Post status of the source."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:298
+msgid "Language code of the source."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:302
+msgid "Author of the source."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:310
+msgid "When the source last changed (UTC)."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:315
+msgid "Edit link, when the current user may edit the source."
+msgstr ""
+
+#: includes/Rest/ItemPresenter.php:320
+msgid "Status of each translation, keyed by language code."
+msgstr ""
+
+#: includes/Rest/MarkSyncedController.php:71
+msgid "Translation post IDs."
+msgstr ""
+
+#. translators: %d: post ID.
+#: includes/Rest/MarkSyncedController.php:108
+#, php-format
+msgid "Sorry, you are not allowed to mark post %d as up to date."
+msgstr ""
+
+#: includes/Rest/MarkSyncedController.php:136
+msgid "This post is not a translation of a tracked source."
+msgstr ""
+
+#: includes/Rest/MarkSyncedController.php:172
+msgid "Translations marked as up to date."
+msgstr ""
+
+#: includes/Rest/MarkSyncedController.php:177
+msgid "Translations that could not be marked, with the reason."
+msgstr ""
+
+#: includes/Rest/MarkSyncedController.php:189
+msgid "New status of each updated translation, keyed by ID."
+msgstr ""
+
+#: includes/Rest/StatusController.php:285
+msgid "Page of the collection."
+msgstr ""
+
+#: includes/Rest/StatusController.php:291
+msgid "Sources per page."
+msgstr ""
+
+#: includes/Rest/StatusController.php:298
+msgid "Only sources whose title contains this text."
+msgstr ""
+
+#: includes/Rest/StatusController.php:302
+msgid "Only translations in these languages."
+msgstr ""
+
+#: includes/Rest/StatusController.php:310
+msgid "Only sources with a translation in one of these statuses."
+msgstr ""
+
+#: includes/Rest/StatusController.php:318
+msgid "Only these post types."
+msgstr ""
+
+#: includes/Rest/StatusController.php:326
+msgid "Only sources by this author (user ID)."
+msgstr ""
+
+#: includes/Rest/StatusController.php:331
+msgid "Only the languages assigned to this translator (user ID) in the settings."
+msgstr ""
+
+#: includes/Rest/StatusController.php:336
+msgid "Only sources changed at or after this time."
+msgstr ""
+
+#: includes/Rest/StatusController.php:341
+msgid "Only sources changed at or before this time."
+msgstr ""
+
+#: includes/Rest/StatusController.php:346
+msgid "Sort by the time the source last changed, or by title."
+msgstr ""
+
+#: includes/Rest/StatusController.php:352
+msgid "Sort direction."
+msgstr ""
+
+#: includes/Rest/StatusController.php:399
+msgid "Translations per status."
+msgstr ""
+
+#: includes/Rest/StatusController.php:401
+msgid "Languages with their counts per status."
+msgstr ""
+
+#: includes/Rest/StatusController.php:413
+msgid "Tracked post types with their counts per status."
+msgstr ""
+
+#: includes/Services/DiffService.php:139
+msgid "At last sync"
+msgstr ""
+
+#: includes/Services/DiffService.php:140
+msgid "Now"
+msgstr ""
+
+#. translators: %s: timezone detail, e.g. "(CEST) Europe/Madrid" or "UTC+3".
+#: build/dashboard/index.js:194
+#: build/editor/index.js:1
+msgid "Nothing has changed in the source since this translation was last marked up to date."
+msgstr ""
+
+#: build/dashboard/index.js:194
+#: build/editor/index.js:1
+msgid "No copy of the earlier version was stored, so only the fact that it changed is known."
+msgstr ""
+
+#: build/dashboard/index.js:194
+#: build/editor/index.js:1
+msgid "Only formatting changed (strict mode)."
+msgstr ""
+
+#: build/dashboard/index.js:194
+#: build/editor/index.js:1
+msgid "The stored earlier version was long and has been cut short."
+msgstr ""
+
+#: build/dashboard/index.js:194
+#: build/editor/index.js:1
+msgid "The changes could not be loaded."
+msgstr ""
+
+#. translators: 1: source post title. 2: language name.
+#: build/dashboard/index.js:195
+#: build/editor/index.js:2
+#, js-format
+msgid "Changes to “%1$s” for %2$s"
+msgstr ""
+
+#: build/dashboard/index.js:195
+#: build/dashboard/index.js:200
+#: build/editor/index.js:2
+#: build/editor/index.js:7
+msgid "(no title)"
+msgstr ""
+
+#: build/dashboard/index.js:195
+#: build/editor/index.js:2
+msgid "Changes in the source"
+msgstr ""
+
+#: build/dashboard/index.js:195
+#: build/dashboard/index.js:203
+#: build/editor/index.js:2
+#: build/editor/index.js:6
+msgid "Try again"
+msgstr ""
+
+#: build/dashboard/index.js:195
+#: build/editor/index.js:2
+msgid "Loading changes…"
+msgstr ""
+
+#. translators: 1: date and time. 2: user name.
+#: build/dashboard/index.js:196
+#: build/editor/index.js:3
+#, js-format
+msgid "Compared with the source as it was when this translation was marked up to date on %1$s by %2$s."
+msgstr ""
+
+#. translators: %s: date and time.
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
+#, js-format
+msgid "Compared with the source as it was when this translation was marked up to date on %s."
+msgstr ""
+
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
+msgid "Open source"
+msgstr ""
+
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
+msgid "Open translation"
+msgstr ""
+
+#: build/dashboard/index.js:197
+#: build/editor/index.js:4
+#: build/editor/index.js:8
+msgid "The translation could not be updated."
+msgstr ""
+
+#. translators: 1: language and status, e.g. "FR: Outdated". 2: action, e.g. "View changes".
+#: build/dashboard/index.js:199
+#: build/editor/index.js:6
+#, js-format
+msgid "%1$s – %2$s"
+msgstr ""
+
+#: build/dashboard/index.js:199
+msgid "Summary"
+msgstr ""
+
+#. translators: 1: number of translations. 2: status, e.g. Outdated.
+#: build/dashboard/index.js:200
+#, js-format
+msgid "%1$d %2$s – show only these"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "By language"
+msgstr ""
+
+#: build/dashboard/index.js:200
+#: build/dashboard/index.js:203
+msgid "Language"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "By post type"
+msgstr ""
+
+#: build/dashboard/index.js:200
+#: build/dashboard/index.js:203
+msgid "Post type"
+msgstr ""
+
+#: build/dashboard/index.js:200
+#: build/editor/index.js:6
+msgid "Translation status could not be loaded."
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "Source"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "View changes"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "Author"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "Source last changed"
+msgstr ""
+
+#: build/dashboard/index.js:200
+#: build/dashboard/index.js:203
+msgid "Status"
+msgstr ""
+
+#: build/dashboard/index.js:200
+msgid "Translator"
+msgstr ""
+
+#. translators: 1: number marked. 2: number that failed.
+#: build/dashboard/index.js:201
+#, js-format
+msgid "%1$d translations marked as up to date; %2$d could not be marked."
+msgstr ""
+
+#: build/dashboard/index.js:202
+msgid "The translations could not be updated."
+msgstr ""
+
+#: build/dashboard/index.js:202
+msgid "Translation Drift needs Polylang or WPML with at least one language."
+msgstr ""
+
+#. translators: %d: number of posts processed so far.
+#: build/dashboard/index.js:203
+#, js-format
+msgid "Building the baseline in the background: %d posts checked so far."
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "No translations are tracked yet. Build the baseline to start: every existing translation is marked as up to date with its source."
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "The baseline build is queued. It runs in the background."
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "The baseline build could not be started."
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Search titles"
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Source ID"
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Changed fields"
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Translation ID"
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Last marked up to date (UTC)"
+msgstr ""
+
+#: build/dashboard/index.js:203
+msgid "Source last changed (UTC)"
+msgstr ""
+
+#. translators: %d: number of posts.
+#: build/dashboard/index.js:204
+#, js-format
+msgid "Exported %d post."
+msgid_plural "Exported %d posts."
+msgstr[0] ""
+msgstr[1] ""
+
+#: build/dashboard/index.js:204
+msgid "The export failed."
+msgstr ""
+
+#: build/dashboard/index.js:204
+msgid "Export CSV"
+msgstr ""
+
+#: build/dashboard/index.js:204
+msgid "No posts match these filters."
+msgstr ""
+
+#: build/dashboard/index.js:204
+msgid "No tracked translations yet."
+msgstr ""
+
+#: build/editor/index.js:6
+msgid "Loading translation status…"
+msgstr ""
+
+#: build/editor/index.js:6
+msgid "This post has no source to compare with yet. Link it to its translations first."
+msgstr ""
+
+#: build/editor/index.js:6
+msgid "This post type is not tracked."
+msgstr ""
+
+#. translators: %s: language name.
+#: build/editor/index.js:7
+#, js-format
+msgid "Source (%s):"
+msgstr ""
+
+#: build/editor/index.js:7
+msgid "Changed in the source since this translation was last marked up to date:"
+msgstr ""
+
+#: build/editor/index.js:7
+msgid "Compare side by side"
+msgstr ""
+
+#. translators: %s: date and time.
+#: build/editor/index.js:8
+#, js-format
+msgid "Last marked up to date: %s"
+msgstr ""
+
+#: build/editor/index.js:8
+msgid "This is the source. Changing its tracked fields marks these translations as outdated:"
+msgstr ""
+
+#: build/editor/index.js:8
+msgid "Translations are checked again in the background shortly after you save."
 msgstr ""

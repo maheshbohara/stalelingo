@@ -91,7 +91,8 @@ final class Schema {
   KEY translation_id (translation_id),
   KEY lang_status (lang,status),
   KEY status_type (status,post_type),
-  KEY synced_by (synced_by)
+  KEY synced_by (synced_by),
+  KEY source_rev_id (source_rev_id)
 ) {$charset_collate};",
 			"CREATE TABLE {$snapshots} (
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,

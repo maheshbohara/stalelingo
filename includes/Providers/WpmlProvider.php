@@ -60,6 +60,25 @@ final class WpmlProvider implements TranslationProvider {
 	 * {@inheritDoc}
 	 *
 	 * @since 0.1.0
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_language_names(): array {
+		$languages = apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's public filter API.
+		$map       = array();
+		foreach ( is_array( $languages ) ? $languages : array() as $code => $language ) {
+			$language              = (array) $language;
+			$name                  = $language['translated_name'] ?? $language['native_name'] ?? '';
+			$map[ (string) $code ] = is_string( $name ) && '' !== $name ? $name : strtoupper( (string) $code );
+		}
+
+		return $map;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 0.1.0
 	 */
 	public function get_default_language(): string {
 		$default = apply_filters( 'wpml_default_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's public filter API.

@@ -88,6 +88,37 @@ class SnapshotRepository {
 	}
 
 	/**
+	 * Adds snapshots for fields a sync point doesn't have yet, keeping the existing ones.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int                   $sync_id Sync row ID.
+	 * @param array<string, string> $values  Normalized values keyed by field.
+	 */
+	public function add( int $sync_id, array $values ): void {
+		global $wpdb;
+
+		$existing = $this->for_sync( $sync_id );
+		$now      = current_time( 'mysql', true );
+		foreach ( $values as $field => $value ) {
+			$field = substr( (string) $field, 0, 191 );
+			if ( isset( $existing[ $field ] ) ) {
+				continue;
+			}
+			$wpdb->insert(
+				$this->table(),
+				array(
+					'sync_id'    => $sync_id,
+					'field_key'  => $field,
+					'value'      => $this->codec->encode( $value ),
+					'created_at' => $now,
+				),
+				array( '%d', '%s', '%s', '%s' )
+			);
+		}
+	}
+
+	/**
 	 * Returns the snapshots of a sync point.
 	 *
 	 * @since 0.1.0

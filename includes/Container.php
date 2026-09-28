@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 use TranslationDrift\Admin\Actions;
 use TranslationDrift\Admin\AdminBar;
+use TranslationDrift\Admin\EditorPanel;
 use TranslationDrift\Admin\ListTable;
 use TranslationDrift\Admin\Metabox;
 use TranslationDrift\Domain\DriftEvaluator;
@@ -25,7 +26,14 @@ use TranslationDrift\Providers\PolylangProvider;
 use TranslationDrift\Providers\ProviderDetector;
 use TranslationDrift\Providers\TranslationProvider;
 use TranslationDrift\Providers\WpmlProvider;
+use TranslationDrift\Rest\BaselineController;
+use TranslationDrift\Rest\DiffController;
+use TranslationDrift\Rest\GroupController;
+use TranslationDrift\Rest\ItemPresenter;
+use TranslationDrift\Rest\MarkSyncedController;
+use TranslationDrift\Rest\StatusController;
 use TranslationDrift\Services\BaselineJob;
+use TranslationDrift\Services\DiffService;
 use TranslationDrift\Services\DriftService;
 use TranslationDrift\Services\Fingerprinter;
 use TranslationDrift\Services\Permissions;
@@ -345,6 +353,53 @@ final class Container {
 	 */
 	public function admin_bar(): AdminBar {
 		return $this->get( 'admin_bar', fn() => new AdminBar( $this->sync_repository(), $this->permissions() ) );
+	}
+
+	/**
+	 * Block editor panel.
+	 *
+	 * @since 0.1.0
+	 */
+	public function editor_panel(): EditorPanel {
+		return $this->get( 'editor_panel', fn() => new EditorPanel( $this->tracked_fields() ) );
+	}
+
+	/**
+	 * Diff service.
+	 *
+	 * @since 0.1.0
+	 */
+	public function diff_service(): DiffService {
+		return $this->get( 'diff_service', fn() => new DiffService( $this->fingerprinter(), $this->snapshot_repository() ) );
+	}
+
+	/**
+	 * REST item presenter.
+	 *
+	 * @since 0.1.0
+	 */
+	public function item_presenter(): ItemPresenter {
+		return $this->get( 'item_presenter', fn() => new ItemPresenter( $this->require_provider(), $this->permissions() ) );
+	}
+
+	/**
+	 * REST controllers of the `tdrift/v1` namespace.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return list<\TranslationDrift\Rest\Controller>
+	 */
+	public function rest_controllers(): array {
+		$permissions = $this->permissions();
+		$presenter   = $this->item_presenter();
+
+		return array(
+			new StatusController( $permissions, $this->require_provider(), $this->tracked_fields(), $this->settings(), $this->sync_repository(), $this->baseline(), $presenter ),
+			new GroupController( $permissions, $this->require_provider(), $this->tracked_fields(), $this->sync_repository(), $presenter ),
+			new DiffController( $permissions, $this->sync_repository(), $this->diff_service(), $presenter ),
+			new MarkSyncedController( $permissions, $this->sync_service(), $this->sync_repository(), $presenter ),
+			new BaselineController( $permissions, $this->baseline() ),
+		);
 	}
 
 	/**

@@ -28,7 +28,10 @@ test.describe( 'Plugin smoke test', () => {
 			page.getByRole( 'heading', { name: 'Translation Drift', level: 1 } )
 		).toBeVisible();
 		await expect(
-			page.locator( '#tdrift-dashboard-root .components-notice' )
+			page.locator( '#tdrift-dashboard-root .dataviews-wrapper' )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'region', { name: 'Summary' } )
 		).toBeVisible();
 
 		const results = await new AxeBuilder( { page } )

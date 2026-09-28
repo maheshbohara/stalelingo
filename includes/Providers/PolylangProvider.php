@@ -83,6 +83,30 @@ final class PolylangProvider implements TranslationProvider {
 	 * {@inheritDoc}
 	 *
 	 * @since 0.1.0
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_language_names(): array {
+		if ( ! function_exists( 'pll_languages_list' ) ) {
+			return array();
+		}
+
+		$slugs = (array) pll_languages_list( array( 'fields' => 'slug' ) );
+		$names = (array) pll_languages_list( array( 'fields' => 'name' ) );
+		$map   = array();
+		foreach ( $slugs as $i => $slug ) {
+			if ( is_string( $slug ) ) {
+				$map[ $slug ] = is_string( $names[ $i ] ?? null ) && '' !== $names[ $i ] ? $names[ $i ] : strtoupper( $slug );
+			}
+		}
+
+		return $map;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 0.1.0
 	 */
 	public function get_default_language(): string {
 		$default = function_exists( 'pll_default_language' ) ? pll_default_language( 'slug' ) : '';

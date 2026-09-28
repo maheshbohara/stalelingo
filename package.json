@@ -22,6 +22,7 @@
 		"@playwright/test": "1.63.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.3.3",
+		"@testing-library/user-event": "^14.6.7",
 		"@types/jest": "^30.0.0",
 		"@types/jest-axe": "^3.5.9",
 		"@types/node": "^22.20.4",
@@ -41,9 +42,16 @@
 		"typescript": "~6.0.3"
 	},
 	"dependencies": {
+		"@wordpress/a11y": "^4.56.0",
 		"@wordpress/api-fetch": "^7.56.0",
 		"@wordpress/components": "^41.0.0",
+		"@wordpress/data": "^10.56.0",
+		"@wordpress/dataviews": "^19.1.0",
+		"@wordpress/date": "^5.56.0",
+		"@wordpress/editor": "^15.1.0",
 		"@wordpress/element": "^8.8.0",
-		"@wordpress/i18n": "^6.29.0"
+		"@wordpress/i18n": "^6.29.0",
+		"@wordpress/plugins": "^7.56.0",
+		"@wordpress/url": "^4.56.0"
 	}
 }

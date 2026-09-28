@@ -154,11 +154,10 @@ final class AdminPage {
 		}
 
 		$post_types = $container->tracked_fields()->post_types();
-		foreach ( $post_types as $type ) {
-			$object                = get_post_type_object( $type );
+		foreach ( StatusView::post_type_labels( $post_types ) as $type => $label ) {
 			$config['postTypes'][] = array(
 				'slug'  => $type,
-				'label' => null === $object ? $type : (string) $object->labels->name,
+				'label' => $label,
 			);
 		}
 

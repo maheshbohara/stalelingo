@@ -39,6 +39,7 @@ All notable changes to this project are documented here. The format follows
 - The release zip is built from an explicit list of paths and rejects unexpected files. It no longer includes `composer.lock`. The readme explains where the JavaScript source is and how to rebuild it.
 
 ### Fixed
+- Dashboard: the table's toolbar is no longer covered by its pagination bar on long pages; post types that share a name show their key; empty post types are left out of the summary.
 - Diffs keep working on sites that limit post revisions: a revision is snapshotted before WordPress deletes it.
 - Saving settings for the first time no longer mangles list values.
 - Inline HTML tags no longer insert spaces into normalized text.

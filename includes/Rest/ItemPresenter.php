@@ -35,6 +35,13 @@ class ItemPresenter {
 	private ?array $language_names = null;
 
 	/**
+	 * Singular post type names keyed by post type, loaded once.
+	 *
+	 * @var array<string, string>|null
+	 */
+	private ?array $type_labels = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.1.0
@@ -56,7 +63,9 @@ class ItemPresenter {
 	 */
 	public function source( \WP_Post $source, array $rows ): array {
 		$author = get_userdata( (int) $source->post_author );
-		$type   = get_post_type_object( $source->post_type );
+		if ( null === $this->type_labels ) {
+			$this->type_labels = StatusView::post_type_labels( array_values( get_post_types( array( 'public' => true ) ) ), true );
+		}
 
 		$translations = array();
 		foreach ( $this->in_language_order( $rows ) as $lang => $row ) {
@@ -67,7 +76,7 @@ class ItemPresenter {
 			'id'              => $source->ID,
 			'title'           => $this->title( $source ),
 			'post_type'       => $source->post_type,
-			'post_type_label' => null === $type ? $source->post_type : (string) $type->labels->singular_name,
+			'post_type_label' => $this->type_labels[ $source->post_type ] ?? $source->post_type,
 			'post_status'     => $source->post_status,
 			'source_lang'     => (string) $this->provider->get_language( $source->ID ),
 			'author'          => array(

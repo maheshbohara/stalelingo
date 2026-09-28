@@ -16,6 +16,7 @@ use TranslationDrift\Admin\EditorPanel;
  * @covers \TranslationDrift\Admin\AdminPage
  * @covers \TranslationDrift\Admin\EditorPanel
  * @covers \TranslationDrift\Admin\Assets
+ * @covers \TranslationDrift\Admin\StatusView
  */
 final class AdminScreensTest extends TestCase {
 
@@ -95,6 +96,37 @@ final class AdminScreensTest extends TestCase {
 			),
 			$config['translators']
 		);
+	}
+
+	public function test_post_types_sharing_a_name_are_told_apart(): void {
+		register_post_type(
+			'events',
+			array(
+				'labels' => array(
+					'name'          => 'Events',
+					'singular_name' => 'Event',
+				),
+			)
+		);
+		register_post_type(
+			'mec-events',
+			array(
+				'labels' => array(
+					'name'          => 'Events',
+					'singular_name' => 'Event',
+				),
+			)
+		);
+
+		$labels = \TranslationDrift\Admin\StatusView::post_type_labels( array( 'post', 'events', 'mec-events' ) );
+
+		$this->assertSame( 'Posts', $labels['post'] );
+		$this->assertSame( 'Events (events)', $labels['events'] );
+		$this->assertSame( 'Events (mec-events)', $labels['mec-events'] );
+		$this->assertSame( 'Event (mec-events)', \TranslationDrift\Admin\StatusView::post_type_labels( array( 'events', 'mec-events' ), true )['mec-events'] );
+
+		unregister_post_type( 'events' );
+		unregister_post_type( 'mec-events' );
 	}
 
 	public function test_dashboard_script_gets_its_config_inline(): void {

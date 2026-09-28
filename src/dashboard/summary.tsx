@@ -78,11 +78,15 @@ export function Summary( { summary, onSelectStatus }: Props ) {
 				<CountsTable
 					caption={ __( 'By post type', 'translation-drift' ) }
 					header={ __( 'Post type', 'translation-drift' ) }
-					rows={ summary.post_types.map( ( t ) => ( {
-						key: t.slug,
-						label: t.label,
-						counts: t.counts,
-					} ) ) }
+					rows={ summary.post_types
+						.filter( ( t ) =>
+							Object.values( t.counts ).some( ( n ) => n )
+						)
+						.map( ( t ) => ( {
+							key: t.slug,
+							label: t.label,
+							counts: t.counts,
+						} ) ) }
 				/>
 			</div>
 		</section>

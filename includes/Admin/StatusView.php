@@ -83,6 +83,34 @@ final class StatusView {
 	}
 
 	/**
+	 * Post type names, with the slug added where two types share a name
+	 * (e.g. "Events (events)" and "Events (mec-events)").
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param list<string> $types    Post type names.
+	 * @param bool         $singular Singular names instead of plural ones.
+	 * @return array<string, string> Labels keyed by post type.
+	 */
+	public static function post_type_labels( array $types, bool $singular = false ): array {
+		$labels = array();
+		foreach ( $types as $type ) {
+			$object          = get_post_type_object( $type );
+			$labels[ $type ] = null === $object ? $type : (string) ( $singular ? $object->labels->singular_name : $object->labels->name );
+		}
+
+		$counts = array_count_values( $labels );
+		foreach ( $labels as $type => $label ) {
+			if ( $counts[ $label ] > 1 ) {
+				/* translators: 1: post type name, e.g. Events. 2: post type key, e.g. mec-events. */
+				$labels[ $type ] = sprintf( __( '%1$s (%2$s)', 'translation-drift' ), $label, $type );
+			}
+		}
+
+		return $labels;
+	}
+
+	/**
 	 * Human-readable name of a tracked field key.
 	 *
 	 * @since 0.1.0

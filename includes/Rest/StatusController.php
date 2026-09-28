@@ -11,6 +11,7 @@ namespace TranslationDrift\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
+use TranslationDrift\Admin\StatusView;
 use TranslationDrift\Providers\TranslationProvider;
 use TranslationDrift\Services\BaselineJob;
 use TranslationDrift\Services\Permissions;
@@ -174,11 +175,10 @@ class StatusController extends Controller {
 		}
 
 		$post_types = array();
-		foreach ( $this->tracked->post_types() as $type ) {
-			$object       = get_post_type_object( $type );
+		foreach ( StatusView::post_type_labels( $this->tracked->post_types() ) as $type => $label ) {
 			$post_types[] = array(
 				'slug'   => $type,
-				'label'  => null === $object ? $type : (string) $object->labels->name,
+				'label'  => $label,
 				'counts' => (object) ( $summary['by_post_type'][ $type ] ?? array() ),
 			);
 		}

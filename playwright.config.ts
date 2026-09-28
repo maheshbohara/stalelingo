@@ -12,11 +12,15 @@ export default defineConfig( {
 	workers: 1,
 	forbidOnly: !! process.env.CI,
 	retries: process.env.CI ? 1 : 0,
-	reporter: process.env.CI ? [ [ 'list' ], [ 'html', { open: 'never' } ] ] : 'list',
+	reporter: process.env.CI
+		? [ [ 'list' ], [ 'html', { open: 'never' } ] ]
+		: 'list',
 	globalSetup: './tests/e2e/global-setup.ts',
 	use: {
 		baseURL,
 		storageState: './test-results/storage/admin.json',
+		// Lets the dev site stop spawning WP-Cron for test requests (docker/mu-plugins/tdrift-dev-e2e.php).
+		extraHTTPHeaders: { 'X-Tdrift-E2E': '1' },
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},

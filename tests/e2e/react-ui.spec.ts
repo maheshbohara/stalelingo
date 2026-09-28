@@ -78,9 +78,11 @@ test.describe( 'React UI', () => {
 		await expect(
 			dialog.getByRole( 'heading', { name: 'Title' } )
 		).toBeVisible();
-		await expect( dialog.locator( 'ins' ) ).toContainText(
-			marker.split( ' ' )[ 1 ] as string
-		);
+		await expect(
+			dialog
+				.locator( 'ins', { hasText: marker.split( ' ' )[ 1 ] } )
+				.first()
+		).toBeVisible();
 		await expect(
 			dialog.getByRole( 'link', { name: 'Open source' } )
 		).toBeVisible();
@@ -98,9 +100,11 @@ test.describe( 'React UI', () => {
 		await openEditor( page, fr );
 		const panel = editorPanel( page );
 		await expect( panel.getByText( 'FR: Outdated' ) ).toBeAttached();
-		await expect( panel.locator( 'ins' ).first() ).toContainText(
-			marker.split( ' ' )[ 1 ] as string
-		);
+		await expect(
+			panel
+				.locator( 'ins', { hasText: marker.split( ' ' )[ 1 ] } )
+				.first()
+		).toBeAttached();
 		await panel
 			.getByRole( 'button', { name: 'Mark as up to date' } )
 			.click();
@@ -135,6 +139,7 @@ test.describe( 'React UI', () => {
 
 		const context = await browser.newContext( {
 			storageState: { cookies: [], origins: [] },
+			extraHTTPHeaders: { 'X-Tdrift-E2E': '1' },
 		} );
 		const translator = await context.newPage();
 		await login( translator, 'translator-fr', 'password' );

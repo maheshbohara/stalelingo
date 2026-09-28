@@ -93,17 +93,15 @@ run_jobs() {
 	return 1
 }
 
-if [[ "$PROVIDER" == "polylang" ]]; then
-	echo "==> Building the baseline"
-	wp eval 'TranslationDrift\Plugin::container()->baseline()->start_baseline();'
-	run_jobs
+echo "==> Building the baseline"
+wp eval 'TranslationDrift\Plugin::container()->baseline()->start_baseline();'
+run_jobs
 
-	echo "==> Editing some sources so their translations drift"
-	wp eval-file "$PLUGIN_DIR/bin/dev/make-drift.php"
-	run_jobs
+echo "==> Editing some sources so their translations drift"
+wp eval-file "$PLUGIN_DIR/bin/dev/make-drift.php"
+run_jobs
 
-	command wp eval 'foreach ( TranslationDrift\Plugin::container()->sync_repository()->count_by_status() as $s => $n ) { WP_CLI::log( sprintf( "  %-10s %d", $s, $n ) ); }'
-fi
+command wp eval 'foreach ( TranslationDrift\Plugin::container()->sync_repository()->count_by_status() as $s => $n ) { WP_CLI::log( sprintf( "  %-10s %d", $s, $n ) ); }'
 
 echo
 echo "Ready: $URL/wp-admin (admin / password). Mailpit: http://localhost:${MAILPIT_PORT:-8025}"

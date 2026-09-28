@@ -17,7 +17,7 @@ $sources = get_posts(
 	array(
 		'post_type'   => array( 'post', 'page', 'tdrift_book' ),
 		'meta_key'    => '_tdrift_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
-		'lang'        => 'en',
+		'lang'        => 'en', // Polylang; WPML filters get_posts() to the default language (en) already.
 		'numberposts' => -1,
 		'orderby'     => 'ID',
 		'order'       => 'ASC',

@@ -12,7 +12,7 @@ make up && make setup    # http://localhost:8080/wp-admin (admin / password), Ma
 make help                # all targets
 ```
 
-`make setup PROVIDER=wpml` uses WPML when its zips are in `./private/wpml/` (git-ignored).
+`make setup PROVIDER=wpml` uses WPML when its zips are in `./private/wpml/` (git-ignored); `make test-integration PROVIDER=wpml` runs the integration suite against WPML.
 
 | Check | Command |
 |---|---|

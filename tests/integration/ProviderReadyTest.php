@@ -15,11 +15,11 @@ namespace TranslationDrift\Tests\Integration;
  */
 final class ProviderReadyTest extends TestCase {
 
-	public function test_polylang_provider_is_ready_with_three_languages(): void {
+	public function test_provider_is_ready_with_three_languages(): void {
 		$provider = $this->container()->provider();
 
 		$this->assertNotNull( $provider );
-		$this->assertSame( 'polylang', $provider->id() );
+		$this->assertSame( self::provider_name(), $provider->id() );
 		$this->assertSame( array( 'en', 'fr', 'es' ), $provider->get_languages() );
 		$this->assertSame( 'en', $provider->get_default_language() );
 	}

@@ -140,12 +140,99 @@ abstract class TestCase extends \WP_UnitTestCase {
 					$args
 				)
 			);
-			pll_set_post_language( $id, $lang );
 			$group[ $lang ] = $id;
 		}
-		pll_save_post_translations( $group );
+		self::link_group( $group );
 
 		return $group;
+	}
+
+	/**
+	 * The multilingual plugin under test: 'polylang' (default) or 'wpml'.
+	 */
+	protected static function provider_name(): string {
+		return 'wpml' === getenv( 'PROVIDER' ) ? 'wpml' : 'polylang';
+	}
+
+	/**
+	 * Skips the test unless the given provider is under test.
+	 */
+	protected function only_for( string $provider ): void {
+		if ( self::provider_name() !== $provider ) {
+			$this->markTestSkipped( "{$provider} only." );
+		}
+	}
+
+	/**
+	 * Sets languages and links posts as one translation group, the first being the source.
+	 *
+	 * @param array<string, int> $group Post IDs keyed by language, source first.
+	 */
+	protected static function link_group( array $group ): void {
+		if ( 'wpml' === self::provider_name() ) {
+			$source_lang = (string) array_key_first( $group );
+			$type        = apply_filters( 'wpml_element_type', get_post_type( $group[ $source_lang ] ) );
+			$trid        = false;
+			foreach ( $group as $lang => $id ) {
+				do_action(
+					'wpml_set_element_language_details',
+					array(
+						'element_id'           => $id,
+						'element_type'         => $type,
+						'trid'                 => $trid,
+						'language_code'        => $lang,
+						'source_language_code' => $lang === $source_lang ? null : $source_lang,
+					)
+				);
+				$trid = apply_filters( 'wpml_element_trid', null, $group[ $source_lang ], $type );
+			}
+			return;
+		}
+
+		foreach ( $group as $lang => $id ) {
+			pll_set_post_language( $id, $lang );
+		}
+		pll_save_post_translations( $group );
+	}
+
+	/**
+	 * Adds a language the way the multilingual plugin's admin screen does.
+	 */
+	protected static function add_language( string $locale, string $code ): void {
+		if ( 'wpml' === self::provider_name() ) {
+			self::set_wpml_languages( array( 'en', 'fr', 'es', $code ) );
+			return;
+		}
+		PLL()->model->languages->add( array( 'locale' => $locale, 'term_group' => 9 ) );
+		PLL()->model->clean_languages_cache();
+	}
+
+	/**
+	 * Removes a language added by add_language().
+	 */
+	protected static function remove_language( string $code ): void {
+		if ( 'wpml' === self::provider_name() ) {
+			self::set_wpml_languages( array( 'en', 'fr', 'es' ) );
+			return;
+		}
+		$language = PLL()->model->get_language( $code );
+		if ( $language ) {
+			PLL()->model->languages->delete( $language->term_id );
+		}
+		PLL()->model->clean_languages_cache();
+	}
+
+	/**
+	 * Sets WPML's active languages and fires the action its languages screen fires.
+	 *
+	 * @param list<string> $codes Language codes.
+	 */
+	private static function set_wpml_languages( array $codes ): void {
+		global $wpdb, $sitepress;
+
+		$old = array_keys( (array) apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) ) );
+		( new \WPML_Installation( $wpdb, $sitepress ) )->set_active_languages( $codes );
+		do_action( 'wpml_update_active_languages', $old );
 	}
 
 	/**
@@ -174,6 +261,10 @@ abstract class TestCase extends \WP_UnitTestCase {
 	 * @return int Jobs run.
 	 */
 	protected function run_jobs(): int {
+		// Jobs run in a later request (WP-Cron, Action Scheduler), so start from a cold object cache,
+		// as that request would: multilingual plugins cache translation groups per request.
+		wp_cache_flush();
+
 		$run = 0;
 		for ( $i = 0; $i < 200; $i++ ) {
 			$job = $this->next_job();

@@ -53,25 +53,30 @@ final class LifecycleTest extends TestCase {
 
 		$this->assertSame( array(), $this->container()->sync_repository()->for_source( $group['en'] ) );
 		$this->assertNull( $this->row( $group['fr'] ) );
-		$this->assertNull( $this->container()->provider()->get_source( $group['fr'] ), 'The group has no source left.' );
+
+		$new_source = $this->container()->provider()->get_source( $group['fr'] );
+		if ( 'wpml' === self::provider_name() ) {
+			// WPML promotes a remaining translation to be the new original.
+			$this->assertContains( $new_source, array( $group['fr'], $group['es'] ) );
+		} else {
+			$this->assertNull( $new_source, 'Polylang: the group has no post in the source language left.' );
+		}
 	}
 
 	public function test_adding_a_language_marks_existing_posts_missing_for_it(): void {
 		$group = $this->create_synced_group();
 
-		PLL()->model->languages->add(
-			array(
-				'locale'     => 'de_DE',
-				'term_group' => 3,
-			)
-		);
-		PLL()->model->clean_languages_cache();
+		self::add_language( 'de_DE', 'de' );
 
-		$this->assertNotEmpty( $this->queued_jobs(), 'A recalculation is queued.' );
-		$this->run_jobs();
+		try {
+			$this->assertNotEmpty( $this->queued_jobs(), 'A recalculation is queued.' );
+			$this->run_jobs();
 
-		$this->assertSame( Status::Missing, $this->status_of( $group['en'], 'de' ) );
-		$this->assertSame( Status::InSync, $this->status_of( $group['en'], 'fr' ) );
+			$this->assertSame( Status::Missing, $this->status_of( $group['en'], 'de' ) );
+			$this->assertSame( Status::InSync, $this->status_of( $group['en'], 'fr' ) );
+		} finally {
+			self::remove_language( 'de' );
+		}
 	}
 
 	public function test_untracked_translations_get_a_row_until_the_baseline_reaches_them(): void {
@@ -84,6 +89,7 @@ final class LifecycleTest extends TestCase {
 	}
 
 	public function test_a_post_that_is_no_longer_a_source_loses_its_rows(): void {
+		$this->only_for( 'polylang' ); // WPML's original can't be overridden.
 		$group = $this->create_synced_group();
 
 		$this->container()->provider()->set_source_override( $group['fr'], true );

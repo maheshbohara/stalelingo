@@ -20,10 +20,34 @@ defined( 'ABSPATH' ) || exit;
 $provider = $args[0] ?? 'polylang';
 $count    = max( 1, (int) ( $args[1] ?? 6 ) );
 
-if ( 'polylang' !== $provider ) {
-	WP_CLI::warning( 'Seeding is implemented for Polylang only until the WPML adapter lands.' );
-	return;
-}
+/**
+ * Sets a post's language and links it to its translation group.
+ *
+ * @param array<string, int> $group Post IDs keyed by language, source ('en') first.
+ */
+$link_group = static function ( array $group ) use ( $provider ): void {
+	if ( 'wpml' === $provider ) {
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's public API.
+		$type = apply_filters( 'wpml_element_type', get_post_type( $group['en'] ) );
+		do_action( 'wpml_set_element_language_details', array( 'element_id' => $group['en'], 'element_type' => $type, 'trid' => false, 'language_code' => 'en' ) );
+		$trid = apply_filters( 'wpml_element_trid', null, $group['en'], $type );
+		foreach ( $group as $lang => $id ) {
+			if ( 'en' !== $lang ) {
+				do_action( 'wpml_set_element_language_details', array( 'element_id' => $id, 'element_type' => $type, 'trid' => $trid, 'language_code' => $lang, 'source_language_code' => 'en' ) );
+			}
+		}
+		// phpcs:enable
+		return;
+	}
+	foreach ( $group as $lang => $id ) {
+		pll_set_post_language( $id, $lang );
+	}
+	pll_save_post_translations( $group );
+};
+
+// Seed posts in every language, whatever the admin's current language filter.
+$all_languages = 'wpml' === $provider ? array( 'suppress_filters' => true ) : array( 'lang' => '' );
+$en_only       = 'wpml' === $provider ? array( 'suppress_filters' => false ) : array( 'lang' => 'en' );
 
 $translators = array();
 foreach ( array( 'fr', 'es' ) as $lang ) {
@@ -43,11 +67,10 @@ foreach ( array( 'post', 'page', 'tdrift_book' ) as $post_type ) {
 		array(
 			'post_type'   => $post_type,
 			'meta_key'    => '_tdrift_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
-			'lang'        => 'en',
 			'fields'      => 'ids',
 			'numberposts' => -1,
 			'post_status' => 'any',
-		)
+		) + $en_only
 	);
 
 	for ( $i = count( $existing ) + 1; $i <= $count; $i++ ) {
@@ -71,10 +94,9 @@ foreach ( array( 'post', 'page', 'tdrift_book' ) as $post_type ) {
 			if ( is_wp_error( $post_id ) ) {
 				WP_CLI::error( $post_id->get_error_message() );
 			}
-			pll_set_post_language( $post_id, $lang );
 			$group[ $lang ] = $post_id;
 		}
-		pll_save_post_translations( $group );
+		$link_group( $group );
 		++$created;
 	}
 }
@@ -167,10 +189,9 @@ if ( ! get_posts(
 				),
 			)
 		);
-		pll_set_post_language( $id, $lang );
 		$pages[ $lang ] = $id;
 	}
-	pll_save_post_translations( $pages );
+	$link_group( $pages );
 	++$created;
 }
 

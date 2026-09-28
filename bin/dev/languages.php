@@ -12,8 +12,28 @@ defined( 'ABSPATH' ) || exit;
 
 $tdrift_provider = $args[0] ?? 'polylang'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
-if ( 'polylang' !== $tdrift_provider ) {
-	WP_CLI::warning( 'Automatic language setup is implemented for Polylang only. Configure WPML languages in its setup wizard.' );
+if ( 'wpml' === $tdrift_provider ) {
+	global $wpdb, $sitepress;
+	if ( ! class_exists( 'WPML_Installation' ) || ! $sitepress ) {
+		WP_CLI::error( 'WPML is not loaded.' );
+	}
+	// Runs WPML's own setup wizard steps: default language, active languages, finish.
+	if ( ! icl_get_setting( 'setup_complete' ) ) {
+		$tdrift_install = new WPML_Installation( $wpdb, $sitepress );
+		$tdrift_install->finish_step1( 'en' );
+		$tdrift_install->finish_step2( array( 'en', 'fr', 'es' ) );
+		$tdrift_install->finish_step3();
+		$tdrift_install->finish_installation();
+	}
+	// A scripted install skips Translation Management's own setup; give it its settings array.
+	if ( ! is_array( icl_get_setting( 'translation-management' ) ) ) {
+		icl_set_setting( 'translation-management', array(), true );
+	}
+	// Translate the dev CPT (1 = translatable).
+	$tdrift_sync                = (array) icl_get_setting( 'custom_posts_sync_option', array() );
+	$tdrift_sync['tdrift_book'] = 1;
+	icl_set_setting( 'custom_posts_sync_option', $tdrift_sync, true );
+	WP_CLI::success( 'WPML languages: ' . implode( ', ', array_keys( (array) apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) ) ) ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	return;
 }
 

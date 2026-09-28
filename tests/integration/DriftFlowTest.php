@@ -174,9 +174,8 @@ final class DriftFlowTest extends TestCase {
 		$this->assertSame( Status::Missing, $this->status_of( $group['en'], 'es' ) );
 
 		$es = self::factory()->post->create( array( 'post_title' => 'Título' ) );
-		pll_set_post_language( $es, 'es' );
-		pll_save_post_translations( $group + array( 'es' => $es ) );
-		// Polylang fires pll_save_post when the new translation is saved.
+		self::link_group( $group + array( 'es' => $es ) );
+		// The multilingual plugin announces the save (pll_save_post / wpml_after_save_post).
 		$this->update( $es, array( 'post_content' => 'Contenido' ) );
 
 		$row = $this->row( $es );

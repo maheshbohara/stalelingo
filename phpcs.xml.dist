@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<ruleset name="Translation Drift">
+	<description>Coding standards for Translation Drift.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/languages/*</exclude-pattern>
+	<exclude-pattern>/private/*</exclude-pattern>
+	<exclude-pattern>/coverage/*</exclude-pattern>
+	<exclude-pattern>/test-results/*</exclude-pattern>
+	<exclude-pattern>/tests/stubs/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg name="parallel" value="8"/>
+	<arg value="sp"/>
+
+	<config name="minimum_wp_version" value="6.8"/>
+	<config name="testVersion" value="8.1-"/>
+
+	<rule ref="WordPress"/>
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress-Docs"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="translation-drift"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="tdrift"/>
+				<element value="TranslationDrift"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- PSR-4 autoloading needs class-named files. -->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>/includes/*</exclude-pattern>
+		<exclude-pattern>/tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Test code: PHPUnit naming and fixtures. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude-pattern>/docker/*</exclude-pattern>
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting">
+		<exclude-pattern>/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.Commenting.DocComment.MissingShort">
+		<exclude-pattern>/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.DB">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.LongConditionClosingComment">
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.PostStatementComment">
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.Security.EscapeOutput">
+		<exclude-pattern>/tests/*</exclude-pattern>
+		<exclude-pattern>/bin/*</exclude-pattern>
+	</rule>
+</ruleset>

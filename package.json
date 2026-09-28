@@ -1,0 +1,49 @@
+{
+	"name": "translation-drift",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Outdated translation tracker for Polylang and WPML.",
+	"license": "GPL-2.0-or-later",
+	"engines": {
+		"node": ">=22.22.2"
+	},
+	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"lint:js": "wp-scripts lint-js src tests/js tests/e2e && tsc --noEmit",
+		"lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
+		"lint": "npm run lint:js && npm run lint:css",
+		"format": "wp-scripts format src tests/js tests/e2e",
+		"test:js": "wp-scripts test-unit-jest --config jest.config.js",
+		"test:e2e": "playwright test --config playwright.config.ts"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "4.13.0",
+		"@playwright/test": "1.63.0",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.3.3",
+		"@types/jest": "^30.0.0",
+		"@types/jest-axe": "^3.5.9",
+		"@types/node": "^22.20.4",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"@wordpress/babel-preset-default": "^8.56.0",
+		"@wordpress/dependency-extraction-webpack-plugin": "^6.56.0",
+		"@wordpress/eslint-plugin": "^27.0.0",
+		"@wordpress/jest-preset-default": "^14.2.0",
+		"@wordpress/prettier-config": "^4.56.0",
+		"@wordpress/scripts": "^36.0.0",
+		"@wordpress/stylelint-config": "^26.0.0",
+		"jest": "^30.5.2",
+		"jest-axe": "^11.0.0",
+		"jest-environment-jsdom": "^30.5.2",
+		"prettier": "npm:wp-prettier@^3.9.6",
+		"typescript": "~6.0.3"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "^7.56.0",
+		"@wordpress/components": "^41.0.0",
+		"@wordpress/element": "^8.8.0",
+		"@wordpress/i18n": "^6.29.0"
+	}
+}

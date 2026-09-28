@@ -1,0 +1,48 @@
+# Copyright (C) 2026 Tilt
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Translation Drift – Outdated Translation Tracker for Polylang & WPML 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/translation-drift\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-28T05:52:50+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: translation-drift\n"
+
+#. Plugin Name of the plugin
+#: translation-drift.php
+msgid "Translation Drift – Outdated Translation Tracker for Polylang & WPML"
+msgstr ""
+
+#. Description of the plugin
+#: translation-drift.php
+msgid "Flags translations that went out of date when their source post changed, shows what changed, and helps editors clear the backlog."
+msgstr ""
+
+#. Author of the plugin
+#: translation-drift.php
+msgid "Tilt"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:62
+#: includes/Admin/AdminPage.php:63
+#: includes/Admin/AdminPage.php:133
+msgid "Translation Drift"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:129
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+#: includes/Admin/DependencyNotice.php:78
+msgid "Translation Drift needs Polylang or WPML to be active. It has nothing to track until one of them is."
+msgstr ""
+
+#: build/dashboard/index.js:1
+msgid "Translation status will appear here once the baseline has been built."
+msgstr ""

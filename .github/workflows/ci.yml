@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Every job runs the same make targets as local development, on the Docker stack.
+jobs:
+  static:
+    name: Lint, PHPStan, PHPCompat, readme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make lint
+      - run: make phpstan
+      - run: make phpcompat
+      - run: make readme-validate
+
+  php-tests:
+    name: PHP ${{ matrix.php }} · WP ${{ matrix.wp }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.1', '8.2', '8.3', '8.4' ]
+        wp: [ latest, latest-1 ]
+    env:
+      PHP_VERSION: ${{ matrix.php }}
+      WP_VERSION: ${{ matrix.wp }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: make test-unit
+      - run: make test-integration
+
+  coverage:
+    name: Coverage thresholds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/clover.xml
+          if-no-files-found: ignore
+
+  js-tests:
+    name: JS tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make test-js
+
+  e2e:
+    name: E2E (Polylang)
+    needs: [ static, php-tests, js-tests ]
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - run: make setup
+      - run: make test-e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results/
+
+  package:
+    name: Plugin Check & zip
+    needs: [ static ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make plugin-check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: translation-drift-zip
+          path: dist/*.zip

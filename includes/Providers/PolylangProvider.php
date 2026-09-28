@@ -261,19 +261,6 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * An empty `lang` query var makes Polylang return every language.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function all_languages_query_args(): array {
-		return array( 'lang' => '' );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * Existing translations use the core edit link. For a missing translation,
 	 * Polylang's own "add translation" link is used when available; its API is
 	 * undocumented and changed in 3.8, so it's only called with that signature.

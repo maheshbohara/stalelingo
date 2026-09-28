@@ -125,10 +125,6 @@ final class PolylangProviderTest extends TestCase {
 		$this->assertSame( 'http://x/wp-admin/post.php?post=11&action=edit', $this->provider()->get_edit_translation_url( 10, 'fr' ) );
 	}
 
-	public function test_all_languages_query_args(): void {
-		$this->assertSame( array( 'lang' => '' ), $this->provider()->all_languages_query_args() );
-	}
-
 	public function test_hooks(): void {
 		$provider = $this->provider();
 		$saved    = array();

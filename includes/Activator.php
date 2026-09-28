@@ -52,6 +52,19 @@ final class Activator {
 	}
 
 	/**
+	 * Schedules the recurring maintenance job if it is missing.
+	 *
+	 * Also runs on admin requests, so sites activated before a job existed get it after an update.
+	 *
+	 * @since 0.1.0
+	 */
+	public static function ensure_schedules(): void {
+		if ( ! wp_next_scheduled( PostHooks::PRUNE_HOOK ) ) {
+			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', PostHooks::PRUNE_HOOK );
+		}
+	}
+
+	/**
 	 * Sets up the current site.
 	 *
 	 * @since 0.1.0
@@ -60,9 +73,7 @@ final class Activator {
 		Migrator::migrate();
 		Capabilities::grant();
 
-		if ( ! wp_next_scheduled( PostHooks::PRUNE_HOOK ) ) {
-			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', PostHooks::PRUNE_HOOK );
-		}
+		self::ensure_schedules();
 
 		// Queued, never run on the activation request itself.
 		$container = Plugin::container();

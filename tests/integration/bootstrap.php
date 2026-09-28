@@ -33,6 +33,10 @@ tests_add_filter(
 		} else {
 			require_once $tdrift_core_dir . '/wp-content/plugins/polylang/polylang.php';
 		}
+		$acf = $tdrift_core_dir . '/wp-content/plugins/advanced-custom-fields/acf.php';
+		if ( is_readable( $acf ) ) {
+			require_once $acf;
+		}
 		require_once $tdrift_root . '/translation-drift.php';
 	}
 );

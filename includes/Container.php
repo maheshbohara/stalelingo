@@ -15,9 +15,12 @@ use TranslationDrift\Domain\DriftEvaluator;
 use TranslationDrift\Domain\Hasher;
 use TranslationDrift\Domain\Normalizer;
 use TranslationDrift\Domain\SnapshotCodec;
+use TranslationDrift\Integrations\Acf;
+use TranslationDrift\Integrations\Elementor;
 use TranslationDrift\Providers\PolylangProvider;
 use TranslationDrift\Providers\ProviderDetector;
 use TranslationDrift\Providers\TranslationProvider;
+use TranslationDrift\Providers\WpmlProvider;
 use TranslationDrift\Services\BaselineJob;
 use TranslationDrift\Services\DriftService;
 use TranslationDrift\Services\Fingerprinter;
@@ -84,6 +87,7 @@ final class Container {
 		if ( ! array_key_exists( 'provider', $this->instances ) ) {
 			$provider = match ( $this->detector->detect() ) {
 				ProviderDetector::POLYLANG => new PolylangProvider( $this->settings() ),
+				ProviderDetector::WPML     => new WpmlProvider(),
 				default                    => null,
 			};
 
@@ -100,7 +104,7 @@ final class Container {
 			} else {
 				return null;
 			}
-		}
+		}//end if
 
 		$provider = $this->instances['provider'];
 
@@ -274,6 +278,24 @@ final class Container {
 				$this->queue()
 			)
 		);
+	}
+
+	/**
+	 * ACF integration.
+	 *
+	 * @since 0.1.0
+	 */
+	public function acf(): Acf {
+		return $this->get( 'acf', fn() => new Acf( $this->settings(), $this->require_provider(), new Normalizer() ) );
+	}
+
+	/**
+	 * Elementor integration.
+	 *
+	 * @since 0.1.0
+	 */
+	public function elementor(): Elementor {
+		return $this->get( 'elementor', fn() => new Elementor( $this->settings(), new Normalizer() ) );
 	}
 
 	/**

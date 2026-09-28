@@ -79,10 +79,13 @@ final class Plugin {
 		$container = self::container();
 
 		if ( $container->has_provider() ) {
+			$container->acf()->register();
+			$container->elementor()->register();
 			$container->post_hooks()->register();
 		}
 
 		if ( is_admin() ) {
+			add_action( 'admin_init', array( Activator::class, 'ensure_schedules' ) );
 			( new AdminPage() )->register();
 			( new DependencyNotice( $container->detector() ) )->register();
 		}

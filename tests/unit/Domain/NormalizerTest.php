@@ -64,6 +64,12 @@ final class NormalizerTest extends TestCase {
 
 	public function test_words_in_adjacent_elements_stay_apart(): void {
 		$this->assertSame( 'One Two', $this->normalizer->normalize_text( '<li>One</li><li>Two</li>' ) );
+		$this->assertSame( 'Line one Line two', $this->normalizer->normalize_text( 'Line one<br>Line two' ) );
+	}
+
+	public function test_inline_tags_do_not_split_words_or_punctuation(): void {
+		$this->assertSame( 'Read the docs.', $this->normalizer->normalize_text( 'Read <a href="/x">the</a> <em>docs</em>.' ) );
+		$this->assertSame( 'unbelievable', $this->normalizer->normalize_text( 'un<strong>believ</strong>able' ) );
 	}
 
 	public function test_keeps_alt_and_label_text_but_drops_scripts_and_comments(): void {

@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Phase 3 integrations:
+  - WPML adapter built on WPML's public filters and actions, with WPML's add-translation link for missing translations.
+  - ACF fields: fields set to "translate" or "copy once" (WPML, Polylang Pro) are tracked, and text fields when no preference is set. Only text values count, including inside groups, repeaters and flexible content.
+  - ACF blocks in any namespace: text fields in block data count and layout fields don't.
+  - Elementor: visible widget text is tracked, and style-only changes are ignored.
+  - Dev tooling: a real-site WPML validation script, plus ACF and Elementor seed content.
+
 - Phase 2 domain core:
   - Provider interface and Polylang adapter: languages, groups, source resolution with a per-group override, and edit or create links.
   - Block-aware normalization (one line per block, visible text only unless strict mode is on), versioned SHA-256 hashing, drift evaluation and the status model (`in_sync`, `outdated`, `missing`, `untracked`).
@@ -17,6 +24,8 @@ All notable changes to this project are documented here. The format follows
   - Dev setup builds the baseline and edits some sources, so the site starts with in-sync, outdated and missing translations.
 
 ### Fixed
+- Inline HTML tags no longer insert spaces into normalized text.
+- The daily maintenance job is scheduled on sites that activated before it existed.
 - Deactivation and uninstall now clear queued jobs that have arguments (`wp_unschedule_hook()`).
 
 - Phase 1 scaffold:

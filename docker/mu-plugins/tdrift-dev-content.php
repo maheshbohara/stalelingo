@@ -23,3 +23,39 @@ add_action(
 		);
 	}
 );
+
+// ACF field group for the dev CPT: one text field (tracked) and one number field (layout, not tracked).
+add_action(
+	'acf/init',
+	static function (): void {
+		acf_add_local_field_group(
+			array(
+				'key'      => 'group_tdrift_dev_book',
+				'title'    => 'Book details',
+				'fields'   => array(
+					array(
+						'key'   => 'field_tdrift_dev_subtitle',
+						'name'  => 'book_subtitle',
+						'label' => 'Subtitle',
+						'type'  => 'text',
+					),
+					array(
+						'key'   => 'field_tdrift_dev_pages',
+						'name'  => 'book_pages',
+						'label' => 'Pages',
+						'type'  => 'number',
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'tdrift_book',
+						),
+					),
+				),
+			)
+		);
+	}
+);

@@ -109,15 +109,6 @@ interface TranslationProvider {
 	public function on_languages_changed( callable $callback ): void;
 
 	/**
-	 * WP_Query arguments that disable the provider's language filtering, so a query returns posts in every language.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function all_languages_query_args(): array;
-
-	/**
 	 * URL to edit the translation of a source post, or to create it when missing.
 	 *
 	 * Null when the current user can't, or the provider offers no such screen.

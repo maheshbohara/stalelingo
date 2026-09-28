@@ -35,6 +35,13 @@ final class Normalizer {
 	private const TEXT_HTML_ATTRIBUTES = array( 'alt', 'title', 'aria-label', 'placeholder' );
 
 	/**
+	 * Opening or closing tags of elements that separate words.
+	 *
+	 * @since 0.1.0
+	 */
+	private const BLOCK_TAG_PATTERN = '#</?(?:address|article|aside|blockquote|br|caption|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|tfoot|th|thead|tr|ul)\b[^>]*>#i';
+
+	/**
 	 * Block attributes that hold visible text for core blocks that don't render it into their saved HTML.
 	 *
 	 * @since 0.1.0
@@ -259,9 +266,10 @@ final class Normalizer {
 
 		$html = (string) preg_replace( '#<(script|style)\b[^>]*>.*?</\1>#is', ' ', $html );
 		$html = (string) preg_replace( '/<!--.*?-->/s', ' ', $html );
-		// A space before each tag keeps words in adjacent elements apart once tags are removed.
+		// Block-level tags and line breaks separate words; inline tags (em, strong, a…) don't.
+		$html = (string) preg_replace( self::BLOCK_TAG_PATTERN, ' ', $html );
 		// wp_strip_all_tags() isn't available to this WordPress-free class; script and style are removed above.
-		$text = strip_tags( str_replace( '<', ' <', $html ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		$text = strip_tags( $html ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 
 		return trim( $text . ' ' . implode( ' ', $extra ) );
 	}

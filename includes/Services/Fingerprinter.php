@@ -128,6 +128,24 @@ class Fingerprinter {
 	 * @param bool   $strict Strict mode.
 	 */
 	private function normalize( string $field, mixed $raw, bool $strict ): string {
+		/**
+		 * Short-circuits normalization of a tracked field.
+		 *
+		 * Integrations return the normalized text of their own fields (for example
+		 * 'acf:*' and 'elementor'); null falls through to the default normalization.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param string|null $normalized Null to use the default.
+		 * @param string      $field      Field key.
+		 * @param mixed       $raw        Raw value.
+		 * @param bool        $strict     Whether strict mode is on.
+		 */
+		$pre = apply_filters( 'tdrift_pre_normalize_value', null, $field, $raw, $strict );
+		if ( is_string( $pre ) ) {
+			return $pre;
+		}
+
 		if ( 'content' === $field ) {
 			return $this->normalizer->normalize_blocks( parse_blocks( (string) $raw ), $strict );
 		}

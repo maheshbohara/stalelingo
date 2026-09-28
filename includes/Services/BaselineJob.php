@@ -206,32 +206,24 @@ class BaselineJob {
 			return array();
 		}
 
-		$where = static function ( string $sql ) use ( $after_id ): string {
-			global $wpdb;
+		global $wpdb;
 
-			return $sql . $wpdb->prepare( " AND {$wpdb->posts}.ID > %d", $after_id );
-		};
+		$types    = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
+		$statuses = array( 'publish', 'future', 'draft', 'pending', 'private' );
 
-		add_filter( 'posts_where', $where );
-		$query = new \WP_Query(
-			array_merge(
-				array(
-					'post_type'              => $post_types,
-					'post_status'            => array( 'publish', 'future', 'draft', 'pending', 'private' ),
-					'orderby'                => 'ID',
-					'order'                  => 'ASC',
-					'posts_per_page'         => $this->batch_size(),
-					'fields'                 => 'ids',
-					'no_found_rows'          => true,
-					'update_post_meta_cache' => false,
-					'update_post_term_cache' => false,
-				),
-				$this->provider->all_languages_query_args()
+		// A read-only query on the core posts table: unlike WP_Query, it is unaffected by the
+		// multilingual plugin's language filters, and it pages by ID cheaply on large sites.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $types is one %s per post type.
+		$ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts} WHERE ID > %d AND post_type IN ({$types}) AND post_status IN (%s, %s, %s, %s, %s) ORDER BY ID ASC LIMIT %d",
+				$after_id,
+				...array_merge( $post_types, $statuses, array( $this->batch_size() ) )
 			)
 		);
-		remove_filter( 'posts_where', $where );
+		// phpcs:enable
 
-		return array_values( array_map( static fn( $id ): int => $id instanceof \WP_Post ? $id->ID : (int) $id, $query->posts ) );
+		return array_values( array_map( 'intval', (array) $ids ) );
 	}
 
 	/**

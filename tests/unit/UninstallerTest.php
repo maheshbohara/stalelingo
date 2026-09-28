@@ -43,6 +43,7 @@ final class UninstallerTest extends TestCase {
 
 	public function test_keeps_data_when_setting_is_off(): void {
 		Functions\when( 'get_option' )->justReturn( array() );
+		Functions\expect( 'wp_unschedule_hook' )->times( 4 );
 		Functions\expect( 'delete_option' )->never();
 		$wpdb = \Mockery::mock();
 		$wpdb->expects( 'query' )->never();

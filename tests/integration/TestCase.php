@@ -9,6 +9,12 @@ declare( strict_types=1 );
 
 namespace TranslationDrift\Tests\Integration;
 
+use TranslationDrift\Container;
+use TranslationDrift\Deactivator;
+use TranslationDrift\Domain\Status;
+use TranslationDrift\Plugin;
+use TranslationDrift\Services\Repositories\SyncRow;
+
 /**
  * Integration test base.
  */
@@ -20,6 +26,48 @@ abstract class TestCase extends \WP_UnitTestCase {
 	 * @var bool
 	 */
 	private bool $ran_ddl = false;
+
+	/**
+	 * Languages every test starts with.
+	 */
+	public const LOCALES = array( 'en_US', 'fr_FR', 'es_ES' );
+
+	public static function set_up_before_class(): void {
+		parent::set_up_before_class();
+		self::ensure_languages();
+	}
+
+	/**
+	 * Recreates the Polylang languages.
+	 *
+	 * The WP test suite deletes every term after each test class (`_delete_all_data()`),
+	 * including Polylang's language terms, so each class starts by restoring them.
+	 */
+	public static function ensure_languages(): void {
+		if ( 'wpml' === getenv( 'PROVIDER' ) || ! function_exists( 'PLL' ) ) {
+			return;
+		}
+
+		$model = PLL()->model;
+		$model->clean_languages_cache();
+		$existing = array_map( static fn( $lang ) => $lang->locale, $model->get_languages_list() );
+		foreach ( self::LOCALES as $order => $locale ) {
+			if ( ! in_array( $locale, $existing, true ) ) {
+				$model->languages->add(
+					array(
+						'locale'     => $locale,
+						'term_group' => $order,
+					)
+				);
+			}
+		}
+		$model->clean_languages_cache();
+	}
+
+	public function set_up(): void {
+		parent::set_up();
+		$this->clear_jobs();
+	}
 
 	/**
 	 * Lets DDL statements reach the real tables instead of the suite's temporary copies.
@@ -34,6 +82,7 @@ abstract class TestCase extends \WP_UnitTestCase {
 	}
 
 	public function tear_down(): void {
+		$this->clear_jobs();
 		parent::tear_down();
 
 		if ( $this->ran_ddl ) {
@@ -44,6 +93,7 @@ abstract class TestCase extends \WP_UnitTestCase {
 			delete_option( \TranslationDrift\Database\Migrator::OPTION );
 			wp_cache_flush();
 			\TranslationDrift\Activator::activate();
+			$this->clear_jobs();
 		}
 	}
 
@@ -54,5 +104,162 @@ abstract class TestCase extends \WP_UnitTestCase {
 		global $wpdb;
 
 		return $table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
+	}
+
+	protected function container(): Container {
+		return Plugin::container();
+	}
+
+	/**
+	 * Updates plugin settings.
+	 *
+	 * @param array<string, mixed> $settings Settings to merge.
+	 */
+	protected function set_settings( array $settings ): void {
+		update_option( \TranslationDrift\Settings::OPTION, array_merge( (array) get_option( \TranslationDrift\Settings::OPTION, array() ), $settings ) );
+	}
+
+	/**
+	 * Creates a Polylang translation group.
+	 *
+	 * @param list<string>         $langs Languages to create, source language first.
+	 * @param array<string, mixed> $args  Post arguments shared by every post.
+	 * @return array<string, int> Post IDs keyed by language.
+	 */
+	protected function create_group( array $langs = array( 'en', 'fr', 'es' ), array $args = array() ): array {
+		$group = array();
+		foreach ( $langs as $lang ) {
+			$id = self::factory()->post->create(
+				array_merge(
+					array(
+						'post_title'   => "Title {$lang}",
+						'post_content' => "<!-- wp:paragraph -->\n<p>Content {$lang}</p>\n<!-- /wp:paragraph -->",
+						'post_excerpt' => "Excerpt {$lang}",
+						'post_status'  => 'publish',
+					),
+					$args
+				)
+			);
+			pll_set_post_language( $id, $lang );
+			$group[ $lang ] = $id;
+		}
+		pll_save_post_translations( $group );
+
+		return $group;
+	}
+
+	/**
+	 * Creates a group and gives every translation a sync point, then clears queued jobs.
+	 *
+	 * @param list<string>         $langs Languages.
+	 * @param array<string, mixed> $args  Post arguments.
+	 * @return array<string, int>
+	 */
+	protected function create_synced_group( array $langs = array( 'en', 'fr', 'es' ), array $args = array() ): array {
+		$group = $this->create_group( $langs, $args );
+		foreach ( $group as $lang => $id ) {
+			if ( 'en' !== $lang ) {
+				$this->container()->sync_service()->mark_synced( $id );
+			}
+		}
+		$this->container()->drift_service()->recalculate_source( $group['en'] );
+		$this->clear_jobs();
+
+		return $group;
+	}
+
+	/**
+	 * Runs queued plugin jobs (WP-Cron) until none are left.
+	 *
+	 * @return int Jobs run.
+	 */
+	protected function run_jobs(): int {
+		$run = 0;
+		for ( $i = 0; $i < 200; $i++ ) {
+			$job = $this->next_job();
+			if ( null === $job ) {
+				break;
+			}
+			wp_unschedule_event( $job['timestamp'], $job['hook'], $job['args'] );
+			do_action_ref_array( $job['hook'], $job['args'] );
+			++$run;
+		}
+
+		return $run;
+	}
+
+	/**
+	 * Queued plugin jobs.
+	 *
+	 * @return list<array{timestamp: int, hook: string, args: list<mixed>}>
+	 */
+	protected function queued_jobs(): array {
+		$jobs = array();
+		foreach ( (array) _get_cron_array() as $timestamp => $hooks ) {
+			foreach ( (array) $hooks as $hook => $events ) {
+				if ( ! str_starts_with( (string) $hook, 'tdrift_' ) || 'tdrift_prune' === $hook ) {
+					continue;
+				}
+				foreach ( (array) $events as $event ) {
+					$jobs[] = array(
+						'timestamp' => (int) $timestamp,
+						'hook'      => (string) $hook,
+						'args'      => array_values( (array) $event['args'] ),
+					);
+				}
+			}
+		}
+
+		return $jobs;
+	}
+
+	/**
+	 * Unschedules every plugin job.
+	 */
+	protected function clear_jobs(): void {
+		foreach ( Deactivator::scheduled_hooks() as $hook ) {
+			wp_unschedule_hook( $hook );
+		}
+	}
+
+	/**
+	 * The row of a translation.
+	 */
+	protected function row( int $translation_id ): ?SyncRow {
+		return $this->container()->sync_repository()->find_by_translation( $translation_id );
+	}
+
+	/**
+	 * The status of a (source, language) pair.
+	 */
+	protected function status_of( int $source_id, string $lang ): ?Status {
+		$rows = $this->container()->sync_repository()->for_source( $source_id );
+
+		return isset( $rows[ $lang ] ) ? $rows[ $lang ]->status : null;
+	}
+
+	/**
+	 * Event types logged for a translation, oldest first.
+	 *
+	 * @return list<string>
+	 */
+	protected function events_of( int $translation_id ): array {
+		return array_reverse(
+			array_map(
+				static fn( object $e ): string => (string) $e->event,
+				$this->container()->event_repository()->for_translation( $translation_id )
+			)
+		);
+	}
+
+	/**
+	 * First queued job, or null.
+	 *
+	 * @return array{timestamp: int, hook: string, args: list<mixed>}|null
+	 */
+	private function next_job(): ?array {
+		$jobs = $this->queued_jobs();
+
+		return $jobs[0] ?? null;
 	}
 }

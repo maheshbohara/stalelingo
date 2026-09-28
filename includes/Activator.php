@@ -12,6 +12,7 @@ namespace TranslationDrift;
 defined( 'ABSPATH' ) || exit;
 
 use TranslationDrift\Database\Migrator;
+use TranslationDrift\Services\PostHooks;
 
 /**
  * Creates tables and grants capabilities on activation.
@@ -58,6 +59,16 @@ final class Activator {
 	public static function activate_site(): void {
 		Migrator::migrate();
 		Capabilities::grant();
+
+		if ( ! wp_next_scheduled( PostHooks::PRUNE_HOOK ) ) {
+			wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', PostHooks::PRUNE_HOOK );
+		}
+
+		// Queued, never run on the activation request itself.
+		$container = Plugin::container();
+		if ( $container->has_provider() ) {
+			$container->baseline()->start_baseline();
+		}
 
 		/**
 		 * Fires after the plugin was activated on a site.

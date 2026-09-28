@@ -32,6 +32,38 @@ final class Plugin {
 	private static bool $booted = false;
 
 	/**
+	 * Shared container.
+	 *
+	 * @since 0.1.0
+	 * @var Container|null
+	 */
+	private static ?Container $container = null;
+
+	/**
+	 * Returns the shared service container.
+	 *
+	 * @since 0.1.0
+	 */
+	public static function container(): Container {
+		if ( null === self::$container ) {
+			self::$container = new Container( new ProviderDetector() );
+		}
+
+		return self::$container;
+	}
+
+	/**
+	 * Replaces the shared container. For tests.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param Container|null $container Container, or null to rebuild on next use.
+	 */
+	public static function set_container( ?Container $container ): void {
+		self::$container = $container;
+	}
+
+	/**
 	 * Registers hooks. Runs on `plugins_loaded`, after Polylang and WPML have loaded.
 	 *
 	 * @since 0.1.0
@@ -44,11 +76,15 @@ final class Plugin {
 
 		Migrator::register();
 
-		$detector = new ProviderDetector();
+		$container = self::container();
+
+		if ( $container->has_provider() ) {
+			$container->post_hooks()->register();
+		}
 
 		if ( is_admin() ) {
 			( new AdminPage() )->register();
-			( new DependencyNotice( $detector ) )->register();
+			( new DependencyNotice( $container->detector() ) )->register();
 		}
 	}
 }

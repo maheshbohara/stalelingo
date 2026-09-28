@@ -27,7 +27,7 @@ final class Migrator {
 	 *
 	 * @since 0.1.0
 	 */
-	public const DB_VERSION = 1;
+	public const DB_VERSION = 2;
 
 	/**
 	 * Option holding the installed schema version for the site.

@@ -23,6 +23,11 @@ abstract class TestCase extends PolyfillTestCase {
 	protected function set_up(): void {
 		parent::set_up();
 		Monkey\setUp();
+		Monkey\Functions\stubs(
+			array(
+				'wp_json_encode' => static fn( $value, $flags = 0 ) => json_encode( $value, $flags ),
+			)
+		);
 	}
 
 	protected function tear_down(): void {

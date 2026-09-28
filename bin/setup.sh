@@ -82,5 +82,28 @@ fi
 echo "==> Seeding content"
 wp eval-file "$PLUGIN_DIR/bin/dev/seed.php" "$PROVIDER" "${SEED_N:-6}"
 
+# Runs due WP-Cron events until no plugin job is left.
+run_jobs() {
+	for _ in $(seq 1 500); do
+		command wp cron event run --due-now --quiet >/dev/null 2>&1 || true
+		pending=$(command wp cron event list --fields=hook --format=csv 2>/dev/null | grep -cE '^tdrift_(baseline|recalc)' || true)
+		[[ "$pending" == "0" ]] && return 0
+	done
+	echo "Jobs still pending after 500 runs." >&2
+	return 1
+}
+
+if [[ "$PROVIDER" == "polylang" ]]; then
+	echo "==> Building the baseline"
+	wp eval 'TranslationDrift\Plugin::container()->baseline()->start_baseline();'
+	run_jobs
+
+	echo "==> Editing some sources so their translations drift"
+	wp eval-file "$PLUGIN_DIR/bin/dev/make-drift.php"
+	run_jobs
+
+	command wp eval 'foreach ( TranslationDrift\Plugin::container()->sync_repository()->count_by_status() as $s => $n ) { WP_CLI::log( sprintf( "  %-10s %d", $s, $n ) ); }'
+fi
+
 echo
 echo "Ready: $URL/wp-admin (admin / password). Mailpit: http://localhost:${MAILPIT_PORT:-8025}"

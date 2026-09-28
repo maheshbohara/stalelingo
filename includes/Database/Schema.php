@@ -97,7 +97,7 @@ final class Schema {
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   sync_id bigint(20) unsigned NOT NULL,
   field_key varchar(191) NOT NULL,
-  value longtext NOT NULL,
+  value longblob NOT NULL,
   created_at datetime NOT NULL,
   PRIMARY KEY  (id),
   UNIQUE KEY sync_field (sync_id,field_key)

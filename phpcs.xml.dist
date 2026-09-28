@@ -24,7 +24,10 @@
 
 	<rule ref="WordPress"/>
 	<rule ref="WordPress-Extra"/>
-	<rule ref="WordPress-Docs"/>
+	<rule ref="WordPress-Docs">
+		<!-- Misreads PHPStan generics (list<string>, array<string, int>) as conflicting with native array hints. -->
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint"/>
+	</rule>
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>

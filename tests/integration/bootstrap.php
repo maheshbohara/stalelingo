@@ -37,6 +37,37 @@ tests_add_filter(
 	}
 );
 
+// Polylang loads its API only when languages exist, so create EN (default), FR and ES before it boots (priority 1).
+tests_add_filter(
+	'plugins_loaded',
+	static function () use ( $tdrift_provider ): void {
+		if ( 'polylang' !== $tdrift_provider || ! class_exists( 'PLL_Admin_Model' ) ) {
+			return;
+		}
+		// Reading Polylang's model this early is deliberate; silence its "called too early" notice.
+		add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
+		add_action( 'pll_init_options_for_blog', array( \WP_Syntex\Polylang\Options\Registry::class, 'register' ) );
+		$options = new \WP_Syntex\Polylang\Options\Options();
+		$model   = new \PLL_Admin_Model( $options );
+		$locales = array_map( static fn( $lang ) => $lang->locale, $model->get_languages_list() );
+		foreach ( array( 'en_US', 'fr_FR', 'es_ES' ) as $order => $locale ) {
+			if ( ! in_array( $locale, $locales, true ) ) {
+				$model->languages->add(
+					array(
+						'locale'     => $locale,
+						'term_group' => $order,
+					)
+				);
+			}
+		}
+		$options['default_lang'] = 'en';
+		$options->save();
+		$model->clean_languages_cache();
+		remove_filter( 'doing_it_wrong_trigger_error', '__return_false' );
+	},
+	0
+);
+
 // Tables are created once, outside the per-test transactions (which turn CREATE TABLE into temporary tables).
 tests_add_filter(
 	'init',

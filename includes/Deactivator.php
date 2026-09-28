@@ -11,6 +11,9 @@ namespace TranslationDrift;
 
 defined( 'ABSPATH' ) || exit;
 
+use TranslationDrift\Services\BaselineJob;
+use TranslationDrift\Services\PostHooks;
+
 /**
  * Stops scheduled work on deactivation. Data is kept until uninstall.
  *
@@ -26,7 +29,12 @@ final class Deactivator {
 	 * @return list<string>
 	 */
 	public static function scheduled_hooks(): array {
-		return array();
+		return array(
+			PostHooks::RECALC_SOURCE_HOOK,
+			PostHooks::PRUNE_HOOK,
+			BaselineJob::BASELINE_HOOK,
+			BaselineJob::RECALC_HOOK,
+		);
 	}
 
 	/**
@@ -45,7 +53,8 @@ final class Deactivator {
 	 */
 	public static function clear_scheduled(): void {
 		foreach ( self::scheduled_hooks() as $hook ) {
-			wp_clear_scheduled_hook( $hook );
+			// wp_clear_scheduled_hook() only matches events without arguments; every job here has some.
+			wp_unschedule_hook( $hook );
 			if ( function_exists( 'as_unschedule_all_actions' ) ) {
 				as_unschedule_all_actions( $hook );
 			}

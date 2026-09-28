@@ -26,7 +26,7 @@ final class Uninstaller {
 	 *
 	 * @since 0.1.0
 	 */
-	public const SETTINGS_OPTION = 'tdrift_settings';
+	public const SETTINGS_OPTION = Settings::OPTION;
 
 	/**
 	 * Uninstalls on every site of the network, or on the single site.

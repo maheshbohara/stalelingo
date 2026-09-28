@@ -19,7 +19,7 @@ final class DeactivatorTest extends TestCase {
 
 	public function test_deactivation_clears_every_scheduled_hook(): void {
 		$hooks = Deactivator::scheduled_hooks();
-		Functions\expect( 'wp_clear_scheduled_hook' )->times( count( $hooks ) );
+		Functions\expect( 'wp_unschedule_hook' )->times( count( $hooks ) );
 
 		Deactivator::deactivate();
 

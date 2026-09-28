@@ -29,11 +29,28 @@ $link_group = static function ( array $group ) use ( $provider ): void {
 	if ( 'wpml' === $provider ) {
 		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's public API.
 		$type = apply_filters( 'wpml_element_type', get_post_type( $group['en'] ) );
-		do_action( 'wpml_set_element_language_details', array( 'element_id' => $group['en'], 'element_type' => $type, 'trid' => false, 'language_code' => 'en' ) );
+		do_action(
+			'wpml_set_element_language_details',
+			array(
+				'element_id'    => $group['en'],
+				'element_type'  => $type,
+				'trid'          => false,
+				'language_code' => 'en',
+			)
+		);
 		$trid = apply_filters( 'wpml_element_trid', null, $group['en'], $type );
 		foreach ( $group as $lang => $id ) {
 			if ( 'en' !== $lang ) {
-				do_action( 'wpml_set_element_language_details', array( 'element_id' => $id, 'element_type' => $type, 'trid' => $trid, 'language_code' => $lang, 'source_language_code' => 'en' ) );
+				do_action(
+					'wpml_set_element_language_details',
+					array(
+						'element_id'           => $id,
+						'element_type'         => $type,
+						'trid'                 => $trid,
+						'language_code'        => $lang,
+						'source_language_code' => 'en',
+					)
+				);
 			}
 		}
 		// phpcs:enable
@@ -173,7 +190,7 @@ if ( ! get_posts(
 		'en' => array( 'Elementor landing page', 'Built with Elementor.', 'Get started' ),
 		'fr' => array( 'Page Elementor', 'Construite avec Elementor.', 'Commencer' ),
 	) as $lang => $copy ) {
-		$id = wp_insert_post(
+		$id             = wp_insert_post(
 			array(
 				'post_type'    => 'page',
 				'post_status'  => 'publish',

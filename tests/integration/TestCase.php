@@ -129,7 +129,7 @@ abstract class TestCase extends \WP_UnitTestCase {
 	protected function create_group( array $langs = array( 'en', 'fr', 'es' ), array $args = array() ): array {
 		$group = array();
 		foreach ( $langs as $lang ) {
-			$id = self::factory()->post->create(
+			$id             = self::factory()->post->create(
 				array_merge(
 					array(
 						'post_title'   => "Title {$lang}",
@@ -203,7 +203,12 @@ abstract class TestCase extends \WP_UnitTestCase {
 			self::set_wpml_languages( array( 'en', 'fr', 'es', $code ) );
 			return;
 		}
-		PLL()->model->languages->add( array( 'locale' => $locale, 'term_group' => 9 ) );
+		PLL()->model->languages->add(
+			array(
+				'locale'     => $locale,
+				'term_group' => 9,
+			)
+		);
 		PLL()->model->clean_languages_cache();
 	}
 

@@ -30,13 +30,9 @@ include=(
 	includes
 	languages
 	build
-	# Human-readable source of build/ and how to rebuild it (WordPress.org guideline 4).
+	# Human-readable source of build/ (WordPress.org guideline 4). Development
+	# files (build configs, Composer and npm manifests, project docs) stay out.
 	src
-	package.json
-	webpack.config.js
-	babel.config.js
-	tsconfig.json
-	composer.json
 )
 for path in "${include[@]}"; do
 	rsync -aR --exclude='*.map' --exclude='.DS_Store' "./$path" "$stage/"
@@ -48,7 +44,10 @@ for asset in "$stage"/build/*/*.asset.php; do
 	sed -i 's/^<?php /<?php defined( '"'"'ABSPATH'"'"' ) || exit; /' "$asset"
 done
 
-# Production autoloader only: no dev dependencies in vendor/, no lock file in the package.
+# Production autoloader only: no dev dependencies in vendor/. composer.json stays,
+# because Plugin Check and the review team expect it next to vendor/; the lock
+# file is only needed for the install.
+cp composer.json composer.lock "$stage/"
 composer install --working-dir="$stage" --no-dev --optimize-autoloader --no-interaction --no-progress --quiet
 rm -f "$stage/composer.lock"
 

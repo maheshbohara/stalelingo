@@ -1,22 +1,22 @@
-# Copyright (C) 2026 Tilt
+# Copyright (C) 2026 Mahesh Bohara
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Translation Drift – Outdated Translation Tracker for Polylang & WPML 0.1.0\n"
+"Project-Id-Version: Translation Drift – Outdated Translation Tracker for Multilingual Sites 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/translation-drift\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-28T05:52:50+00:00\n"
+"POT-Creation-Date: 2026-09-28T06:30:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: translation-drift\n"
 
 #. Plugin Name of the plugin
 #: translation-drift.php
-msgid "Translation Drift – Outdated Translation Tracker for Polylang & WPML"
+msgid "Translation Drift – Outdated Translation Tracker for Multilingual Sites"
 msgstr ""
 
 #. Description of the plugin
@@ -26,7 +26,12 @@ msgstr ""
 
 #. Author of the plugin
 #: translation-drift.php
-msgid "Tilt"
+msgid "Mahesh Bohara"
+msgstr ""
+
+#. Author URI of the plugin
+#: translation-drift.php
+msgid "http://www.maheshbohara.com.np/"
 msgstr ""
 
 #: includes/Admin/AdminPage.php:62

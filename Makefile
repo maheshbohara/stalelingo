@@ -91,7 +91,7 @@ lint-js: node_modules/.package-lock.json
 phpstan: vendor/autoload.php ## PHPStan level 8
 	$(PHP) vendor/bin/phpstan analyse --memory-limit=1G --no-progress
 
-phpcompat: vendor/autoload.php ## PHPCompatibilityWP for PHP 8.1–8.4
+phpcompat: vendor/autoload.php ## PHPCompatibilityWP for PHP 8.1 and newer
 	$(PHP) composer phpcompat
 
 plugin-check: zip ## Official Plugin Check against the packaged plugin

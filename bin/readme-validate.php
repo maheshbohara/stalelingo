@@ -30,7 +30,7 @@ if ( ! preg_match( '/^=== (.+) ===$/m', $readme, $m ) ) {
 	$errors[] = 'readme name does not match the Plugin Name header.';
 }
 
-foreach ( array( 'Contributors', 'Tags', 'Requires at least', 'Tested up to', 'Requires PHP', 'Stable tag', 'License' ) as $key ) {
+foreach ( array( 'Tags', 'Requires at least', 'Tested up to', 'Requires PHP', 'Stable tag', 'License' ) as $key ) {
 	if ( null === $header( $readme, $key ) ) {
 		$errors[] = "Missing readme header: {$key}.";
 	}

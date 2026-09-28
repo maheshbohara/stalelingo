@@ -15,4 +15,5 @@ All notable changes to this project are documented here. The format follows
   - Polylang and WPML detection (`tdrift_provider` filter), and one notice on the Plugins screens and the plugin's own screens when neither is active.
   - Tools → Translation Drift screen shell. Its assets load on that screen only.
   - `uninstall.php`, which honours the "delete data" setting on single sites and across a multisite network.
-  - PHPCS (WordPress, WordPress-Extra, WordPress-Docs), PHPCompatibilityWP, PHPStan level 8, PHPUnit unit and integration suites, Jest, Playwright, the Plugin Check runner, a readme validator, coverage thresholds and CI.
+  - Plugin name: "Translation Drift – Outdated Translation Tracker for Multilingual Sites". Author: Mahesh Bohara.
+  - PHPCS (WordPress, WordPress-Extra, WordPress-Docs), PHPCompatibilityWP (PHP 8.1 and newer), PHPStan level 8, PHPUnit unit and integration suites, Jest, Playwright, the Plugin Check runner, a readme validator, coverage thresholds and CI.

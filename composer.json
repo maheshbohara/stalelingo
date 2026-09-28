@@ -12,7 +12,9 @@
 		"php-stubs/acf-pro-stubs": "^6.8",
 		"php-stubs/wordpress-tests-stubs": "^7.1",
 		"php-stubs/wp-cli-stubs": "^2.12",
-		"phpcompatibility/phpcompatibility-wp": "^2.1.8",
+		"phpcompatibility/php-compatibility": "^10.0@alpha",
+		"phpcompatibility/phpcompatibility-paragonie": "^2.0@alpha",
+		"phpcompatibility/phpcompatibility-wp": "^3.0@alpha",
 		"phpstan/extension-installer": "^1.4",
 		"phpstan/phpstan": "^2.2",
 		"phpunit/phpcov": "^8.2",
@@ -46,7 +48,7 @@
 	},
 	"scripts": {
 		"lint": "phpcs",
-		"phpcompat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 8.1-8.4 --extensions=php --ignore=vendor/*,node_modules/*,build/* -p .",
+		"phpcompat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 8.1- --extensions=php --ignore=vendor/*,node_modules/*,build/* -p .",
 		"phpstan": "phpstan analyse --memory-limit=1G",
 		"test:unit": "phpunit -c phpunit.xml.dist",
 		"test:integration": "phpunit -c phpunit-integration.xml.dist"

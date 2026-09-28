@@ -1,5 +1,4 @@
-=== Translation Drift – Outdated Translation Tracker for Polylang & WPML ===
-Contributors: gettilt
+=== Translation Drift – Outdated Translation Tracker for Multilingual Sites ===
 Tags: multilingual, translation, translation management, localization, content audit
 Requires at least: 6.8
 Tested up to: 7.1

@@ -1,11 +1,12 @@
 <?php
 /**
- * Plugin Name:       Translation Drift – Outdated Translation Tracker for Polylang & WPML
+ * Plugin Name:       Translation Drift – Outdated Translation Tracker for Multilingual Sites
  * Description:       Flags translations that went out of date when their source post changed, shows what changed, and helps editors clear the backlog.
  * Version:           0.1.0
  * Requires at least: 6.8
  * Requires PHP:      8.1
- * Author:            Tilt
+ * Author:            Mahesh Bohara
+ * Author URI:        http://www.maheshbohara.com.np/
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       translation-drift

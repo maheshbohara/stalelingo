@@ -21,13 +21,45 @@ version=$(sed -n "s/^ \* Version: *//p" "$slug.php" | tr -d '[:space:]')
 rm -rf "$stage" "$root/dist/$slug-"*.zip
 mkdir -p "$stage"
 
-# Copy everything not listed in .distignore.
-rsync -a --delete --exclude-from=.distignore ./ "$stage/"
+# Allowlist: only these paths ship. Anything else in the checkout (tool output,
+# scratch files, dotfolders) stays out without having to be listed anywhere.
+include=(
+	translation-drift.php
+	uninstall.php
+	readme.txt
+	includes
+	languages
+	build
+	# Human-readable source of build/ and how to rebuild it (WordPress.org guideline 4).
+	src
+	package.json
+	webpack.config.js
+	babel.config.js
+	tsconfig.json
+	composer.json
+)
+for path in "${include[@]}"; do
+	rsync -aR --exclude='*.map' --exclude='.DS_Store' "./$path" "$stage/"
+done
 
-# Production autoloader only: no dev dependencies in vendor/.
+# The generated build/*.asset.php files only return an array; give them the same
+# direct-access guard as every other PHP file anyway.
+for asset in "$stage"/build/*/*.asset.php; do
+	sed -i 's/^<?php /<?php defined( '"'"'ABSPATH'"'"' ) || exit; /' "$asset"
+done
+
+# Production autoloader only: no dev dependencies in vendor/, no lock file in the package.
 composer install --working-dir="$stage" --no-dev --optimize-autoloader --no-interaction --no-progress --quiet
 rm -f "$stage/composer.lock"
-cp composer.lock "$stage/composer.lock"
+
+# Fail on anything the directory review would question: dotfiles, or file types
+# outside what the plugin needs (source, built assets, the .pot and licences).
+unexpected=$(cd "$stage" && find . -type f \( -name '.*' -o ! \( -name '*.php' -o -name '*.js' -o -name '*.css' -o -name '*.json' -o -name '*.txt' -o -name '*.md' -o -name '*.pot' -o -name '*.ts' -o -name '*.tsx' -o -name '*.scss' -o -name 'LICENSE' \) \) | sort)
+if [[ -n "$unexpected" ]]; then
+	echo "Unexpected files in the package:" >&2
+	echo "$unexpected" >&2
+	exit 1
+fi
 
 (cd "$root/dist" && zip -qr "$slug-$version.zip" "$slug")
 

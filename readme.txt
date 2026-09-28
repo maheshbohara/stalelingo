@@ -65,6 +65,10 @@ No. Translation Drift tells you what needs updating. You or your translators upd
 
 Polylang treats translations as equals, so Translation Drift uses the source language from its settings, which defaults to Polylang's default language. You can override it for a single post.
 
+= Where is the source code of the JavaScript and CSS? =
+
+The `src` folder of the plugin holds the readable TypeScript and SCSS source of everything in `build`. To rebuild it, run `npm install` and then `npm run build` (it uses `@wordpress/scripts`). The PHP code in `includes` is not compiled.
+
 == Screenshots ==
 
 1. The dashboard with outdated and missing translations by language.

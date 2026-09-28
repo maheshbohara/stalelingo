@@ -35,6 +35,9 @@ All notable changes to this project are documented here. The format follows
   - Hooks: `tdrift_tracked_fields`, `tdrift_tracked_meta_keys`, `tdrift_tracked_post_types`, `tdrift_normalize_value`, `tdrift_block_text_attributes`, `tdrift_block_text`, `tdrift_is_material_change`, `tdrift_source_language`, `tdrift_drift_detected`, `tdrift_marked_synced`, `tdrift_can_mark_synced`, `tdrift_batch_size` and the snapshot and event limits.
   - Dev setup builds the baseline and edits some sources, so the site starts with in-sync, outdated and missing translations.
 
+### Changed
+- The release zip is built from an explicit list of paths and rejects unexpected files. It no longer includes `composer.lock`. The readme explains where the JavaScript source is and how to rebuild it.
+
 ### Fixed
 - Diffs keep working on sites that limit post revisions: a revision is snapshotted before WordPress deletes it.
 - Saving settings for the first time no longer mangles list values.

@@ -32,28 +32,28 @@ use TranslationDrift\Settings;
  *
  * Emails are plain text and sent with wp_mail().
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Notifier {
 
 	/**
 	 * WP-Cron hook of the digest.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DIGEST_HOOK = 'tdrift_send_digest';
 
 	/**
 	 * Most translations listed in one digest.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const MAX_ITEMS = 100;
 
 	/**
 	 * Local hour the digest is sent at.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DIGEST_HOUR = 8;
 
@@ -67,7 +67,7 @@ class Notifier {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Settings            $settings Settings.
 	 * @param TranslationProvider $provider Provider.
@@ -83,7 +83,7 @@ class Notifier {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action(
@@ -108,7 +108,7 @@ class Notifier {
 	/**
 	 * Schedules, reschedules or removes the digest to match the frequency setting.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function schedule(): void {
 		$frequency = (string) $this->settings->get( 'digest_frequency' );
@@ -132,7 +132,7 @@ class Notifier {
 	/**
 	 * Next time the digest is due: DIGEST_HOUR today or tomorrow, in the site's timezone.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int|null $now Current Unix time; defaults to now.
 	 */
@@ -149,7 +149,7 @@ class Notifier {
 	/**
 	 * Sends every digest.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return int Emails sent.
 	 */
@@ -165,7 +165,7 @@ class Notifier {
 			 *
 			 * Return an empty array to skip this recipient.
 			 *
-			 * @since 0.1.0
+			 * @since 1.0.0
 			 *
 			 * @param list<array<string, mixed>> $items Items: translation_id, source_id, lang, language,
 			 *                                          source_title, translation_title, changed_fields
@@ -198,7 +198,7 @@ class Notifier {
 	/**
 	 * Emails the translators of a language as soon as a translation of an "immediate" post type goes out of date.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $translation_id Translation post ID.
 	 * @param int    $source_id      Source post ID.
@@ -237,7 +237,7 @@ class Notifier {
 	 * Recipients and their languages: translators get the languages assigned to them,
 	 * extra recipients get every language (null).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, list<string>|null> Languages keyed by email address.
 	 */

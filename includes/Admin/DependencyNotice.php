@@ -19,14 +19,14 @@ use TranslationDrift\Providers\ProviderDetector;
  *
  * The notice appears only on the Plugins screens and the plugin's own screens.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class DependencyNotice {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param ProviderDetector $detector Provider detector.
 	 */
@@ -36,7 +36,7 @@ final class DependencyNotice {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'admin_notices', array( $this, 'maybe_render' ) );
@@ -46,7 +46,7 @@ final class DependencyNotice {
 	/**
 	 * Whether the notice should show for the given screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $screen_id Current screen ID.
 	 */
@@ -66,7 +66,7 @@ final class DependencyNotice {
 	/**
 	 * Prints the notice when appropriate.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function maybe_render(): void {
 		$screen = get_current_screen();

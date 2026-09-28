@@ -17,14 +17,14 @@ defined( 'ABSPATH' ) || exit;
  * Detection must run on or after `plugins_loaded`, once the multilingual
  * plugins have defined their API.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class ProviderDetector {
 
 	/**
 	 * Provider identifiers.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const POLYLANG = 'polylang';
 	public const WPML     = 'wpml';
@@ -32,7 +32,7 @@ class ProviderDetector {
 	/**
 	 * Returns the providers whose APIs are loaded.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -56,7 +56,7 @@ class ProviderDetector {
 	 * Polylang loads its `pll_*` API only once a language exists, so this checks
 	 * the version constant. Callers of the API must still check function_exists().
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	protected function is_polylang_loaded(): bool {
 		return defined( 'POLYLANG_VERSION' );
@@ -68,7 +68,7 @@ class ProviderDetector {
 	 * Polylang's WPML compatibility layer defines icl_* functions, so this
 	 * checks WPML's own constant and class instead.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	protected function is_wpml_loaded(): bool {
 		return defined( 'ICL_SITEPRESS_VERSION' ) && class_exists( 'SitePress', false );
@@ -77,7 +77,7 @@ class ProviderDetector {
 	/**
 	 * Returns the provider to use, or null when no supported plugin is active.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function detect(): ?string {
 		$available = $this->available();
@@ -86,7 +86,7 @@ class ProviderDetector {
 		/**
 		 * Filters the detected multilingual provider.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param string|null  $provider  'polylang', 'wpml', or null when neither is active.
 		 * @param list<string> $available Providers whose APIs are loaded.

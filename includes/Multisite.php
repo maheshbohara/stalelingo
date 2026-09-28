@@ -20,14 +20,14 @@ use TranslationDrift\Database\Schema;
  * Sites created later are set up here when the plugin is network-active, and a
  * deleted site's tables are dropped with the rest of its tables.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Multisite {
 
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function register(): void {
 		// After core created the new site's own tables (priority 10) and default content (100).
@@ -38,7 +38,7 @@ final class Multisite {
 	/**
 	 * Sets up a new site when the plugin is network-active.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Site $site New site.
 	 */
@@ -55,7 +55,7 @@ final class Multisite {
 	/**
 	 * Adds the plugin's tables to those dropped with a deleted site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string> $tables  Table names.
 	 * @param int          $site_id Site being deleted.
@@ -83,7 +83,7 @@ final class Multisite {
 	/**
 	 * Whether the plugin is active for the whole network.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function is_network_active(): bool {
 		if ( ! is_multisite() ) {

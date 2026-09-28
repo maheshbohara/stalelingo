@@ -16,21 +16,21 @@ use TranslationDrift\Services\Permissions;
 /**
  * Shared namespace and permission helpers of the `tdrift/v1` routes.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 abstract class Controller extends \WP_REST_Controller {
 
 	/**
 	 * REST namespace.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const REST_NAMESPACE = 'tdrift/v1';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions $permissions Permissions.
 	 */
@@ -41,7 +41,7 @@ abstract class Controller extends \WP_REST_Controller {
 	/**
 	 * Permission callback of the dashboard routes: the `tdrift_manage` capability.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return true|\WP_Error
 	 */
@@ -52,7 +52,7 @@ abstract class Controller extends \WP_REST_Controller {
 	/**
 	 * 401 when logged out, 403 when logged in.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $message Message; defaults to a generic one.
 	 */
@@ -67,7 +67,7 @@ abstract class Controller extends \WP_REST_Controller {
 	/**
 	 * Permission check for a single post: it must exist, and the user must be allowed to view it.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 * @return true|\WP_Error
@@ -86,7 +86,7 @@ abstract class Controller extends \WP_REST_Controller {
 	/**
 	 * Schema of a positive integer path parameter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $description Description.
 	 * @return array<string, mixed>

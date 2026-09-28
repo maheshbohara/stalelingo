@@ -37,28 +37,28 @@ use TranslationDrift\Services\TrackedFields;
  *     $ wp translation-drift baseline --dry-run
  *     $ wp translation-drift baseline
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Command {
 
 	/**
 	 * Columns of `report`.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const REPORT_FIELDS = array( 'source_id', 'title', 'post_type', 'lang', 'status', 'translation_id', 'changed_fields', 'synced_at' );
 
 	/**
 	 * Sources read per query while building a report.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const PAGE_SIZE = 200;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider Provider.
 	 * @param TrackedFields       $tracked  Tracked fields.
@@ -112,7 +112,7 @@ class Command {
 	 *     $ wp translation-drift report --status=outdated
 	 *     $ wp translation-drift report --lang=fr --post_type=page --format=json
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string>          $args       Positional arguments (unused).
 	 * @param array<string, string> $assoc_args Options.
@@ -158,7 +158,7 @@ class Command {
 	 *
 	 * @subcommand mark-synced
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string>          $args       Translation post IDs.
 	 * @param array<string, string> $assoc_args Options.
@@ -226,7 +226,7 @@ class Command {
 	 *     $ wp translation-drift baseline --dry-run
 	 *     $ wp translation-drift baseline
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string>          $args       Positional arguments (unused).
 	 * @param array<string, string> $assoc_args Options.
@@ -261,7 +261,7 @@ class Command {
 	 *
 	 *     $ wp translation-drift recalc
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string>          $args       Positional arguments (unused).
 	 * @param array<string, string> $assoc_args Options (unused).

@@ -18,14 +18,14 @@ use TranslationDrift\Services\Repositories\SyncRepository;
 /**
  * What changed in a translation's source since it was last marked up to date, field by field.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class DiffController extends Controller {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions    $permissions Permissions.
 	 * @param SyncRepository $sync        Sync rows.
@@ -45,7 +45,7 @@ class DiffController extends Controller {
 	/**
 	 * Registers the route.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -73,7 +73,7 @@ class DiffController extends Controller {
 	/**
 	 * The user must be allowed to edit the translation, or manage translations.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -86,7 +86,7 @@ class DiffController extends Controller {
 	/**
 	 * The diff of a translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -141,7 +141,7 @@ class DiffController extends Controller {
 	/**
 	 * Schema of a diff.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

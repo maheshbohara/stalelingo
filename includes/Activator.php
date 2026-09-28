@@ -20,14 +20,14 @@ use TranslationDrift\Services\PostHooks;
  * Only cheap work happens here. The baseline build is queued for later and
  * never runs on the activation request.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Activator {
 
 	/**
 	 * Activation callback.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param bool $network_wide Whether the plugin is being network-activated.
 	 */
@@ -56,7 +56,7 @@ final class Activator {
 	 *
 	 * Also runs on admin requests, so sites activated before a job existed get it after an update.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function ensure_schedules(): void {
 		if ( ! wp_next_scheduled( PostHooks::PRUNE_HOOK ) ) {
@@ -67,7 +67,7 @@ final class Activator {
 	/**
 	 * Sets up the current site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function activate_site(): void {
 		Migrator::migrate();
@@ -84,7 +84,7 @@ final class Activator {
 		/**
 		 * Fires after the plugin was activated on a site.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 */
 		do_action( 'tdrift_activated_site' );
 	}

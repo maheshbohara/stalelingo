@@ -17,27 +17,27 @@ defined( 'ABSPATH' ) || exit;
  * A job already queued with the same hook and arguments isn't queued again,
  * which debounces repeated saves of the same post.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Queue {
 
 	/**
 	 * Action Scheduler group.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const GROUP = 'translation-drift';
 
 	/**
 	 * Whether Action Scheduler is loaded and ready.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function uses_action_scheduler(): bool {
 		/**
 		 * Filters whether jobs go through Action Scheduler when it's available.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param bool $use Default true.
 		 */
@@ -49,7 +49,7 @@ class Queue {
 	/**
 	 * Queues a job unless an identical one is already pending.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string      $hook  Action hook the job runs.
 	 * @param list<mixed> $args  Arguments passed to the hook.
@@ -75,7 +75,7 @@ class Queue {
 	/**
 	 * Whether an identical job is pending.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string      $hook Hook.
 	 * @param list<mixed> $args Arguments.

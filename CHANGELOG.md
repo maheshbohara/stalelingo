@@ -4,9 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.0.0] - 2026-09-28
 
 ### Added
+- Phase 7 release hardening:
+  - Version 1.0.0; readme FAQ for digests, WP-CLI, multisite and uninstall; changelog and upgrade notice.
+  - Readme screenshots (`make screenshots`), a performance run on 5,000 posts × 3 languages (`make perf`), and a clean-install smoke test of the release zip (`make zip-smoke`, also in CI with the multisite suite).
 - Phase 6 notifications, WP-CLI, privacy and multisite:
   - Daily or weekly email digests: each translator gets the outdated translations in their languages, and extra recipients get every language. Filter `tdrift_digest_items`.
   - Immediate emails when a translation of a chosen post type becomes outdated.
@@ -45,6 +48,7 @@ All notable changes to this project are documented here. The format follows
 - The release zip is built from an explicit list of paths and rejects unexpected files. It no longer includes `composer.lock`. The readme explains where the JavaScript source is and how to rebuild it.
 
 ### Fixed
+- Diff tables: the added/removed icons no longer overlap the first character.
 - Dashboard: the table's toolbar is no longer covered by its pagination bar on long pages; post types that share a name show their key; empty post types are left out of the summary.
 - Diffs keep working on sites that limit post revisions: a revision is snapshotted before WordPress deletes it.
 - Saving settings for the first time no longer mangles list values.

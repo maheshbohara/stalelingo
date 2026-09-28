@@ -29,14 +29,14 @@ use TranslationDrift\Settings;
  * ACF blocks: the text fields of each block's data join that block's line in
  * the normalized content, through the `tdrift_block_text` filter.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Acf {
 
 	/**
 	 * Field key prefix.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const PREFIX = 'acf:';
 
@@ -57,7 +57,7 @@ class Acf {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Settings            $settings   Settings.
 	 * @param TranslationProvider $provider   Provider.
@@ -77,7 +77,7 @@ class Acf {
 	/**
 	 * Whether ACF is active and tracking is on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function is_enabled(): bool {
 		return (bool) $this->settings->get( 'acf' ) && function_exists( 'acf_get_field_groups' ) && function_exists( 'acf_get_fields' );
@@ -86,7 +86,7 @@ class Acf {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		if ( ! $this->is_enabled() ) {
@@ -102,7 +102,7 @@ class Acf {
 	/**
 	 * Adds the post type's tracked ACF fields.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed  $fields    Field keys.
 	 * @param string $post_type Post type.
@@ -120,7 +120,7 @@ class Acf {
 	/**
 	 * Raw value of an `acf:*` field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed    $value Value from earlier filters.
 	 * @param string   $field Field key.
@@ -138,7 +138,7 @@ class Acf {
 	/**
 	 * Normalizes an `acf:*` field: its text parts, one per line, or every value in strict mode.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string|null $normalized Earlier result.
 	 * @param string      $field      Field key.
@@ -164,7 +164,7 @@ class Acf {
 	/**
 	 * Adds an ACF block's text fields to its normalized line.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed                $parts Text parts.
 	 * @param array<string, mixed> $block Parsed block.
@@ -185,7 +185,7 @@ class Acf {
 	/**
 	 * Whether a block type is an ACF block. ACF blocks can use any namespace.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $name Block name.
 	 */
@@ -195,7 +195,7 @@ class Acf {
 		/**
 		 * Filters whether a block type's `data` attribute holds ACF field values.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param bool   $is_acf Whether it is an ACF block.
 		 * @param string $name   Block name.
@@ -206,7 +206,7 @@ class Acf {
 	/**
 	 * The translation preference of a field: 'translate', 'copy_once', 'copy', 'ignore', or null when unset.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $field Field definition.
 	 */
@@ -226,7 +226,7 @@ class Acf {
 		/**
 		 * Filters the translation preference of an ACF field.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param string|null          $preference 'translate', 'copy_once', 'copy', 'ignore', or null when unset.
 		 * @param array<string, mixed> $field      Field definition.
@@ -239,7 +239,7 @@ class Acf {
 	/**
 	 * Whether a top-level field is tracked.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $field Field definition.
 	 */
@@ -259,7 +259,7 @@ class Acf {
 	/**
 	 * Tracked top-level fields of a post type, keyed by field name.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 * @return array<string, array<string, mixed>>
@@ -283,7 +283,7 @@ class Acf {
 	/**
 	 * Forgets the field definitions read this request (after field groups change).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function flush_cache(): void {
 		$this->fields_by_type = array();

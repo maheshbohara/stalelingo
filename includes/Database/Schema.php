@@ -14,14 +14,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Names and `dbDelta()` definitions of the plugin's tables.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Schema {
 
 	/**
 	 * Table name suffixes, without the site prefix.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const TABLE_SYNC      = 'tdrift_sync';
 	public const TABLE_SNAPSHOTS = 'tdrift_snapshots';
@@ -30,7 +30,7 @@ final class Schema {
 	/**
 	 * Returns the full name of a plugin table for the current site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $suffix One of the TABLE_* constants.
 	 */
@@ -43,7 +43,7 @@ final class Schema {
 	/**
 	 * Returns every plugin table name for the current site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -61,7 +61,7 @@ final class Schema {
 	 * One `tdrift_sync` row exists per (source, language) pair. A row whose
 	 * `translation_id` is 0 records a missing translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $charset_collate Output of `$wpdb->get_charset_collate()`.
 	 * @return list<string>

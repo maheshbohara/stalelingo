@@ -23,14 +23,14 @@ use TranslationDrift\Services\TrackedFields;
  * status and its source. Open to anyone who may edit the post, so translators
  * without `tdrift_manage` see their own translations.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class GroupController extends Controller {
 
 	/**
 	 * Roles a post can have.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const ROLE_SOURCE      = 'source';
 	public const ROLE_TRANSLATION = 'translation';
@@ -39,7 +39,7 @@ class GroupController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions         $permissions Permissions.
 	 * @param TranslationProvider $provider    Provider.
@@ -61,7 +61,7 @@ class GroupController extends Controller {
 	/**
 	 * Registers the route.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -84,7 +84,7 @@ class GroupController extends Controller {
 	/**
 	 * The user must be allowed to edit the post, or manage translations.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -97,7 +97,7 @@ class GroupController extends Controller {
 	/**
 	 * The group of a post.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -159,7 +159,7 @@ class GroupController extends Controller {
 	/**
 	 * Schema of a group.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

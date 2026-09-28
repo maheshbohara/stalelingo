@@ -21,14 +21,14 @@ use TranslationDrift\Settings;
  * The field has a value only for posts edited with Elementor
  * (`_elementor_edit_mode` = builder). Styling changes don't count unless strict mode is on.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Elementor {
 
 	/**
 	 * Field key.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const FIELD = 'elementor';
 
@@ -42,7 +42,7 @@ class Elementor {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Settings   $settings   Settings.
 	 * @param Normalizer $normalizer Normalizer.
@@ -54,13 +54,13 @@ class Elementor {
 	/**
 	 * Whether Elementor is active and tracking is on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function is_enabled(): bool {
 		/**
 		 * Filters whether Elementor content is tracked.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param bool $enabled Default: the Elementor setting is on and Elementor is active.
 		 */
@@ -70,7 +70,7 @@ class Elementor {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		if ( ! $this->is_enabled() ) {
@@ -85,7 +85,7 @@ class Elementor {
 	/**
 	 * Adds the `elementor` field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed $fields Field keys.
 	 * @return list<string>
@@ -100,7 +100,7 @@ class Elementor {
 	/**
 	 * Raw `_elementor_data` of a post built with Elementor, otherwise null (no value).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed    $value Value from earlier filters.
 	 * @param string   $field Field key.
@@ -123,7 +123,7 @@ class Elementor {
 	/**
 	 * Normalizes the `elementor` field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string|null $normalized Earlier result.
 	 * @param string      $field      Field key.

@@ -16,14 +16,14 @@ use TranslationDrift\Domain\Status;
 /**
  * The sync point and cached status of one (source, language) pair.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class SyncRow {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int                        $id             Row ID.
 	 * @param int                        $translation_id Translation post ID, 0 when missing.
@@ -55,7 +55,7 @@ final class SyncRow {
 	/**
 	 * Builds a row from a database result.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param object $row Database row.
 	 */

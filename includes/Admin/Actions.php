@@ -23,14 +23,14 @@ use TranslationDrift\Services\SyncService;
  *
  * Every state change checks a nonce and the user's permission.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Actions {
 
 	/**
 	 * Action names.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const MARK_SYNCED        = 'tdrift_mark_synced';
 	public const BUILD_BASELINE     = 'tdrift_build_baseline';
@@ -39,7 +39,7 @@ class Actions {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider    Provider.
 	 * @param SyncService         $syncer      Sync service.
@@ -57,7 +57,7 @@ class Actions {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'admin_post_' . self::MARK_SYNCED, array( $this, 'mark_synced' ) );
@@ -69,7 +69,7 @@ class Actions {
 	/**
 	 * URL of the "Mark as up to date" link for a translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $translation_id Translation post ID.
 	 */
@@ -90,7 +90,7 @@ class Actions {
 	 * Link of a status badge: the translation's edit screen, or a redirect to the provider's
 	 * "add translation" screen when it's missing. Builds the URL without any query.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SyncRow $row Row.
 	 */
@@ -118,7 +118,7 @@ class Actions {
 	/**
 	 * Marks one translation as up to date and returns to where the user was.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function mark_synced(): void {
 		$translation_id = isset( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Verified on the next line.
@@ -138,7 +138,7 @@ class Actions {
 	/**
 	 * Queues a baseline build from the settings screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function build_baseline(): void {
 		check_admin_referer( self::BUILD_BASELINE );
@@ -159,7 +159,7 @@ class Actions {
 	 *
 	 * Changes nothing, so needs no nonce; the target screen checks permissions.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function open_translation(): void {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only redirect.
@@ -182,7 +182,7 @@ class Actions {
 	/**
 	 * Confirms a single "Mark as up to date".
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function marked_notice(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only flag added to the redirect by mark_synced().
@@ -203,7 +203,7 @@ class Actions {
 	/**
 	 * Ends the request after a redirect. Overridden in tests.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	protected function finish(): void {
 		exit;

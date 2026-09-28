@@ -24,14 +24,14 @@ use TranslationDrift\Settings;
  *
  * Reads only the plugin's cached status; nothing is recalculated here.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class StatusController extends Controller {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions         $permissions Permissions.
 	 * @param TranslationProvider $provider    Provider.
@@ -57,7 +57,7 @@ class StatusController extends Controller {
 	/**
 	 * Registers the routes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -91,7 +91,7 @@ class StatusController extends Controller {
 	/**
 	 * Sources matching the filters, one page at a time.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -143,7 +143,7 @@ class StatusController extends Controller {
 	/**
 	 * One source.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post                                                       $item    Source post.
 	 * @param \WP_REST_Request                                               $request Request.
@@ -158,7 +158,7 @@ class StatusController extends Controller {
 	/**
 	 * Counts per status, overall and by language and post type, plus the baseline progress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return \WP_REST_Response
 	 */
@@ -275,7 +275,7 @@ class StatusController extends Controller {
 	/**
 	 * Query parameters of the collection.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -360,7 +360,7 @@ class StatusController extends Controller {
 	/**
 	 * Schema of a source item.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -381,7 +381,7 @@ class StatusController extends Controller {
 	/**
 	 * Schema of the summary.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

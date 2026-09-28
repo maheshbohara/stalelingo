@@ -18,28 +18,28 @@ defined( 'ABSPATH' ) || exit;
  * and platform. Bump {@see Hasher::VERSION} if normalization changes in a way
  * that would change hashes, so existing sync points can be migrated.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Hasher {
 
 	/**
 	 * Hash format version.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const VERSION = 'v1';
 
 	/**
 	 * Hash stored for a field that has no value (for example, meta that doesn't exist).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const ABSENT = 'absent';
 
 	/**
 	 * Hashes one normalized value. Null means the field has no value.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string|null $normalized Normalized value.
 	 */
@@ -54,7 +54,7 @@ final class Hasher {
 	/**
 	 * Hashes a map of normalized values, sorted by field key.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string|null> $values Normalized values keyed by field.
 	 * @return array<string, string>

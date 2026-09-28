@@ -53,7 +53,7 @@ use TranslationDrift\Services\TrackedFields;
  * Services that need a multilingual plugin throw when none is ready; check
  * {@see Container::has_provider()} first.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Container {
 
@@ -67,7 +67,7 @@ final class Container {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param ProviderDetector $detector Provider detector.
 	 */
@@ -77,7 +77,7 @@ final class Container {
 	/**
 	 * Provider detector.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function detector(): ProviderDetector {
 		return $this->detector;
@@ -86,7 +86,7 @@ final class Container {
 	/**
 	 * Settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function settings(): Settings {
 		return $this->get( 'settings', static fn() => new Settings() );
@@ -95,7 +95,7 @@ final class Container {
 	/**
 	 * The active provider when it is ready to use, otherwise null.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function provider(): ?TranslationProvider {
 		if ( ! array_key_exists( 'provider', $this->instances ) ) {
@@ -108,7 +108,7 @@ final class Container {
 			/**
 			 * Filters the multilingual provider adapter.
 			 *
-			 * @since 0.1.0
+			 * @since 1.0.0
 			 *
 			 * @param TranslationProvider|null $provider Adapter, or null when no supported plugin is active.
 			 */
@@ -128,7 +128,7 @@ final class Container {
 	/**
 	 * Whether a ready provider exists.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function has_provider(): bool {
 		return null !== $this->provider();
@@ -137,7 +137,7 @@ final class Container {
 	/**
 	 * Job queue.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function queue(): Queue {
 		return $this->get( 'queue', static fn() => new Queue() );
@@ -146,7 +146,7 @@ final class Container {
 	/**
 	 * Permissions.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function permissions(): Permissions {
 		return $this->get( 'permissions', static fn() => new Permissions() );
@@ -155,7 +155,7 @@ final class Container {
 	/**
 	 * Sync rows.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function sync_repository(): SyncRepository {
 		return $this->get( 'sync_repository', static fn() => new SyncRepository() );
@@ -164,7 +164,7 @@ final class Container {
 	/**
 	 * Snapshots.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function snapshot_repository(): SnapshotRepository {
 		return $this->get(
@@ -173,7 +173,7 @@ final class Container {
 				/**
 				 * Filters the maximum bytes stored per snapshot value. Longer values are truncated.
 				 *
-				 * @since 0.1.0
+				 * @since 1.0.0
 				 *
 				 * @param int $max_bytes Bytes. Default 65536.
 				 */
@@ -187,7 +187,7 @@ final class Container {
 	/**
 	 * Events.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function event_repository(): EventRepository {
 		return $this->get( 'event_repository', static fn() => new EventRepository() );
@@ -196,7 +196,7 @@ final class Container {
 	/**
 	 * Tracked fields.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function tracked_fields(): TrackedFields {
 		return $this->get( 'tracked_fields', fn() => new TrackedFields( $this->settings(), $this->require_provider() ) );
@@ -205,7 +205,7 @@ final class Container {
 	/**
 	 * Fingerprinter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function fingerprinter(): Fingerprinter {
 		return $this->get(
@@ -217,7 +217,7 @@ final class Container {
 	/**
 	 * Sync service.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function sync_service(): SyncService {
 		return $this->get(
@@ -235,7 +235,7 @@ final class Container {
 	/**
 	 * Drift service.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function drift_service(): DriftService {
 		return $this->get(
@@ -255,7 +255,7 @@ final class Container {
 	/**
 	 * Baseline and recalculation jobs.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function baseline(): BaselineJob {
 		return $this->get(
@@ -274,7 +274,7 @@ final class Container {
 	/**
 	 * Post hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function post_hooks(): PostHooks {
 		return $this->get(
@@ -297,7 +297,7 @@ final class Container {
 	/**
 	 * ACF integration.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function acf(): Acf {
 		return $this->get( 'acf', fn() => new Acf( $this->settings(), $this->require_provider(), new Normalizer() ) );
@@ -306,7 +306,7 @@ final class Container {
 	/**
 	 * Elementor integration.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function elementor(): Elementor {
 		return $this->get( 'elementor', fn() => new Elementor( $this->settings(), new Normalizer() ) );
@@ -315,7 +315,7 @@ final class Container {
 	/**
 	 * Posts list table integration.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function list_table(): ListTable {
 		return $this->get(
@@ -327,7 +327,7 @@ final class Container {
 	/**
 	 * Classic editor metabox.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function metabox(): Metabox {
 		return $this->get(
@@ -339,7 +339,7 @@ final class Container {
 	/**
 	 * Admin-post handlers.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function actions(): Actions {
 		return $this->get(
@@ -351,7 +351,7 @@ final class Container {
 	/**
 	 * Admin bar counter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function admin_bar(): AdminBar {
 		return $this->get( 'admin_bar', fn() => new AdminBar( $this->sync_repository(), $this->permissions() ) );
@@ -360,7 +360,7 @@ final class Container {
 	/**
 	 * Email digests and immediate notifications.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function notifier(): Notifier {
 		return $this->get( 'notifier', fn() => new Notifier( $this->settings(), $this->require_provider(), $this->sync_repository() ) );
@@ -369,7 +369,7 @@ final class Container {
 	/**
 	 * Personal data exporters and eraser.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function privacy(): Privacy {
 		return $this->get( 'privacy', fn() => new Privacy( $this->sync_repository(), $this->event_repository() ) );
@@ -378,7 +378,7 @@ final class Container {
 	/**
 	 * The `wp translation-drift` command.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function cli_command(): Command {
 		return $this->get(
@@ -390,7 +390,7 @@ final class Container {
 	/**
 	 * Block editor panel.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function editor_panel(): EditorPanel {
 		return $this->get( 'editor_panel', fn() => new EditorPanel( $this->tracked_fields() ) );
@@ -399,7 +399,7 @@ final class Container {
 	/**
 	 * Diff service.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function diff_service(): DiffService {
 		return $this->get( 'diff_service', fn() => new DiffService( $this->fingerprinter(), $this->snapshot_repository() ) );
@@ -408,7 +408,7 @@ final class Container {
 	/**
 	 * REST item presenter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function item_presenter(): ItemPresenter {
 		return $this->get( 'item_presenter', fn() => new ItemPresenter( $this->require_provider(), $this->permissions() ) );
@@ -417,7 +417,7 @@ final class Container {
 	/**
 	 * REST controllers of the `tdrift/v1` namespace.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<\TranslationDrift\Rest\Controller>
 	 */

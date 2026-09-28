@@ -22,14 +22,14 @@ use TranslationDrift\Services\Repositories\SyncRepository;
  *
  * Permission checks belong to the caller (see {@see Permissions}).
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class SyncService {
 
 	/**
 	 * Why a translation was marked up to date.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const CONTEXT_MANUAL     = 'manual';
 	public const CONTEXT_BASELINE   = 'baseline';
@@ -39,7 +39,7 @@ class SyncService {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider      Provider.
 	 * @param Fingerprinter       $fingerprinter Fingerprinter.
@@ -59,7 +59,7 @@ class SyncService {
 	/**
 	 * Marks a translation as up to date with its source's current content.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $translation_id Translation post ID.
 	 * @param int    $user_id        Acting user, 0 for the system.
@@ -104,7 +104,7 @@ class SyncService {
 		/**
 		 * Fires after a translation was marked up to date.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param int    $translation_id Translation post ID.
 		 * @param int    $source_id      Source post ID.
@@ -124,7 +124,7 @@ class SyncService {
 	 * sync point was recorded against. Before that happens, its title, content and
 	 * excerpt are snapshotted and the sync point stops referring to the revision.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post $revision Revision being deleted.
 	 * @return int Sync points updated.

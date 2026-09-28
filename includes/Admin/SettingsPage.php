@@ -19,35 +19,35 @@ use TranslationDrift\Settings;
 /**
  * The settings screen, built on the Settings API.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class SettingsPage {
 
 	/**
 	 * Menu slug.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const SLUG = 'translation-drift-settings';
 
 	/**
 	 * Settings API group.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const GROUP = 'tdrift_settings_group';
 
 	/**
 	 * Settings whose change needs every status recalculated.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const TRACKING_KEYS = array( 'post_types', 'fields', 'meta_keys', 'acf', 'elementor', 'source_language', 'strict' );
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Container $container Services; the provider may be missing.
 	 */
@@ -57,7 +57,7 @@ class SettingsPage {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
@@ -69,7 +69,7 @@ class SettingsPage {
 	/**
 	 * Capability needed to save the settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function capability(): string {
 		return Capabilities::MANAGE;
@@ -78,7 +78,7 @@ class SettingsPage {
 	/**
 	 * Adds the page under Settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_page(): void {
 		$hook = add_options_page(
@@ -96,7 +96,7 @@ class SettingsPage {
 	/**
 	 * Registers the option, sections and fields.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_settings(): void {
 		register_setting(
@@ -153,7 +153,7 @@ class SettingsPage {
 	/**
 	 * Sanitizes submitted settings. Unknown keys are dropped; invalid values fall back to defaults.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed $input Submitted value.
 	 * @return array<string, mixed>
@@ -217,7 +217,7 @@ class SettingsPage {
 	/**
 	 * Recalculates every status when what's tracked changes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed $old_value Previous settings.
 	 * @param mixed $new_value New settings.
@@ -239,7 +239,7 @@ class SettingsPage {
 	/**
 	 * Prints the page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function render(): void {
 		if ( ! current_user_can( Capabilities::MANAGE ) ) {
@@ -263,7 +263,7 @@ class SettingsPage {
 	/**
 	 * The "Build baseline" tool.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private function render_tools(): void {
 		if ( ! $this->container->has_provider() ) {
@@ -299,7 +299,7 @@ class SettingsPage {
 	/**
 	 * Post types field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_post_types(): void {
 		$chosen = (array) $this->settings()->get( 'post_types' );
@@ -313,7 +313,7 @@ class SettingsPage {
 	/**
 	 * Tracked fields field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_fields(): void {
 		$chosen = (array) $this->settings()->get( 'fields' );
@@ -327,7 +327,7 @@ class SettingsPage {
 	/**
 	 * Extra meta keys field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_meta_keys(): void {
 		printf(
@@ -341,7 +341,7 @@ class SettingsPage {
 	/**
 	 * ACF and Elementor toggles.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_integrations(): void {
 		$acf       = function_exists( 'acf_get_field_groups' );
@@ -356,7 +356,7 @@ class SettingsPage {
 	/**
 	 * Source language field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_source_language(): void {
 		$provider = $this->container->provider();
@@ -377,7 +377,7 @@ class SettingsPage {
 	/**
 	 * Strict mode field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_strict(): void {
 		$this->toggle( 'strict', __( 'Count formatting-only changes (markup, block settings, whitespace in HTML) as changes', 'translation-drift' ) );
@@ -386,7 +386,7 @@ class SettingsPage {
 	/**
 	 * Auto-clear field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_auto_clear(): void {
 		$this->toggle( 'auto_clear', __( 'Mark an outdated translation as up to date when it is saved', 'translation-drift' ) );
@@ -396,7 +396,7 @@ class SettingsPage {
 	/**
 	 * Translator assignment per language.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_translators(): void {
 		$assigned = (array) $this->settings()->get( 'translators' );
@@ -431,7 +431,7 @@ class SettingsPage {
 	/**
 	 * Digest frequency field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_digest_frequency(): void {
 		$current = (string) $this->settings()->get( 'digest_frequency' );
@@ -450,7 +450,7 @@ class SettingsPage {
 	/**
 	 * Extra digest recipients field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_digest_recipients(): void {
 		printf(
@@ -464,7 +464,7 @@ class SettingsPage {
 	/**
 	 * High-priority post types field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_immediate_post_types(): void {
 		$chosen = (array) $this->settings()->get( 'immediate_post_types' );
@@ -478,7 +478,7 @@ class SettingsPage {
 	/**
 	 * Delete-data field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function field_delete_data(): void {
 		$this->toggle( 'delete_data', __( 'Delete all Translation Drift data when the plugin is deleted', 'translation-drift' ) );

@@ -19,14 +19,14 @@ use TranslationDrift\Domain\Status;
  * A badge never relies on color alone: it shows the language code and a
  * symbol, and carries the full status as screen-reader text and a tooltip.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class StatusView {
 
 	/**
 	 * Human-readable status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Status $status Status.
 	 */
@@ -42,7 +42,7 @@ final class StatusView {
 	/**
 	 * A symbol that tells statuses apart without color.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Status $status Status.
 	 */
@@ -58,7 +58,7 @@ final class StatusView {
 	/**
 	 * HTML of one language badge. Already escaped.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string      $lang   Language code.
 	 * @param Status      $status Status.
@@ -86,7 +86,7 @@ final class StatusView {
 	 * Post type names, with the slug added where two types share a name
 	 * (e.g. "Events (events)" and "Events (mec-events)").
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string> $types    Post type names.
 	 * @param bool         $singular Singular names instead of plural ones.
@@ -113,7 +113,7 @@ final class StatusView {
 	/**
 	 * Human-readable name of a tracked field key.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $field Field key, e.g. 'title', 'meta:subtitle', 'acf:hero_text'.
 	 */
@@ -144,7 +144,7 @@ final class StatusView {
 		/**
 		 * Filters the label shown for a tracked field.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param string $label Label.
 		 * @param string $field Field key.

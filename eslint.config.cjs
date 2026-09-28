@@ -21,10 +21,10 @@ module.exports = [
 	},
 	...wpPlugin.configs[ 'test-playwright' ].map( ( c ) => ( {
 		...c,
-		files: [ 'tests/e2e/**/*.ts' ],
+		files: [ 'tests/e2e/**/*.ts', 'tests/screenshots/**/*.ts' ],
 	} ) ),
 	{
-		files: [ 'tests/e2e/**/*.ts', '*.config.{js,cjs,ts}' ],
+		files: [ 'tests/e2e/**/*.ts', 'tests/screenshots/**/*.ts', '*.config.{js,cjs,ts}' ],
 		rules: {
 			'import/no-extraneous-dependencies': 'off',
 			'import/no-unresolved': 'off',

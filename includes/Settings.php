@@ -14,28 +14,28 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Reads the `tdrift_settings` option, merged over defaults.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Settings {
 
 	/**
 	 * Option name.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const OPTION = 'tdrift_settings';
 
 	/**
 	 * Post fields that can be tracked.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const POST_FIELDS = array( 'title', 'content', 'excerpt', 'slug', 'featured_image' );
 
 	/**
 	 * Default settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -63,7 +63,7 @@ class Settings {
 	/**
 	 * Returns all settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -76,7 +76,7 @@ class Settings {
 	/**
 	 * Returns one setting.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $key Setting key.
 	 */
@@ -87,7 +87,7 @@ class Settings {
 	/**
 	 * Whether strict mode is on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function strict(): bool {
 		return (bool) $this->get( 'strict' );

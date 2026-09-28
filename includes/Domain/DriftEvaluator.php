@@ -19,14 +19,14 @@ defined( 'ABSPATH' ) || exit;
  * were not tracked at the sync point are reported separately and are not drift,
  * so turning on a new tracked field doesn't flag every translation.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class DriftEvaluator {
 
 	/**
 	 * Evaluates drift.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string> $baseline Field hashes at the sync point.
 	 * @param array<string, string> $current  Current field hashes of the source.
@@ -47,7 +47,7 @@ final class DriftEvaluator {
 			 * Return false to ignore changes to a field, for example one that is
 			 * copied rather than translated.
 			 *
-			 * @since 0.1.0
+			 * @since 1.0.0
 			 *
 			 * @param bool                 $is_material Whether the change is material. Default true.
 			 * @param string               $field       Field key, e.g. 'title' or 'meta:subtitle'.

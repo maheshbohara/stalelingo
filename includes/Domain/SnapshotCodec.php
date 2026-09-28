@@ -17,28 +17,28 @@ defined( 'ABSPATH' ) || exit;
  * Values longer than the cap are cut on a UTF-8 character boundary and marked
  * as truncated, so the diff viewer can say so rather than show a false change.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class SnapshotCodec {
 
 	/**
 	 * Prefix of the current encoding (raw deflate). Stored in a longblob column.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const PREFIX = 'z1:';
 
 	/**
 	 * Default maximum stored bytes per value, before compression.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DEFAULT_MAX_BYTES = 65536;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $max_bytes Maximum bytes kept per value.
 	 */
@@ -49,7 +49,7 @@ final class SnapshotCodec {
 	/**
 	 * Encodes a value.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $value Normalized value.
 	 */
@@ -72,7 +72,7 @@ final class SnapshotCodec {
 	/**
 	 * Decodes a stored value.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $stored Encoded value.
 	 * @return array{value: string, truncated: bool}

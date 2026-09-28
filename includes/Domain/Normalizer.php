@@ -23,28 +23,28 @@ defined( 'ABSPATH' ) || exit;
  * which keeps this class free of WordPress calls other than hooks. Each block
  * with text becomes one line, `[block/name] text`, so diffs read per block.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Normalizer {
 
 	/**
 	 * HTML attributes whose values are visible or announced text.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const TEXT_HTML_ATTRIBUTES = array( 'alt', 'title', 'aria-label', 'placeholder' );
 
 	/**
 	 * Opening or closing tags of elements that separate words.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const BLOCK_TAG_PATTERN = '#</?(?:address|article|aside|blockquote|br|caption|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|tfoot|th|thead|tr|ul)\b[^>]*>#i';
 
 	/**
 	 * Block attributes that hold visible text for core blocks that don't render it into their saved HTML.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const DEFAULT_BLOCK_TEXT_ATTRIBUTES = array(
 		'core/search'                    => array( 'label', 'placeholder', 'buttonText' ),
@@ -62,7 +62,7 @@ final class Normalizer {
 	/**
 	 * Normalizes plain or HTML text.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $value  Raw value.
 	 * @param bool   $strict Whether to keep markup.
@@ -84,7 +84,7 @@ final class Normalizer {
 	/**
 	 * Normalizes parsed block content into one line per block that has text.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<array-key, mixed> $blocks Output of `parse_blocks()`.
 	 * @param bool                    $strict Whether to keep markup and every attribute.
@@ -102,7 +102,7 @@ final class Normalizer {
 	 * Scalars are normalized as text. Arrays and objects are encoded as JSON
 	 * with sorted keys, so reordering keys doesn't count as a change.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param mixed $value  Raw value.
 	 * @param bool  $strict Whether to keep markup in strings.
@@ -123,7 +123,7 @@ final class Normalizer {
 	/**
 	 * Returns the text-bearing attribute names for a block type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $block_name Block name, e.g. 'core/search'.
 	 * @return list<string>
@@ -136,7 +136,7 @@ final class Normalizer {
 		 * alignment, colors or spacing doesn't flag translations as outdated.
 		 * Text that a block renders into its saved HTML is always included.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param array<string, list<string>> $map Attribute names keyed by block name.
 		 */
@@ -210,7 +210,7 @@ final class Normalizer {
 		 * Integrations use this to add text a block keeps outside its HTML,
 		 * such as ACF block field values.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param list<string>         $parts Normalized text parts.
 		 * @param array<string, mixed> $block The parsed block.

@@ -12,38 +12,47 @@
 
 .tdrift-diff-table {
 	// No overflow scrolling: a scrollable region would need keyboard access. Long text wraps instead.
+	// Same layout as core's revisions.css (the icon sits in the cell's left padding), so the
+	// table looks right whether or not that stylesheet is loaded on the screen.
 	table.diff {
 		width: 100%;
 		border-collapse: collapse;
 		table-layout: fixed;
-		font-family: inherit;
-		font-size: 13px;
 
-		th {
-			padding: 4px 8px;
-			border-bottom: 1px solid #dcdcde;
-			font-weight: 600;
-			text-align: left;
-		}
-
+		th,
 		td {
-			padding: 4px 8px;
+			padding: 4px 8px 4px 2em;
+			font-family: Consolas, Monaco, monospace;
+			font-size: 13px;
+			line-height: 1.5;
+			text-align: left;
 			vertical-align: top;
 			white-space: pre-wrap;
 			overflow-wrap: anywhere;
+		}
+
+		th {
+			border-bottom: 1px solid #dcdcde;
+			font-weight: 600;
 		}
 
 		col.content {
 			width: auto;
 		}
 
+		.diff-deletedline,
+		.diff-addedline {
+			position: relative;
+		}
+
 		.dashicons {
-			display: inline-block;
-			width: 16px;
-			height: 16px;
-			margin-right: 4px;
-			font-size: 16px;
-			vertical-align: text-bottom;
+			position: absolute;
+			top: 0.45em;
+			left: 0.5em;
+			width: 1em;
+			height: 1em;
+			font-size: 1em;
+			line-height: 1;
 		}
 	}
 

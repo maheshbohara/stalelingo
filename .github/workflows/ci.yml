@@ -37,6 +37,13 @@ jobs:
       - run: make test-unit
       - run: make test-integration
 
+  multisite:
+    name: Multisite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make test-integration-ms
+
   coverage:
     name: Coverage thresholds
     runs-on: ubuntu-latest
@@ -80,6 +87,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: make plugin-check
+      - run: make zip-smoke
       - uses: actions/upload-artifact@v4
         with:
           name: translation-drift-zip

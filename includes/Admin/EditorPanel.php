@@ -19,21 +19,21 @@ use TranslationDrift\Services\TrackedFields;
  * The panel itself is a `@wordpress/editor` PluginDocumentSettingPanel (see `src/editor`).
  * The classic editor gets the {@see Metabox} instead.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class EditorPanel {
 
 	/**
 	 * Script and style handle.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const HANDLE = 'tdrift-editor';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TrackedFields $tracked Tracked fields.
 	 */
@@ -43,7 +43,7 @@ class EditorPanel {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
@@ -54,7 +54,7 @@ class EditorPanel {
 	 *
 	 * The site editor and widget screens fire the same hook without a post type, so they get nothing.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function enqueue(): void {
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;

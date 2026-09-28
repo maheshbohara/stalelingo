@@ -18,14 +18,14 @@ defined( 'ABSPATH' ) || exit;
  * tables are never read or written directly. The source of a group is WPML's
  * original: the member whose `source_language_code` is null.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class WpmlProvider implements TranslationProvider {
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function id(): string {
 		return ProviderDetector::WPML;
@@ -34,7 +34,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function is_ready(): bool {
 		return defined( 'ICL_SITEPRESS_VERSION' ) && array() !== $this->get_languages();
@@ -43,7 +43,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -59,7 +59,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -78,7 +78,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function get_default_language(): string {
 		$default = apply_filters( 'wpml_default_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WPML's public filter API.
@@ -89,7 +89,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -100,7 +100,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 * @return array<string, int>
@@ -117,7 +117,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -145,7 +145,7 @@ final class WpmlProvider implements TranslationProvider {
 	 *
 	 * WPML's original is the translation without a source language.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Any post in the group.
 	 */
@@ -169,7 +169,7 @@ final class WpmlProvider implements TranslationProvider {
 	 * Editor fire `wpml_pro_translation_completed`, and duplicates fire
 	 * `icl_make_duplicate`.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(int): void $callback Callback.
 	 */
@@ -199,7 +199,7 @@ final class WpmlProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(): void $callback Callback.
 	 */
@@ -217,7 +217,7 @@ final class WpmlProvider implements TranslationProvider {
 	 * A missing translation links to WPML's own "add translation" screen:
 	 * `post-new.php` with the group's `trid`, the target language and the source language.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $source_id Source post ID.
 	 * @param string $lang      Language code.

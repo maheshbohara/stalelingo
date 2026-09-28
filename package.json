@@ -1,6 +1,6 @@
 {
 	"name": "translation-drift",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"private": true,
 	"description": "Outdated translation tracker for Polylang and WPML.",
 	"license": "GPL-2.0-or-later",
@@ -10,10 +10,10 @@
 	"scripts": {
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",
-		"lint:js": "wp-scripts lint-js src tests/js tests/e2e && tsc --noEmit",
+		"lint:js": "wp-scripts lint-js src tests/js tests/e2e tests/screenshots && tsc --noEmit",
 		"lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
 		"lint": "npm run lint:js && npm run lint:css",
-		"format": "wp-scripts format src tests/js tests/e2e",
+		"format": "wp-scripts format src tests/js tests/e2e tests/screenshots",
 		"test:js": "wp-scripts test-unit-jest --config jest.config.js",
 		"test:e2e": "playwright test --config playwright.config.ts"
 	},

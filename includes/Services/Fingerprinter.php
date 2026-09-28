@@ -18,21 +18,21 @@ use TranslationDrift\Settings;
 /**
  * Reads a post's tracked fields, normalizes them and hashes them.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Fingerprinter {
 
 	/**
 	 * Key prefix of strict-mode hashes in a sync point.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const STRICT_PREFIX = 'strict:';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TrackedFields $fields     Tracked fields.
 	 * @param Normalizer    $normalizer Normalizer.
@@ -50,7 +50,7 @@ class Fingerprinter {
 	/**
 	 * Fingerprints a post.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post  $post   Post.
 	 * @param bool|null $strict Normalization mode; null uses the strict-mode setting.
@@ -67,7 +67,7 @@ class Fingerprinter {
 	 *
 	 * The post may be a revision: the fields are read from it as given, whatever its post type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post     $post   Post or revision.
 	 * @param list<string> $fields Field keys.
@@ -87,7 +87,7 @@ class Fingerprinter {
 			 *
 			 * Return null to treat the field as having no value.
 			 *
-			 * @since 0.1.0
+			 * @since 1.0.0
 			 *
 			 * @param string|null $normalized Normalized value.
 			 * @param string      $field      Field key.
@@ -110,7 +110,7 @@ class Fingerprinter {
 	 * Storing both lets strict mode be switched on or off without every
 	 * translation suddenly comparing against hashes made in the other mode.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post $post Post.
 	 * @return array{fingerprint: Fingerprint, hashes: array<string, string>} Normal-mode fingerprint and both modes' hashes.
@@ -131,7 +131,7 @@ class Fingerprinter {
 	/**
 	 * The stored hashes that belong to the current normalization mode, keyed by field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string> $stored Hashes stored at a sync point.
 	 * @param bool|null             $strict Mode; null uses the strict-mode setting.
@@ -183,7 +183,7 @@ class Fingerprinter {
 		/**
 		 * Filters the raw value of a custom tracked field (one added with `tdrift_tracked_fields`).
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param mixed    $value Raw value. Default null (no value).
 		 * @param string   $field Field key.
@@ -206,7 +206,7 @@ class Fingerprinter {
 		 * Integrations return the normalized text of their own fields (for example
 		 * 'acf:*' and 'elementor'); null falls through to the default normalization.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param string|null $normalized Null to use the default.
 		 * @param string      $field      Field key.

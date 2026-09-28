@@ -19,14 +19,14 @@ use TranslationDrift\Domain\Status;
 /**
  * Reads and writes sync points and cached statuses.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class SyncRepository {
 
 	/**
 	 * Table name.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private function table(): string {
 		return Schema::table( Schema::TABLE_SYNC );
@@ -35,7 +35,7 @@ class SyncRepository {
 	/**
 	 * Finds the row of a translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $translation_id Translation post ID.
 	 */
@@ -54,7 +54,7 @@ class SyncRepository {
 	/**
 	 * Returns the rows of a source, keyed by language.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $source_id Source post ID.
 	 * @return array<string, SyncRow>
@@ -78,7 +78,7 @@ class SyncRepository {
 	/**
 	 * Rows of many posts at once, as sources or translations: one query for a whole list-table page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<int> $post_ids Post IDs.
 	 * @return list<SyncRow>
@@ -108,7 +108,7 @@ class SyncRepository {
 	/**
 	 * Rows whose sync point refers to a source revision.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $revision_id Revision post ID.
 	 * @return list<SyncRow>
@@ -135,7 +135,7 @@ class SyncRepository {
 	/**
 	 * Forgets the source revision of a sync point, once its fields are snapshotted instead.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $id Row ID.
 	 */
@@ -150,7 +150,7 @@ class SyncRepository {
 	 *
 	 * Trashed sources are left out.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<Status>      $statuses Statuses.
 	 * @param list<string>|null $langs    Languages, or null for all.
@@ -204,7 +204,7 @@ class SyncRepository {
 	/**
 	 * Rows marked up to date by a user, for the personal data exporter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 * @param int $limit   Rows per page.
@@ -235,7 +235,7 @@ class SyncRepository {
 	/**
 	 * Removes a user from the sync points they marked, for the personal data eraser.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 * @return int Rows anonymized.
@@ -253,7 +253,7 @@ class SyncRepository {
 	/**
 	 * Rows of many sources, grouped by source then language: one query for a dashboard page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<int> $source_ids Source post IDs.
 	 * @return array<int, array<string, SyncRow>>
@@ -287,7 +287,7 @@ class SyncRepository {
 	 * A source matches when at least one of its rows matches every row filter
 	 * (languages, statuses, post types, last change). Trashed sources are left out.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $args Query arguments.
 	 * @phpstan-param array{
@@ -408,7 +408,7 @@ class SyncRepository {
 	/**
 	 * Row counts per status, overall and by language and post type. Trashed sources are left out.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array{totals: array<string, int>, by_language: array<string, array<string, int>>, by_post_type: array<string, array<string, int>>}
 	 */
@@ -457,7 +457,7 @@ class SyncRepository {
 	/**
 	 * IDs of the sources and translations of a post type that have a row with the given status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Status $status    Status.
 	 * @param string $post_type Post type.
@@ -483,7 +483,7 @@ class SyncRepository {
 	/**
 	 * Inserts or replaces the row for a (source, language) pair.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int                  $source_id Source post ID.
 	 * @param string               $lang      Language code.
@@ -537,7 +537,7 @@ class SyncRepository {
 	/**
 	 * Inserts a new row.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int                  $source_id Source post ID.
 	 * @param string               $lang      Language code.
@@ -566,7 +566,7 @@ class SyncRepository {
 	/**
 	 * ID of the row for a (source, language) pair.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $source_id Source post ID.
 	 * @param string $lang      Language code.
@@ -582,7 +582,7 @@ class SyncRepository {
 	/**
 	 * Updates the cached status of a row.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int          $id                 Row ID.
 	 * @param Status       $status             New status.
@@ -609,7 +609,7 @@ class SyncRepository {
 	/**
 	 * Deletes rows and returns their IDs.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $column 'source_id' or 'translation_id'.
 	 * @param int    $post_id Post ID.
@@ -631,7 +631,7 @@ class SyncRepository {
 	/**
 	 * Deletes rows by ID.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<int> $ids Row IDs.
 	 */
@@ -648,7 +648,7 @@ class SyncRepository {
 	/**
 	 * Counts rows per status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, int>
 	 */

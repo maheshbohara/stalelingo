@@ -22,21 +22,21 @@ defined( 'ABSPATH' ) || exit;
  * Field definitions come from a resolver (in WordPress, `acf_get_field()`),
  * which keeps this class free of ACF calls.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class AcfTextExtractor {
 
 	/**
 	 * Default text field types.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DEFAULT_TEXT_TYPES = array( 'text', 'textarea', 'wysiwyg', 'link' );
 
 	/**
 	 * Field types that contain other fields.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const CONTAINER_TYPES = array( 'group', 'repeater', 'flexible_content', 'clone' );
 
@@ -50,7 +50,7 @@ final class AcfTextExtractor {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(string): (array<string, mixed>|null) $resolver   Field key to field definition.
 	 * @param Normalizer                                    $normalizer Normalizer.
@@ -62,7 +62,7 @@ final class AcfTextExtractor {
 	/**
 	 * Text field types.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -70,7 +70,7 @@ final class AcfTextExtractor {
 		/**
 		 * Filters which ACF field types hold translatable text.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param list<string> $types Field types. Default text, textarea, wysiwyg and link.
 		 */
@@ -82,7 +82,7 @@ final class AcfTextExtractor {
 	/**
 	 * Whether a field holds text, directly or in a sub-field.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $field Field definition.
 	 */
@@ -104,7 +104,7 @@ final class AcfTextExtractor {
 	/**
 	 * Normalized text parts of a field value.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $field Field definition.
 	 * @param mixed                $value Raw (unformatted) value.
@@ -146,7 +146,7 @@ final class AcfTextExtractor {
 	 * field key (`heading` / `_heading`); group and repeater sub-fields are
 	 * flattened (`items_0_title`). Keys may also be field keys themselves.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, mixed> $data Block data.
 	 * @return list<string>

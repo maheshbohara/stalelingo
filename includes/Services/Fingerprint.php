@@ -14,14 +14,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Normalized values and hashes of a source post's tracked fields.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Fingerprint {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string|null> $values Normalized values; null when the field has no value.
 	 * @param array<string, string>      $hashes Field hashes.

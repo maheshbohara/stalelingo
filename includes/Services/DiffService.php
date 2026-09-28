@@ -24,21 +24,21 @@ use TranslationDrift\Services\Repositories\SyncRow;
  * the same way (normal mode, even in strict mode), so content reads one block
  * per line and formatting noise stays out of the diff.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class DiffService {
 
 	/**
 	 * Fields that post revisions store.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const REVISIONED_FIELDS = array( 'title', 'content', 'excerpt' );
 
 	/**
 	 * HTML that wp_text_diff() produces and the diff viewer keeps.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const ALLOWED_HTML = array(
 		'table'    => array( 'class' => true ),
@@ -66,7 +66,7 @@ class DiffService {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Fingerprinter      $fingerprinter Fingerprinter.
 	 * @param SnapshotRepository $snapshots     Snapshots.
@@ -77,7 +77,7 @@ class DiffService {
 	/**
 	 * Diffs of the fields that changed since the sync point.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SyncRow  $row    Sync row of the translation.
 	 * @param \WP_Post $source Current source post.

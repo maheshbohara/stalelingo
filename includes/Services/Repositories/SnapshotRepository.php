@@ -19,21 +19,21 @@ use TranslationDrift\Domain\SnapshotCodec;
 /**
  * Stores the values of non-revisioned fields at each sync point, for diffs.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class SnapshotRepository {
 
 	/**
 	 * Default maximum number of fields snapshotted per sync point.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DEFAULT_MAX_FIELDS = 50;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SnapshotCodec $codec Value codec.
 	 */
@@ -43,7 +43,7 @@ class SnapshotRepository {
 	/**
 	 * Table name.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private function table(): string {
 		return Schema::table( Schema::TABLE_SNAPSHOTS );
@@ -52,7 +52,7 @@ class SnapshotRepository {
 	/**
 	 * Replaces the snapshots of a sync point.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int                   $sync_id Sync row ID.
 	 * @param array<string, string> $values  Normalized values keyed by field.
@@ -65,7 +65,7 @@ class SnapshotRepository {
 		/**
 		 * Filters how many fields are snapshotted per sync point. Fields past the cap have no stored diff.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param int $max Maximum fields. Default 50.
 		 */
@@ -90,7 +90,7 @@ class SnapshotRepository {
 	/**
 	 * Adds snapshots for fields a sync point doesn't have yet, keeping the existing ones.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int                   $sync_id Sync row ID.
 	 * @param array<string, string> $values  Normalized values keyed by field.
@@ -121,7 +121,7 @@ class SnapshotRepository {
 	/**
 	 * Returns the snapshots of a sync point.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $sync_id Sync row ID.
 	 * @return array<string, array{value: string, truncated: bool}>
@@ -145,7 +145,7 @@ class SnapshotRepository {
 	/**
 	 * Deletes the snapshots of the given sync points.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<int> $sync_ids Sync row IDs.
 	 */
@@ -162,7 +162,7 @@ class SnapshotRepository {
 	/**
 	 * Deletes snapshots whose sync row no longer exists.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return int Rows deleted.
 	 */

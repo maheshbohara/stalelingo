@@ -22,14 +22,14 @@ use TranslationDrift\Services\Repositories\SyncRepository;
  * that already have a sync point are left alone unless `$force` is set.
  * Each batch queues the next one, so no request does more than one batch.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class BaselineJob {
 
 	/**
 	 * Job hooks. Arguments: the last post ID processed, and the force flag (baseline only).
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const BASELINE_HOOK = 'tdrift_baseline_batch';
 	public const RECALC_HOOK   = 'tdrift_recalc_batch';
@@ -37,28 +37,28 @@ class BaselineJob {
 	/**
 	 * Option holding the baseline progress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const STATE_OPTION = 'tdrift_baseline_state';
 
 	/**
 	 * Default posts per batch.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DEFAULT_BATCH_SIZE = 50;
 
 	/**
 	 * Post statuses the walks visit.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const STATUSES = array( 'publish', 'future', 'draft', 'pending', 'private' );
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider Provider.
 	 * @param TrackedFields       $tracked  Tracked fields.
@@ -80,7 +80,7 @@ class BaselineJob {
 	/**
 	 * Queues a baseline build.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param bool $force Also reset translations that already have a sync point.
 	 * @return bool Whether a job was queued.
@@ -94,7 +94,7 @@ class BaselineJob {
 	/**
 	 * Queues a recalculation of every source.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return bool Whether a job was queued.
 	 */
@@ -105,7 +105,7 @@ class BaselineJob {
 	/**
 	 * Returns the baseline progress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array{status: string, processed: int, updated_at: string}
 	 */
@@ -123,7 +123,7 @@ class BaselineJob {
 	/**
 	 * Runs one baseline batch and queues the next.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int  $after_id Last post ID processed by the previous batch.
 	 * @param bool $force    Reset existing sync points too.
@@ -147,7 +147,7 @@ class BaselineJob {
 	/**
 	 * Runs one recalculation batch and queues the next.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $after_id Last post ID processed by the previous batch.
 	 * @return int Posts examined in this batch.
@@ -171,7 +171,7 @@ class BaselineJob {
 	/**
 	 * Builds the whole baseline in this request, batch by batch, without queueing jobs. For WP-CLI.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param bool          $force Reset existing sync points too.
 	 * @param callable|null $tick  Called with the number of posts after each batch.
@@ -204,7 +204,7 @@ class BaselineJob {
 	/**
 	 * What a baseline build would do, without changing anything. For `baseline --dry-run`.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param bool $force Count translations that already have a sync point too.
 	 * @return array{posts: int, sources: int, translations: int} Posts examined, sources found and
@@ -241,7 +241,7 @@ class BaselineJob {
 	/**
 	 * Recalculates every source in this request, without queueing jobs. For WP-CLI.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable|null $tick Called with the number of posts after each batch.
 	 * @return int Sources recalculated.
@@ -270,7 +270,7 @@ class BaselineJob {
 	/**
 	 * Tracked posts (sources and translations) that a full walk visits.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function count_posts(): int {
 		$post_types = $this->tracked->post_types();
@@ -338,13 +338,13 @@ class BaselineJob {
 	/**
 	 * Posts per batch.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function batch_size(): int {
 		/**
 		 * Filters how many posts a background batch processes.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param int $size Posts per batch. Default 50.
 		 */

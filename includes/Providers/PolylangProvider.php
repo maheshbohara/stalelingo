@@ -21,21 +21,21 @@ use TranslationDrift\Settings;
  * can make another post the source of its group, which is stored as the
  * {@see PolylangProvider::SOURCE_META} flag on that post.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class PolylangProvider implements TranslationProvider {
 
 	/**
 	 * Post meta flag marking a post as the source of its group.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const SOURCE_META = '_tdrift_is_source';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Settings $settings Plugin settings.
 	 */
@@ -45,7 +45,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function id(): string {
 		return ProviderDetector::POLYLANG;
@@ -56,7 +56,7 @@ final class PolylangProvider implements TranslationProvider {
 	 *
 	 * Polylang loads its API only once a language exists.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function is_ready(): bool {
 		return function_exists( 'pll_languages_list' ) && array() !== $this->get_languages();
@@ -65,7 +65,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -82,7 +82,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -106,7 +106,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function get_default_language(): string {
 		$default = function_exists( 'pll_default_language' ) ? pll_default_language( 'slug' ) : '';
@@ -117,7 +117,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -128,7 +128,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 * @return array<string, int>
@@ -167,7 +167,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -184,7 +184,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Any post in the group.
 	 */
@@ -208,7 +208,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * Language whose post is the source of the group, before per-group overrides.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Any post in the group.
 	 */
@@ -219,7 +219,7 @@ final class PolylangProvider implements TranslationProvider {
 		/**
 		 * Filters the source language of a translation group.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param string $lang    Language code. Default the "Source language" setting,
 		 *                        or the multilingual plugin's default language.
@@ -233,7 +233,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * Makes a post the source of its group, or restores the default source.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int  $post_id   Post ID.
 	 * @param bool $is_source Whether the post should be the source.
@@ -252,7 +252,7 @@ final class PolylangProvider implements TranslationProvider {
 	 *
 	 * `pll_save_post` fires after Polylang saved the language and translation links.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(int): void $callback Callback.
 	 */
@@ -268,7 +268,7 @@ final class PolylangProvider implements TranslationProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(): void $callback Callback.
 	 */
@@ -289,7 +289,7 @@ final class PolylangProvider implements TranslationProvider {
 	 * Polylang's own "add translation" link is used when available; its API is
 	 * undocumented and changed in 3.8, so it's only called with that signature.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $source_id Source post ID.
 	 * @param string $lang      Language code.

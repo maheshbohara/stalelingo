@@ -18,21 +18,21 @@ defined( 'ABSPATH' ) || exit;
  * {@see Migrator::migrations()} handle changes `dbDelta()` can't express, such
  * as data backfills or dropped columns.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Migrator {
 
 	/**
 	 * Current schema version. Bump when {@see Schema} or {@see Migrator::migrations()} changes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DB_VERSION = 3;
 
 	/**
 	 * Option holding the installed schema version for the site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const OPTION = 'tdrift_db_version';
 
@@ -40,7 +40,7 @@ final class Migrator {
 	 * Hooks the upgrade check. Plugin updates do not re-run activation, so the
 	 * version is compared on every load; this costs one autoloaded option read.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function register(): void {
 		add_action( 'init', array( self::class, 'maybe_upgrade' ), 1 );
@@ -49,7 +49,7 @@ final class Migrator {
 	/**
 	 * Returns the installed schema version for the current site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function installed_version(): int {
 		return (int) get_option( self::OPTION, 0 );
@@ -58,7 +58,7 @@ final class Migrator {
 	/**
 	 * Runs the migrations if the site is behind the code.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function maybe_upgrade(): void {
 		if ( self::installed_version() < self::DB_VERSION ) {
@@ -69,7 +69,7 @@ final class Migrator {
 	/**
 	 * Creates or updates the tables, then runs pending migration steps.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function migrate(): void {
 		global $wpdb;
@@ -90,7 +90,7 @@ final class Migrator {
 		/**
 		 * Fires after the plugin tables were created or upgraded on a site.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param int $from Schema version before the upgrade (0 on a fresh install).
 		 * @param int $to   Schema version after the upgrade.
@@ -101,7 +101,7 @@ final class Migrator {
 	/**
 	 * Data migration steps, keyed by the schema version that introduced them.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<int, callable(): void>
 	 */

@@ -23,35 +23,35 @@ use TranslationDrift\Settings;
  *
  * Saving a source only queues a recalculation, so saving never waits for it.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class PostHooks {
 
 	/**
 	 * Job hook that recalculates one source. Argument: source post ID.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const RECALC_SOURCE_HOOK = 'tdrift_recalc_source';
 
 	/**
 	 * Daily maintenance hook.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const PRUNE_HOOK = 'tdrift_prune';
 
 	/**
 	 * Post statuses that are tracked.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const TRACKED_STATUSES = array( 'publish', 'future', 'draft', 'pending', 'private' );
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider  Provider.
 	 * @param TrackedFields       $tracked   Tracked fields.
@@ -81,7 +81,7 @@ class PostHooks {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		// After the multilingual plugins (priority 10–21) saved the language.
@@ -115,7 +115,7 @@ class PostHooks {
 	/**
 	 * Queues a recalculation when a source is saved.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int      $post_id Post ID.
 	 * @param \WP_Post $post    Post.
@@ -133,7 +133,7 @@ class PostHooks {
 	/**
 	 * Handles a translation save: sets its first sync point, or auto-clears it when enabled.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -163,7 +163,7 @@ class PostHooks {
 	 * A deleted translation leaves a `missing` row once its source is recalculated.
 	 * A deleted revision is snapshotted first when a sync point refers to it, so diffs keep working.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -192,7 +192,7 @@ class PostHooks {
 	/**
 	 * Daily maintenance: removes orphaned snapshots and old events.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function prune(): void {
 		$this->snapshots->prune_orphans();

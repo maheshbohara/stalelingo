@@ -16,14 +16,14 @@ use TranslationDrift\Capabilities;
 /**
  * Who may do what.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Permissions {
 
 	/**
 	 * Whether a user may use the dashboard, settings and bulk actions.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 */
@@ -37,7 +37,7 @@ class Permissions {
 	 * Managers may see any translation; anyone else needs permission to edit it.
 	 * The diff shows the source's tracked text, which a translator needs to update the translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 * @param int $post_id Translation (or source) post ID.
@@ -53,7 +53,7 @@ class Permissions {
 	 * Managers may mark any translation. Anyone else, such as a translator,
 	 * needs permission to edit that translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id        User ID.
 	 * @param int $translation_id Translation post ID.
@@ -65,7 +65,7 @@ class Permissions {
 		/**
 		 * Filters whether a user may mark a translation as up to date.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param bool $allowed        Whether the user may.
 		 * @param int  $user_id        User ID.

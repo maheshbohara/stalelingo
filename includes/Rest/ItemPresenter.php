@@ -23,7 +23,7 @@ use TranslationDrift\Services\Repositories\SyncRow;
  *
  * Links and titles appear only where the current user may see them.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class ItemPresenter {
 
@@ -44,7 +44,7 @@ class ItemPresenter {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider    Provider.
 	 * @param Permissions         $permissions Permissions.
@@ -55,7 +55,7 @@ class ItemPresenter {
 	/**
 	 * A source with the status of each translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post               $source Source post.
 	 * @param array<string, SyncRow> $rows   Its rows, keyed by language.
@@ -92,7 +92,7 @@ class ItemPresenter {
 	/**
 	 * The status of one translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SyncRow $row Sync row.
 	 * @return array<string, mixed>
@@ -118,7 +118,7 @@ class ItemPresenter {
 	/**
 	 * Field keys with their labels.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param list<string> $fields Field keys.
 	 * @return list<array{key: string, label: string}>
@@ -136,7 +136,7 @@ class ItemPresenter {
 	/**
 	 * Display name of a language.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $lang Language code.
 	 */
@@ -151,7 +151,7 @@ class ItemPresenter {
 	/**
 	 * Post title as plain text.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post $post Post.
 	 */
@@ -162,7 +162,7 @@ class ItemPresenter {
 	/**
 	 * Edit link when the current user may edit the post, otherwise null.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -175,7 +175,7 @@ class ItemPresenter {
 	/**
 	 * A GMT MySQL date as ISO 8601 in UTC.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $gmt Date, `Y-m-d H:i:s` in GMT.
 	 */
@@ -219,7 +219,7 @@ class ItemPresenter {
 	/**
 	 * JSON Schema of a translation's status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -275,7 +275,7 @@ class ItemPresenter {
 	/**
 	 * JSON Schema of a source with its translations.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -337,7 +337,7 @@ class ItemPresenter {
 	/**
 	 * JSON Schema of a list of fields.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $description Description.
 	 * @return array<string, mixed>
@@ -359,7 +359,7 @@ class ItemPresenter {
 	/**
 	 * Status values.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */

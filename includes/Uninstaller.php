@@ -17,21 +17,21 @@ use TranslationDrift\Database\Schema;
 /**
  * Removes plugin data when the site owner opted in.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Uninstaller {
 
 	/**
 	 * Option holding the plugin settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const SETTINGS_OPTION = Settings::OPTION;
 
 	/**
 	 * Uninstalls on every site of the network, or on the single site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function uninstall(): void {
 		if ( ! is_multisite() ) {
@@ -55,7 +55,7 @@ final class Uninstaller {
 	/**
 	 * Whether the current site asked for its data to be deleted on uninstall.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function should_delete_data(): bool {
 		$settings = get_option( self::SETTINGS_OPTION, array() );
@@ -69,7 +69,7 @@ final class Uninstaller {
 	 * Scheduled jobs are always removed. Tables, options and the capability are
 	 * removed only when the "Delete data on uninstall" setting is on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function uninstall_site(): void {
 		global $wpdb;

@@ -156,6 +156,9 @@ zip: deps ## Build the WordPress.org zip in dist/
 	$(NODE) npm run build
 	$(PHP) bash bin/zip.sh
 
+screenshots: deps up ## Capture the readme screenshots into .wordpress-org/ (on the seeded dev site)
+	$(RUN) playwright npx playwright test --config playwright.screenshots.config.ts
+
 zip-smoke: zip ## Install the release zip on a clean WordPress (:8081) and run the smoke e2e test against it
 	$(DC) --profile zip up -d --wait db wordpress-zip
 	$(DC) --profile zip run --rm -T wpcli-zip bash /tools/zip-smoke.sh

@@ -21,21 +21,21 @@ use TranslationDrift\Services\SyncService;
  * Every translation is checked with {@see Permissions::can_mark_synced()}, so
  * translators may mark the translations they can edit.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class MarkSyncedController extends Controller {
 
 	/**
 	 * Most translations per request.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const MAX_IDS = 100;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions    $permissions Permissions.
 	 * @param SyncService    $syncer      Sync service.
@@ -55,7 +55,7 @@ class MarkSyncedController extends Controller {
 	/**
 	 * Registers the route.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -89,7 +89,7 @@ class MarkSyncedController extends Controller {
 	/**
 	 * The user must be allowed to mark every requested translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -116,7 +116,7 @@ class MarkSyncedController extends Controller {
 	/**
 	 * Marks the translations.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -157,7 +157,7 @@ class MarkSyncedController extends Controller {
 	/**
 	 * Schema of the result.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

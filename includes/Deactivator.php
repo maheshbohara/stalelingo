@@ -18,14 +18,14 @@ use TranslationDrift\Services\PostHooks;
 /**
  * Stops scheduled work on deactivation. Data is kept until uninstall.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Deactivator {
 
 	/**
 	 * Returns the WP-Cron and Action Scheduler hooks the plugin schedules.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -42,7 +42,7 @@ final class Deactivator {
 	/**
 	 * Deactivation callback.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function deactivate(): void {
 		self::clear_scheduled();
@@ -51,7 +51,7 @@ final class Deactivator {
 	/**
 	 * Unschedules every plugin job on the current site.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function clear_scheduled(): void {
 		foreach ( self::scheduled_hooks() as $hook ) {

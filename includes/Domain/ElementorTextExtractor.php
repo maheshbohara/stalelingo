@@ -20,14 +20,14 @@ defined( 'ABSPATH' ) || exit;
  * settings whose names look like text (title, text, content, description…).
  * Each widget with text becomes one line: `[elementor/<widget>] text`.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class ElementorTextExtractor {
 
 	/**
 	 * Text settings per widget type. Nested keys use `repeater.field`.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const WIDGET_TEXT = array(
 		'heading'              => array( 'title' ),
@@ -62,21 +62,21 @@ final class ElementorTextExtractor {
 	/**
 	 * Setting names that never hold text, even if they match the fallback pattern.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const STYLE_PATTERN = '/(typography|color|colour|size|align|margin|padding|border|shadow|css|_class|_id$|width|height|position|spacing|gap|radius|animation|font|weight|transform|hover|icon|link|url|image|background|opacity|z_index|layout|view|skin|html_tag|header_size)/i';
 
 	/**
 	 * Setting names that look like text, for widgets not in the list.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private const TEXT_PATTERN = '/(^|_)(title|text|content|description|heading|label|caption|editor|placeholder|subtitle|message)(_|$)/i';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Normalizer $normalizer Normalizer.
 	 */
@@ -86,7 +86,7 @@ final class ElementorTextExtractor {
 	/**
 	 * Normalized text of an Elementor document, one line per widget.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string|array<mixed> $data `_elementor_data` (JSON string or decoded array).
 	 */
@@ -105,7 +105,7 @@ final class ElementorTextExtractor {
 	/**
 	 * Text setting names of a widget type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $widget Widget type, e.g. 'heading'.
 	 * @return list<string>|null Null when the widget isn't known.
@@ -117,7 +117,7 @@ final class ElementorTextExtractor {
 		 * Keys are widget types; values list setting names, with `repeater.field`
 		 * for repeater items. Widgets not listed use a name-based fallback.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param array<string, list<string>> $map Text settings keyed by widget type.
 		 */

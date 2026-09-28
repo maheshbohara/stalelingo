@@ -20,14 +20,14 @@ use TranslationDrift\Providers\ProviderDetector;
 /**
  * Wires the plugin's services into WordPress.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Plugin {
 
 	/**
 	 * Whether boot() already ran.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @var bool
 	 */
 	private static bool $booted = false;
@@ -35,7 +35,7 @@ final class Plugin {
 	/**
 	 * Shared container.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @var Container|null
 	 */
 	private static ?Container $container = null;
@@ -43,7 +43,7 @@ final class Plugin {
 	/**
 	 * Returns the shared service container.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function container(): Container {
 		if ( null === self::$container ) {
@@ -56,7 +56,7 @@ final class Plugin {
 	/**
 	 * Replaces the shared container. For tests.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Container|null $container Container, or null to rebuild on next use.
 	 */
@@ -67,7 +67,7 @@ final class Plugin {
 	/**
 	 * Registers hooks. Runs on `plugins_loaded`, after Polylang and WPML have loaded.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function boot(): void {
 		if ( self::$booted ) {
@@ -119,7 +119,7 @@ final class Plugin {
 	/**
 	 * Registers the `tdrift/v1` REST routes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function register_rest_routes(): void {
 		foreach ( self::container()->rest_controllers() as $controller ) {

@@ -17,14 +17,14 @@ use TranslationDrift\Services\Permissions;
 /**
  * Reads the baseline progress and queues a new baseline build.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class BaselineController extends Controller {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Permissions $permissions Permissions.
 	 * @param BaselineJob $baseline    Baseline job.
@@ -37,7 +37,7 @@ class BaselineController extends Controller {
 	/**
 	 * Registers the route.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register_routes(): void {
 		register_rest_route(
@@ -69,7 +69,7 @@ class BaselineController extends Controller {
 	/**
 	 * Baseline progress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -87,7 +87,7 @@ class BaselineController extends Controller {
 	/**
 	 * Queues a baseline build.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
@@ -107,7 +107,7 @@ class BaselineController extends Controller {
 	/**
 	 * Schema of the baseline progress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -129,7 +129,7 @@ class BaselineController extends Controller {
 	/**
 	 * Schema of the response.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

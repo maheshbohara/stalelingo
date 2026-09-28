@@ -19,28 +19,28 @@ use TranslationDrift\Rest\Controller;
 /**
  * Registers the dashboard screen and loads its assets on that screen only.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class AdminPage {
 
 	/**
 	 * Menu slug of the dashboard.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const SLUG = 'translation-drift';
 
 	/**
 	 * Script and style handle of the dashboard bundle.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const HANDLE = 'tdrift-dashboard';
 
 	/**
 	 * Hook suffix returned by add_management_page().
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @var string
 	 */
 	private string $hook_suffix = '';
@@ -48,7 +48,7 @@ final class AdminPage {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Container|null $container Service container; defaults to the shared one.
 	 */
@@ -58,7 +58,7 @@ final class AdminPage {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
@@ -68,7 +68,7 @@ final class AdminPage {
 	/**
 	 * Adds the page under Tools.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_page(): void {
 		$hook_suffix = add_management_page(
@@ -85,7 +85,7 @@ final class AdminPage {
 	/**
 	 * Whether the given screen ID belongs to one of the plugin's own screens.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $screen_id Screen ID or hook suffix.
 	 */
@@ -100,7 +100,7 @@ final class AdminPage {
 	/**
 	 * Enqueues the dashboard bundle on the dashboard screen only.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $hook_suffix Current admin page hook suffix.
 	 */
@@ -120,7 +120,7 @@ final class AdminPage {
 	/**
 	 * Settings the dashboard needs before its first request: filter choices and links.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -202,7 +202,7 @@ final class AdminPage {
 	/**
 	 * Renders the mount point for the React dashboard.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function render(): void {
 		if ( ! current_user_can( Capabilities::MANAGE ) ) {

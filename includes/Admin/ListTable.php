@@ -25,28 +25,28 @@ use TranslationDrift\Services\TrackedFields;
  * The column reads the cached status only. Rows for every post on the page
  * are loaded in one query the first time the column renders.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class ListTable {
 
 	/**
 	 * Column key.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const COLUMN = 'tdrift-status';
 
 	/**
 	 * Filter query var.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const FILTER = 'tdrift_status';
 
 	/**
 	 * Bulk action key.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const BULK_ACTION = 'tdrift_mark_synced';
 
@@ -67,7 +67,7 @@ class ListTable {
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TrackedFields       $tracked     Tracked fields.
 	 * @param TranslationProvider $provider    Provider.
@@ -87,7 +87,7 @@ class ListTable {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'current_screen', array( $this, 'setup_screen' ) );
@@ -96,7 +96,7 @@ class ListTable {
 	/**
 	 * Hooks into the list screen of a tracked post type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Screen $screen Current screen.
 	 */
@@ -119,7 +119,7 @@ class ListTable {
 	/**
 	 * Adds the column after the title.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string> $columns Columns.
 	 * @return array<string, string>
@@ -144,7 +144,7 @@ class ListTable {
 	 *
 	 * Sources show one badge per language; a translation shows its own status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $column  Column key.
 	 * @param int    $post_id Post ID.
@@ -178,7 +178,7 @@ class ListTable {
 	/**
 	 * Prints the status filter dropdown.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type of the list.
 	 */
@@ -205,7 +205,7 @@ class ListTable {
 	/**
 	 * Limits the list to posts with the requested status.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Query $query Query.
 	 */
@@ -225,7 +225,7 @@ class ListTable {
 	/**
 	 * Adds the bulk action.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, string> $actions Bulk actions.
 	 * @return array<string, string>
@@ -243,7 +243,7 @@ class ListTable {
 	 * WordPress verifies the list table's nonce before this runs. Each
 	 * translation is checked against the user's permission.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string    $redirect Redirect URL.
 	 * @param string    $action   Bulk action.
@@ -280,7 +280,7 @@ class ListTable {
 	/**
 	 * Reports the result of the bulk action.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function bulk_notice(): void {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only counts added to the redirect by handle_bulk_action().
@@ -310,7 +310,7 @@ class ListTable {
 	/**
 	 * The status requested by the filter dropdown, if valid.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function requested_status(): ?Status {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- A list filter, like core's own; it only narrows what the user can already see.

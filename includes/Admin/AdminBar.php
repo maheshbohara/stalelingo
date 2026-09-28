@@ -17,28 +17,28 @@ use TranslationDrift\Services\Repositories\SyncRepository;
 /**
  * Shows the number of outdated translations in the admin bar, for users who manage translations.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class AdminBar {
 
 	/**
 	 * Node ID.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const NODE = 'tdrift-outdated';
 
 	/**
 	 * Transient caching the count.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const CACHE_KEY = 'tdrift_outdated_count';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SyncRepository $sync        Sync rows.
 	 * @param Permissions    $permissions Permissions.
@@ -49,7 +49,7 @@ class AdminBar {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'admin_bar_menu', array( $this, 'add_node' ), 90 );
@@ -61,7 +61,7 @@ class AdminBar {
 	/**
 	 * Number of outdated translations, cached for two minutes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function outdated_count(): int {
 		$count = get_transient( self::CACHE_KEY );
@@ -76,7 +76,7 @@ class AdminBar {
 	/**
 	 * Forgets the cached count.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function flush(): void {
 		delete_transient( self::CACHE_KEY );
@@ -85,7 +85,7 @@ class AdminBar {
 	/**
 	 * Adds the counter node.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Admin_Bar $bar Admin bar.
 	 */

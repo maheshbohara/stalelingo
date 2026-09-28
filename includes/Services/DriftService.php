@@ -24,14 +24,14 @@ use TranslationDrift\Services\Repositories\SyncRepository;
  * Runs in the background after a source is saved, so list tables and the
  * dashboard only ever read the cached status.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class DriftService {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TranslationProvider $provider      Provider.
 	 * @param TrackedFields       $tracked       Tracked fields.
@@ -55,7 +55,7 @@ class DriftService {
 	/**
 	 * Recalculates every language of a source post.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $source_id Source post ID.
 	 */
@@ -161,7 +161,7 @@ class DriftService {
 			/**
 			 * Fires when a translation becomes outdated because its source changed.
 			 *
-			 * @since 0.1.0
+			 * @since 1.0.0
 			 *
 			 * @param int          $translation_id Translation post ID.
 			 * @param int          $source_id      Source post ID.

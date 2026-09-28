@@ -14,21 +14,21 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Enqueues the stylesheet of the PHP-rendered admin UI on the screens that use it.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Assets {
 
 	/**
 	 * Style handle.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const ADMIN_STYLE = 'tdrift-admin';
 
 	/**
 	 * Enqueues the badge and metabox styles. Callers hook this only on their own screens.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public static function enqueue_admin_style(): void {
 		$asset_file = TDRIFT_DIR . 'build/admin/index.asset.php';
@@ -45,7 +45,7 @@ final class Assets {
 	/**
 	 * Enqueues a built script (and its stylesheet, when there is one) with its generated dependencies.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string       $handle     Script and style handle.
 	 * @param string       $entry      Build entry, e.g. 'dashboard/index'.

@@ -31,6 +31,7 @@ wp user create translator-fr translator-fr@example.test --role=author --user_pas
 wp eval-file /tools/dev/seed.php polylang 3 post,page
 
 echo "==> Installing $(basename "$zip")"
+rm -rf wp-content/plugins/translation-drift
 wp plugin install "$zip" --activate
 wp plugin list --name=translation-drift --fields=name,status,version
 
@@ -39,9 +40,11 @@ command wp translation-drift baseline
 command wp translation-drift report --format=count
 
 echo "==> Making one translation drift"
-source_id=$(command wp post list --post_type=post --lang=en --field=ID --posts_per_page=1 --orderby=ID --order=ASC)
+source_id=$(command wp post list --post_type=post --lang=en --meta_key=_tdrift_seed --field=ID --posts_per_page=1 --orderby=ID --order=ASC)
 wp post update "$source_id" --post_title="$(command wp post get "$source_id" --field=post_title) (zip smoke)"
 command wp cron event run --due-now >/dev/null
-command wp translation-drift report --status=outdated --format=count
+outdated=$(command wp translation-drift report --status=outdated --format=count)
+echo "Outdated translations after editing post $source_id: $outdated"
+[[ "$outdated" -gt 0 ]] || { echo "Editing a source did not flag its translations." >&2; exit 1; }
 
 echo "Zip smoke site ready: http://localhost:8081/wp-admin (admin / password)"

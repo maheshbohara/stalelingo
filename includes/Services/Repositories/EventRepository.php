@@ -18,14 +18,14 @@ use TranslationDrift\Database\Schema;
 /**
  * Append-only log of drift events.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class EventRepository {
 
 	/**
 	 * Event types.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DRIFT_DETECTED = 'drift_detected';
 	public const DRIFT_RESOLVED = 'drift_resolved';
@@ -35,14 +35,14 @@ class EventRepository {
 	/**
 	 * Default retention in days.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const DEFAULT_RETENTION_DAYS = 180;
 
 	/**
 	 * Table name.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	private function table(): string {
 		return Schema::table( Schema::TABLE_EVENTS );
@@ -51,7 +51,7 @@ class EventRepository {
 	/**
 	 * Records an event.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string               $event          Event type.
 	 * @param int                  $translation_id Translation post ID.
@@ -81,7 +81,7 @@ class EventRepository {
 	/**
 	 * Returns the events of a translation, newest first.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $translation_id Translation post ID.
 	 * @param int $limit          Maximum rows.
@@ -100,7 +100,7 @@ class EventRepository {
 	/**
 	 * Events caused by a user, oldest first, for the personal data exporter.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 * @param int $limit   Rows per page.
@@ -124,7 +124,7 @@ class EventRepository {
 	/**
 	 * Removes a user from the events they caused, for the personal data eraser.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $user_id User ID.
 	 * @return int Rows anonymized.
@@ -142,7 +142,7 @@ class EventRepository {
 	/**
 	 * Deletes events older than the retention period.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return int Rows deleted.
 	 */
@@ -152,7 +152,7 @@ class EventRepository {
 		/**
 		 * Filters how many days drift events are kept.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param int $days Days. Default 180.
 		 */

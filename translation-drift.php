@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Translation Drift – Outdated Translation Tracker for Multilingual Sites
  * Description:       Flags translations that went out of date when their source post changed, shows what changed, and helps editors clear the backlog.
- * Version:           0.1.0
+ * Version:           1.0.0
  * Requires at least: 6.8
  * Requires PHP:      8.1
  * Author:            Mahesh Bohara
@@ -19,7 +19,7 @@ declare( strict_types=1 );
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'TDRIFT_VERSION', '0.1.0' );
+define( 'TDRIFT_VERSION', '1.0.0' );
 define( 'TDRIFT_FILE', __FILE__ );
 define( 'TDRIFT_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TDRIFT_URL', plugin_dir_url( __FILE__ ) );

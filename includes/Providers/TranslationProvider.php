@@ -16,28 +16,28 @@ defined( 'ABSPATH' ) || exit;
  *
  * Posts only for now; the same shape works for taxonomy terms later.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 interface TranslationProvider {
 
 	/**
 	 * Provider identifier, e.g. 'polylang'.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function id(): string;
 
 	/**
 	 * Whether the provider's API is loaded and at least one language exists.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function is_ready(): bool;
 
 	/**
 	 * Language codes of the site's languages.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -46,7 +46,7 @@ interface TranslationProvider {
 	/**
 	 * Display names of the site's languages, keyed by code.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -55,14 +55,14 @@ interface TranslationProvider {
 	/**
 	 * The provider's default language code.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function get_default_language(): string;
 
 	/**
 	 * Whether posts of this type are translated.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -71,7 +71,7 @@ interface TranslationProvider {
 	/**
 	 * The translation group of a post: post IDs keyed by language code, including the post itself.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 * @return array<string, int>
@@ -81,7 +81,7 @@ interface TranslationProvider {
 	/**
 	 * Language code of a post, or null when it has none.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post ID.
 	 */
@@ -90,7 +90,7 @@ interface TranslationProvider {
 	/**
 	 * ID of the source post of the post's group, or null when the group has no source.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int $post_id Any post in the group.
 	 */
@@ -102,7 +102,7 @@ interface TranslationProvider {
 	 * The callback receives the post ID. It fires for sources and translations alike,
 	 * including a translation just created from its source.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(int): void $callback Callback.
 	 */
@@ -111,7 +111,7 @@ interface TranslationProvider {
 	/**
 	 * Registers a callback that runs when the site's languages change.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param callable(): void $callback Callback.
 	 */
@@ -122,7 +122,7 @@ interface TranslationProvider {
 	 *
 	 * Null when the current user can't, or the provider offers no such screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param int    $source_id Source post ID.
 	 * @param string $lang      Language code.

@@ -20,14 +20,14 @@ use TranslationDrift\Settings;
  * Field keys: 'title', 'content', 'excerpt', 'slug', 'featured_image', and
  * 'meta:<key>' for post meta.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class TrackedFields {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param Settings            $settings Settings.
 	 * @param TranslationProvider $provider Multilingual provider.
@@ -38,7 +38,7 @@ class TrackedFields {
 	/**
 	 * Tracked post types: translated by the provider and chosen in settings.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return list<string>
 	 */
@@ -53,7 +53,7 @@ class TrackedFields {
 		/**
 		 * Filters the post types whose translations are tracked.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param list<string> $types Post types.
 		 */
@@ -65,7 +65,7 @@ class TrackedFields {
 	/**
 	 * Whether a post type is tracked.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -76,7 +76,7 @@ class TrackedFields {
 	/**
 	 * Tracked meta keys for a post type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 * @return list<string>
@@ -87,7 +87,7 @@ class TrackedFields {
 		/**
 		 * Filters the meta keys tracked for a post type.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param list<string> $keys      Meta keys.
 		 * @param string       $post_type Post type.
@@ -100,7 +100,7 @@ class TrackedFields {
 	/**
 	 * Tracked field keys for a post type.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 * @return list<string>
@@ -114,7 +114,7 @@ class TrackedFields {
 		/**
 		 * Filters the tracked field keys for a post type.
 		 *
-		 * @since 0.1.0
+		 * @since 1.0.0
 		 *
 		 * @param list<string> $fields    Field keys, e.g. 'title', 'content', 'meta:subtitle'.
 		 * @param string       $post_type Post type.

@@ -20,21 +20,21 @@ use TranslationDrift\Services\TrackedFields;
 /**
  * Shows translation status in the classic editor. The block editor uses a sidebar panel instead.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Metabox {
 
 	/**
 	 * Metabox ID.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const ID = 'tdrift-status';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param TrackedFields       $tracked     Tracked fields.
 	 * @param TranslationProvider $provider    Provider.
@@ -52,7 +52,7 @@ class Metabox {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_action( 'add_meta_boxes', array( $this, 'add' ) );
@@ -61,7 +61,7 @@ class Metabox {
 	/**
 	 * Adds the metabox to tracked post types, in the classic editor only.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type.
 	 */
@@ -85,7 +85,7 @@ class Metabox {
 	/**
 	 * Prints the metabox.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param \WP_Post $post Post being edited.
 	 */

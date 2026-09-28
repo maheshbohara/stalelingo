@@ -22,28 +22,28 @@ use TranslationDrift\Services\Repositories\SyncRepository;
  * (`tdrift_events.user_id`). The exporters list those records; the eraser
  * anonymizes them (the user ID becomes 0) so the translation history stays usable.
  *
- * @since 0.1.0
+ * @since 1.0.0
  */
 final class Privacy {
 
 	/**
 	 * Records per exporter page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const PAGE_SIZE = 100;
 
 	/**
 	 * Group of the exported items.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public const GROUP_ID = 'translation-drift';
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param SyncRepository  $sync   Sync rows.
 	 * @param EventRepository $events Events.
@@ -54,7 +54,7 @@ final class Privacy {
 	/**
 	 * Registers hooks.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function register(): void {
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporters' ) );
@@ -65,7 +65,7 @@ final class Privacy {
 	/**
 	 * Adds the exporters.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, array<string, mixed>> $exporters Exporters.
 	 * @return array<string, array<string, mixed>>
@@ -88,7 +88,7 @@ final class Privacy {
 	/**
 	 * Adds the eraser.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array<string, array<string, mixed>> $erasers Erasers.
 	 * @return array<string, array<string, mixed>>
@@ -107,7 +107,7 @@ final class Privacy {
 	/**
 	 * Exports the translations a user marked as up to date.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $email Email address.
 	 * @param int    $page  Page, starting at 1.
@@ -151,7 +151,7 @@ final class Privacy {
 	/**
 	 * Exports the history events a user caused.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $email Email address.
 	 * @param int    $page  Page, starting at 1.
@@ -200,7 +200,7 @@ final class Privacy {
 	/**
 	 * Anonymizes a user's records: their user ID becomes 0.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string $email Email address.
 	 * @param int    $page  Page (unused; everything is done in one pass).
@@ -239,7 +239,7 @@ final class Privacy {
 	/**
 	 * Suggests text for the site's privacy policy.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_policy_content(): void {
 		if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {

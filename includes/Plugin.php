@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 use TranslationDrift\Admin\AdminPage;
 use TranslationDrift\Admin\DependencyNotice;
+use TranslationDrift\Admin\SettingsPage;
 use TranslationDrift\Database\Migrator;
 use TranslationDrift\Providers\ProviderDetector;
 
@@ -84,10 +85,21 @@ final class Plugin {
 			$container->post_hooks()->register();
 		}
 
+		if ( $container->has_provider() ) {
+			$container->admin_bar()->register();
+		}
+
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( Activator::class, 'ensure_schedules' ) );
 			( new AdminPage() )->register();
+			( new SettingsPage( $container ) )->register();
 			( new DependencyNotice( $container->detector() ) )->register();
+
+			if ( $container->has_provider() ) {
+				$container->list_table()->register();
+				$container->metabox()->register();
+				$container->actions()->register();
+			}
 		}
 	}
 }

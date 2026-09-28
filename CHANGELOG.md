@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Phase 4 admin UI:
+  - Settings screen: post types, fields, extra custom fields, ACF and Elementor, source language, strict mode, auto-clear, translators per language, email digest options, immediate-email post types, delete data on uninstall, and a Build baseline tool.
+  - Posts list: a translation status column with a labelled badge per language, a status filter, and a bulk "Mark translations as up to date" action.
+  - Classic editor metabox with status, changed fields and "Mark as up to date".
+  - Admin bar counter of outdated translations.
+  - Strict mode can be switched on or off without flagging translations.
+
 - Phase 3 integrations:
   - WPML adapter built on WPML's public filters and actions, with WPML's add-translation link for missing translations.
   - ACF fields: fields set to "translate" or "copy once" (WPML, Polylang Pro) are tracked, and text fields when no preference is set. Only text values count, including inside groups, repeaters and flexible content.
@@ -24,6 +31,7 @@ All notable changes to this project are documented here. The format follows
   - Dev setup builds the baseline and edits some sources, so the site starts with in-sync, outdated and missing translations.
 
 ### Fixed
+- Saving settings for the first time no longer mangles list values.
 - Inline HTML tags no longer insert spaces into normalized text.
 - The daily maintenance job is scheduled on sites that activated before it existed.
 - Deactivation and uninstall now clear queued jobs that have arguments (`wp_unschedule_hook()`).

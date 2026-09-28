@@ -75,7 +75,8 @@ class SyncService {
 			return false;
 		}
 
-		$fingerprint = $this->fingerprinter->fingerprint( $source );
+		$sync_point  = $this->fingerprinter->sync_point( $source );
+		$fingerprint = $sync_point['fingerprint'];
 		$revision_id = $this->latest_revision_id( $source_id );
 		$now         = current_time( 'mysql', true );
 
@@ -86,7 +87,7 @@ class SyncService {
 				'translation_id'     => $translation_id,
 				'post_type'          => $source->post_type,
 				'status'             => Status::InSync,
-				'field_hashes'       => $fingerprint->hashes,
+				'field_hashes'       => $sync_point['hashes'],
 				'changed_fields'     => array(),
 				'source_rev_id'      => $revision_id,
 				'synced_at'          => $now,

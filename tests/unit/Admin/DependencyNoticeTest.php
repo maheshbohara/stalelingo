@@ -44,7 +44,7 @@ final class DependencyNoticeTest extends TestCase {
 			'plugins'         => array( 'plugins', true ),
 			'network plugins' => array( 'plugins-network', true ),
 			'dashboard'       => array( 'tools_page_translation-drift', true ),
-			'settings'        => array( 'settings_page_translation-drift', true ),
+			'settings'        => array( 'settings_page_translation-drift-settings', true ),
 			'posts list'      => array( 'edit-post', false ),
 			'wp dashboard'    => array( 'dashboard', false ),
 		);

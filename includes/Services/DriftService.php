@@ -89,7 +89,7 @@ class DriftService {
 			}
 
 			$evaluation = $this->evaluator->evaluate(
-				$row->field_hashes,
+				$this->fingerprinter->hashes_for_mode( $row->field_hashes ),
 				$fingerprint->hashes,
 				array(
 					'translation_id' => $translation_id,

@@ -1,0 +1,56 @@
+// Status badges for list tables, the classic editor metabox and the settings page.
+// Statuses differ by symbol and screen-reader text as well as color.
+
+.tdrift-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.tdrift-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 6px;
+	border: 1px solid currentcolor;
+	border-radius: 2px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 20px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+a.tdrift-badge:focus {
+	box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #2271b1);
+	outline: 2px solid transparent;
+}
+
+.tdrift-badge-in-sync {
+	color: #00701a;
+	background: #edfaef;
+}
+
+.tdrift-badge-outdated {
+	color: #8a2424;
+	background: #fcf0f1;
+}
+
+.tdrift-badge-missing {
+	color: #50575e;
+	background: #f6f7f7;
+	border-style: dashed;
+}
+
+.tdrift-badge-untracked {
+	color: #614200;
+	background: #fcf9e8;
+}
+
+.tdrift-metabox-fields {
+	margin: 4px 0 8px 18px;
+	list-style: disc;
+}
+
+.column-tdrift-status {
+	width: 8em;
+}

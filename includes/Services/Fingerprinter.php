@@ -23,6 +23,13 @@ use TranslationDrift\Settings;
 class Fingerprinter {
 
 	/**
+	 * Key prefix of strict-mode hashes in a sync point.
+	 *
+	 * @since 0.1.0
+	 */
+	public const STRICT_PREFIX = 'strict:';
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.1.0
@@ -45,10 +52,11 @@ class Fingerprinter {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param \WP_Post $post Post.
+	 * @param \WP_Post  $post   Post.
+	 * @param bool|null $strict Normalization mode; null uses the strict-mode setting.
 	 */
-	public function fingerprint( \WP_Post $post ): Fingerprint {
-		$strict = $this->settings->strict();
+	public function fingerprint( \WP_Post $post, ?bool $strict = null ): Fingerprint {
+		$strict = $strict ?? $this->settings->strict();
 		$values = array();
 
 		foreach ( $this->fields->fields( $post->post_type ) as $field ) {
@@ -76,6 +84,53 @@ class Fingerprinter {
 		ksort( $values, SORT_STRING );
 
 		return new Fingerprint( $values, $this->hasher->hash_all( $values ) );
+	}
+
+	/**
+	 * Field hashes in both normalization modes, for a sync point.
+	 *
+	 * Normal-mode hashes are keyed by field; strict-mode hashes by `strict:<field>`.
+	 * Storing both lets strict mode be switched on or off without every
+	 * translation suddenly comparing against hashes made in the other mode.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param \WP_Post $post Post.
+	 * @return array{fingerprint: Fingerprint, hashes: array<string, string>} Normal-mode fingerprint and both modes' hashes.
+	 */
+	public function sync_point( \WP_Post $post ): array {
+		$normal = $this->fingerprint( $post, false );
+		$hashes = $normal->hashes;
+		foreach ( $this->fingerprint( $post, true )->hashes as $field => $hash ) {
+			$hashes[ self::STRICT_PREFIX . $field ] = $hash;
+		}
+
+		return array(
+			'fingerprint' => $normal,
+			'hashes'      => $hashes,
+		);
+	}
+
+	/**
+	 * The stored hashes that belong to the current normalization mode, keyed by field.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array<string, string> $stored Hashes stored at a sync point.
+	 * @param bool|null             $strict Mode; null uses the strict-mode setting.
+	 * @return array<string, string>
+	 */
+	public function hashes_for_mode( array $stored, ?bool $strict = null ): array {
+		$strict = $strict ?? $this->settings->strict();
+		$hashes = array();
+		foreach ( $stored as $key => $hash ) {
+			$is_strict = str_starts_with( (string) $key, self::STRICT_PREFIX );
+			if ( $is_strict === $strict ) {
+				$hashes[ $is_strict ? substr( (string) $key, strlen( self::STRICT_PREFIX ) ) : (string) $key ] = $hash;
+			}
+		}
+
+		return $hashes;
 	}
 
 	/**

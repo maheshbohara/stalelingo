@@ -1,0 +1,126 @@
+<?php
+/**
+ * Status labels and badges.
+ *
+ * @package TranslationDrift
+ */
+
+declare( strict_types=1 );
+
+namespace TranslationDrift\Admin;
+
+defined( 'ABSPATH' ) || exit;
+
+use TranslationDrift\Domain\Status;
+
+/**
+ * Renders statuses and field names for the admin UI.
+ *
+ * A badge never relies on color alone: it shows the language code and a
+ * symbol, and carries the full status as screen-reader text and a tooltip.
+ *
+ * @since 0.1.0
+ */
+final class StatusView {
+
+	/**
+	 * Human-readable status.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param Status $status Status.
+	 */
+	public static function label( Status $status ): string {
+		return match ( $status ) {
+			Status::InSync    => __( 'Up to date', 'translation-drift' ),
+			Status::Outdated  => __( 'Outdated', 'translation-drift' ),
+			Status::Missing   => __( 'Missing', 'translation-drift' ),
+			Status::Untracked => __( 'Not tracked yet', 'translation-drift' ),
+		};
+	}
+
+	/**
+	 * A symbol that tells statuses apart without color.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param Status $status Status.
+	 */
+	public static function symbol( Status $status ): string {
+		return match ( $status ) {
+			Status::InSync    => '✓',
+			Status::Outdated  => '!',
+			Status::Missing   => '–',
+			Status::Untracked => '?',
+		};
+	}
+
+	/**
+	 * HTML of one language badge. Already escaped.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string      $lang   Language code.
+	 * @param Status      $status Status.
+	 * @param string|null $url    Link to the translation (edit or create), if any.
+	 */
+	public static function badge( string $lang, Status $status, ?string $url = null ): string {
+		/* translators: 1: language code, e.g. FR. 2: translation status, e.g. Outdated. */
+		$full  = sprintf( __( '%1$s: %2$s', 'translation-drift' ), strtoupper( $lang ), self::label( $status ) );
+		$inner = sprintf(
+			'<span aria-hidden="true">%1$s <span class="tdrift-badge-symbol">%2$s</span></span><span class="screen-reader-text">%3$s</span>',
+			esc_html( strtoupper( $lang ) ),
+			esc_html( self::symbol( $status ) ),
+			esc_html( $full )
+		);
+		$class = 'tdrift-badge tdrift-badge-' . str_replace( '_', '-', $status->value );
+
+		if ( null !== $url && '' !== $url ) {
+			return sprintf( '<a class="%1$s" href="%2$s" title="%3$s">%4$s</a>', esc_attr( $class ), esc_url( $url ), esc_attr( $full ), $inner );
+		}
+
+		return sprintf( '<span class="%1$s" title="%2$s">%3$s</span>', esc_attr( $class ), esc_attr( $full ), $inner );
+	}
+
+	/**
+	 * Human-readable name of a tracked field key.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $field Field key, e.g. 'title', 'meta:subtitle', 'acf:hero_text'.
+	 */
+	public static function field_label( string $field ): string {
+		$labels = array(
+			'title'          => __( 'Title', 'translation-drift' ),
+			'content'        => __( 'Content', 'translation-drift' ),
+			'excerpt'        => __( 'Excerpt', 'translation-drift' ),
+			'slug'           => __( 'Slug', 'translation-drift' ),
+			'featured_image' => __( 'Featured image', 'translation-drift' ),
+			'elementor'      => __( 'Elementor content', 'translation-drift' ),
+		);
+
+		if ( isset( $labels[ $field ] ) ) {
+			$label = $labels[ $field ];
+		} elseif ( str_starts_with( $field, 'acf:' ) ) {
+			$acf_field = function_exists( 'acf_get_field' ) ? acf_get_field( substr( $field, 4 ) ) : false;
+			$name      = is_array( $acf_field ) && ! empty( $acf_field['label'] ) ? (string) $acf_field['label'] : substr( $field, 4 );
+			/* translators: %s: ACF field label. */
+			$label = sprintf( __( 'Field “%s”', 'translation-drift' ), $name );
+		} elseif ( str_starts_with( $field, 'meta:' ) ) {
+			/* translators: %s: custom field (post meta) key. */
+			$label = sprintf( __( 'Custom field “%s”', 'translation-drift' ), substr( $field, 5 ) );
+		} else {
+			$label = $field;
+		}
+
+		/**
+		 * Filters the label shown for a tracked field.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param string $label Label.
+		 * @param string $field Field key.
+		 */
+		return (string) apply_filters( 'tdrift_field_label', $label, $field );
+	}
+}

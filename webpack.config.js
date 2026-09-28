@@ -5,6 +5,7 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		'dashboard/index': path.resolve( __dirname, 'src/dashboard/index.tsx' ),
+		'admin/index': path.resolve( __dirname, 'src/admin/index.ts' ),
 	},
 	output: {
 		...defaultConfig.output,

@@ -79,7 +79,7 @@ final class AdminPage {
 	public static function is_own_screen( string $screen_id ): bool {
 		return in_array(
 			$screen_id,
-			array( 'tools_page_' . self::SLUG, 'settings_page_' . self::SLUG ),
+			array( 'tools_page_' . self::SLUG, 'settings_page_' . SettingsPage::SLUG ),
 			true
 		);
 	}

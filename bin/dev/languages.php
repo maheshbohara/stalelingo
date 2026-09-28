@@ -66,11 +66,16 @@ foreach ( $tdrift_wanted as $tdrift_locale => $tdrift_order ) {
 
 PLL()->model->clean_languages_cache();
 
-// Default language EN, translate the dev CPT, and skip the setup wizard.
-$tdrift_options                 = get_option( 'polylang', array() );
+// Default language EN and translate the dev CPT. Polylang 3.8 keeps its options in an object that is
+// saved at the end of the request, so write through it rather than with update_option().
+$tdrift_options                 = PLL()->options;
 $tdrift_options['default_lang'] = 'en';
-$tdrift_options['post_types']   = array_values( array_unique( array_merge( (array) ( $tdrift_options['post_types'] ?? array() ), array( 'tdrift_book' ) ) ) );
-update_option( 'polylang', $tdrift_options );
+$tdrift_options['post_types']   = array_values( array_unique( array_merge( (array) $tdrift_options['post_types'], array( 'tdrift_book' ) ) ) );
+if ( method_exists( $tdrift_options, 'save' ) ) {
+	$tdrift_options->save();
+}
+
+// Skip the setup wizard.
 delete_transient( 'pll_activation_redirect' );
 update_option( 'pll_wizard_done', 1 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 

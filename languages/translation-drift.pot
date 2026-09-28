@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-28T06:30:08+00:00\n"
+"POT-Creation-Date: 2026-09-28T08:23:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: translation-drift\n"
@@ -34,18 +34,384 @@ msgstr ""
 msgid "http://www.maheshbohara.com.np/"
 msgstr ""
 
+#: includes/Admin/Actions.php:128
+msgid "Sorry, you are not allowed to update this translation."
+msgstr ""
+
+#: includes/Admin/Actions.php:147
+msgid "Sorry, you are not allowed to do that."
+msgstr ""
+
+#: includes/Admin/Actions.php:175
+msgid "This translation can’t be opened from here. Create it from the source post’s language settings."
+msgstr ""
+
+#: includes/Admin/Actions.php:195
+msgid "Translation marked as up to date."
+msgstr ""
+
+#: includes/Admin/Actions.php:195
+msgid "This post isn’t a translation of a tracked source."
+msgstr ""
+
+#. translators: %s: number of outdated translations.
+#: includes/Admin/AdminBar.php:103
+#, php-format
+msgid "%s outdated translation"
+msgid_plural "%s outdated translations"
+msgstr[0] ""
+msgstr[1] ""
+
 #: includes/Admin/AdminPage.php:62
 #: includes/Admin/AdminPage.php:63
 #: includes/Admin/AdminPage.php:133
+#: includes/Admin/Metabox.php:75
+#: includes/Admin/SettingsPage.php:86
 msgid "Translation Drift"
 msgstr ""
 
 #: includes/Admin/AdminPage.php:129
+#: includes/Admin/SettingsPage.php:246
 msgid "Sorry, you are not allowed to access this page."
 msgstr ""
 
 #: includes/Admin/DependencyNotice.php:78
 msgid "Translation Drift needs Polylang or WPML to be active. It has nothing to track until one of them is."
+msgstr ""
+
+#: includes/Admin/ListTable.php:132
+#: includes/Admin/ListTable.php:136
+msgid "Translations"
+msgstr ""
+
+#: includes/Admin/ListTable.php:171
+msgid "No translation status"
+msgstr ""
+
+#: includes/Admin/ListTable.php:191
+msgid "Filter by translation status"
+msgstr ""
+
+#: includes/Admin/ListTable.php:193
+msgid "All translation statuses"
+msgstr ""
+
+#: includes/Admin/ListTable.php:235
+msgid "Mark translations as up to date"
+msgstr ""
+
+#. translators: %d: number of translations.
+#: includes/Admin/ListTable.php:295
+#, php-format
+msgid "%d translation marked as up to date."
+msgid_plural "%d translations marked as up to date."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of translations.
+#: includes/Admin/ListTable.php:298
+#, php-format
+msgid "You are not allowed to update %d translation."
+msgid_plural "You are not allowed to update %d translations."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/Metabox.php:99
+msgid "This post has no source to compare with yet."
+msgstr ""
+
+#: includes/Admin/Metabox.php:118
+msgid "This is the source. Changing its tracked fields marks its translations as outdated."
+msgstr ""
+
+#: includes/Admin/Metabox.php:120
+msgid "Translation status will appear once the baseline reaches this post."
+msgstr ""
+
+#: includes/Admin/Metabox.php:139
+msgid "Not tracked yet. It will be once the baseline reaches it, or when you mark it as up to date."
+msgstr ""
+
+#: includes/Admin/Metabox.php:143
+#: includes/Admin/SettingsPage.php:284
+msgid "Status:"
+msgstr ""
+
+#: includes/Admin/Metabox.php:148
+msgid "Changed in the source since the last sync:"
+msgstr ""
+
+#. translators: 1: time ago, e.g. "3 days". 2: user display name.
+#: includes/Admin/Metabox.php:160
+#, php-format
+msgid "Last marked up to date %1$s ago by %2$s."
+msgstr ""
+
+#. translators: %s: time ago, e.g. "3 days".
+#: includes/Admin/Metabox.php:162
+#, php-format
+msgid "Last marked up to date %s ago."
+msgstr ""
+
+#: includes/Admin/Metabox.php:171
+msgid "Mark as up to date"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:85
+#: includes/Admin/SettingsPage.php:250
+msgid "Translation Drift settings"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:114
+msgid "What to track"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:115
+msgid "Workflow"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:116
+msgid "Notifications"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:117
+msgid "Data"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:124
+#: includes/Admin/SettingsPage.php:306
+msgid "Post types"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:125
+#: includes/Admin/SettingsPage.php:320
+msgid "Fields"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:126
+msgid "Extra custom fields"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:127
+#: includes/Admin/SettingsPage.php:349
+msgid "Page builders and fields"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:128
+msgid "Source language"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:129
+msgid "Strict mode"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:130
+msgid "Saving a translation"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:131
+msgid "Translators"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:132
+msgid "Email digest"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:133
+msgid "Also send the digest to"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:134
+#: includes/Admin/SettingsPage.php:471
+msgid "Immediate emails"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:135
+msgid "Uninstall"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:275
+msgid "Not built yet."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:276
+msgid "Queued; it runs in the background shortly."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:277
+msgid "Running in the background."
+msgstr ""
+
+#. translators: %s: number of posts.
+#: includes/Admin/SettingsPage.php:279
+#, php-format
+msgid "Built (%s post checked)."
+msgid_plural "Built (%s posts checked)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/Admin/SettingsPage.php:282
+msgid "Baseline"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:283
+msgid "The baseline treats every translation that has no sync point yet as up to date with its source. It runs in the background, in batches."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:291
+msgid "Also mark translations that are currently outdated as up to date"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:294
+msgid "Build baseline"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:310
+msgid "Only post types your multilingual plugin translates are listed. Clear every box to track all of them."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:337
+msgid "Custom field (post meta) keys to track, one per line."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:350
+msgid "Track Advanced Custom Fields fields and ACF blocks"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:350
+msgid "(ACF isn’t active)"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:352
+msgid "Track Elementor text"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:352
+msgid "(Elementor isn’t active)"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:353
+msgid "ACF fields set to be translated (or copied once) are tracked; other text fields are tracked when no translation setting exists. Layout values and styling are ignored."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:364
+msgid "With WPML, each translation is compared with its original post."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:370
+msgid "Default language of the site"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:374
+msgid "Translations are compared with the post in this language."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:383
+msgid "Count formatting-only changes (markup, block settings, whitespace in HTML) as changes"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:392
+msgid "Mark an outdated translation as up to date when it is saved"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:393
+msgid "Off by default: translators mark translations as up to date themselves after reviewing the changes."
+msgstr ""
+
+#. translators: %s: language code, e.g. FR.
+#: includes/Admin/SettingsPage.php:419
+#, php-format
+msgid "Translators for %s"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:428
+msgid "Translators receive the digest for their languages."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:439
+msgid "Off"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:440
+msgid "Daily"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:441
+msgid "Weekly"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:447
+msgid "Each translator gets a list of outdated translations in their languages."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:460
+msgid "Email addresses, one per line. They receive every language."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:475
+msgid "Email translators as soon as a translation of these post types goes out of date."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:484
+msgid "Delete all Translation Drift data when the plugin is deleted"
+msgstr ""
+
+#: includes/Admin/StatusView.php:35
+msgid "Up to date"
+msgstr ""
+
+#: includes/Admin/StatusView.php:36
+msgid "Outdated"
+msgstr ""
+
+#: includes/Admin/StatusView.php:37
+msgid "Missing"
+msgstr ""
+
+#: includes/Admin/StatusView.php:38
+msgid "Not tracked yet"
+msgstr ""
+
+#. translators: 1: language code, e.g. FR. 2: translation status, e.g. Outdated.
+#: includes/Admin/StatusView.php:69
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#: includes/Admin/StatusView.php:94
+msgid "Title"
+msgstr ""
+
+#: includes/Admin/StatusView.php:95
+msgid "Content"
+msgstr ""
+
+#: includes/Admin/StatusView.php:96
+msgid "Excerpt"
+msgstr ""
+
+#: includes/Admin/StatusView.php:97
+msgid "Slug"
+msgstr ""
+
+#: includes/Admin/StatusView.php:98
+msgid "Featured image"
+msgstr ""
+
+#: includes/Admin/StatusView.php:99
+msgid "Elementor content"
+msgstr ""
+
+#. translators: %s: ACF field label.
+#: includes/Admin/StatusView.php:108
+#, php-format
+msgid "Field “%s”"
+msgstr ""
+
+#. translators: %s: custom field (post meta) key.
+#: includes/Admin/StatusView.php:111
+#, php-format
+msgid "Custom field “%s”"
 msgstr ""
 
 #: build/dashboard/index.js:1

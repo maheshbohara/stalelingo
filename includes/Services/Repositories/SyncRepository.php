@@ -76,6 +76,62 @@ class SyncRepository {
 	}
 
 	/**
+	 * Rows of many posts at once, as sources or translations: one query for a whole list-table page.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param list<int> $post_ids Post IDs.
+	 * @return list<SyncRow>
+	 */
+	public function for_posts( array $post_ids ): array {
+		global $wpdb;
+
+		$post_ids = array_values( array_unique( array_filter( array_map( 'intval', $post_ids ) ) ) );
+		if ( array() === $post_ids ) {
+			return array();
+		}
+
+		$placeholders = implode( ', ', array_fill( 0, count( $post_ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is one %d per ID, used twice.
+		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE source_id IN ({$placeholders}) OR translation_id IN ({$placeholders})", $this->table(), ...$post_ids, ...$post_ids ) );
+
+		$result = array();
+		foreach ( (array) $rows as $row ) {
+			if ( is_object( $row ) ) {
+				$result[] = SyncRow::from_db( $row );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * IDs of the sources and translations of a post type that have a row with the given status.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param Status $status    Status.
+	 * @param string $post_type Post type.
+	 * @return list<int>
+	 */
+	public function post_ids_with_status( Status $status, string $post_type ): array {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare( 'SELECT source_id, translation_id FROM %i WHERE status = %s AND post_type = %s', $this->table(), $status->value, $post_type )
+		);
+
+		$ids = array();
+		foreach ( (array) $rows as $row ) {
+			$row   = (array) $row;
+			$ids[] = (int) ( $row['source_id'] ?? 0 );
+			$ids[] = (int) ( $row['translation_id'] ?? 0 );
+		}
+
+		return array_values( array_unique( array_filter( $ids ) ) );
+	}
+
+	/**
 	 * Inserts or replaces the row for a (source, language) pair.
 	 *
 	 * @since 0.1.0

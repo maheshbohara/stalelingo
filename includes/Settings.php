@@ -42,19 +42,21 @@ class Settings {
 	public static function defaults(): array {
 		return array(
 			// Empty means every public, translated post type except attachments.
-			'post_types'        => array(),
-			'fields'            => array( 'title', 'content', 'excerpt' ),
-			'meta_keys'         => array(),
-			'acf'               => true,
-			'elementor'         => true,
+			'post_types'           => array(),
+			'fields'               => array( 'title', 'content', 'excerpt' ),
+			'meta_keys'            => array(),
+			'acf'                  => true,
+			'elementor'            => true,
 			// Empty means the multilingual plugin's default language.
-			'source_language'   => '',
-			'strict'            => false,
-			'auto_clear'        => false,
-			'digest_frequency'  => 'off',
-			'digest_recipients' => array(),
-			'translators'       => array(),
-			'delete_data'       => false,
+			'source_language'      => '',
+			'strict'               => false,
+			'auto_clear'           => false,
+			'digest_frequency'     => 'off',
+			'digest_recipients'    => array(),
+			// Post types whose translators are emailed as soon as a translation goes out of date.
+			'immediate_post_types' => array(),
+			'translators'          => array(),
+			'delete_data'          => false,
 		);
 	}
 

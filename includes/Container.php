@@ -11,6 +11,10 @@ namespace TranslationDrift;
 
 defined( 'ABSPATH' ) || exit;
 
+use TranslationDrift\Admin\Actions;
+use TranslationDrift\Admin\AdminBar;
+use TranslationDrift\Admin\ListTable;
+use TranslationDrift\Admin\Metabox;
 use TranslationDrift\Domain\DriftEvaluator;
 use TranslationDrift\Domain\Hasher;
 use TranslationDrift\Domain\Normalizer;
@@ -296,6 +300,51 @@ final class Container {
 	 */
 	public function elementor(): Elementor {
 		return $this->get( 'elementor', fn() => new Elementor( $this->settings(), new Normalizer() ) );
+	}
+
+	/**
+	 * Posts list table integration.
+	 *
+	 * @since 0.1.0
+	 */
+	public function list_table(): ListTable {
+		return $this->get(
+			'list_table',
+			fn() => new ListTable( $this->tracked_fields(), $this->require_provider(), $this->sync_repository(), $this->sync_service(), $this->permissions() )
+		);
+	}
+
+	/**
+	 * Classic editor metabox.
+	 *
+	 * @since 0.1.0
+	 */
+	public function metabox(): Metabox {
+		return $this->get(
+			'metabox',
+			fn() => new Metabox( $this->tracked_fields(), $this->require_provider(), $this->sync_repository(), $this->permissions() )
+		);
+	}
+
+	/**
+	 * Admin-post handlers.
+	 *
+	 * @since 0.1.0
+	 */
+	public function actions(): Actions {
+		return $this->get(
+			'actions',
+			fn() => new Actions( $this->require_provider(), $this->sync_service(), $this->baseline(), $this->permissions() )
+		);
+	}
+
+	/**
+	 * Admin bar counter.
+	 *
+	 * @since 0.1.0
+	 */
+	public function admin_bar(): AdminBar {
+		return $this->get( 'admin_bar', fn() => new AdminBar( $this->sync_repository(), $this->permissions() ) );
 	}
 
 	/**

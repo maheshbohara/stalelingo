@@ -1,8 +1,8 @@
 <?php
 /**
- * Development only: validates Translation Drift against a real WPML site.
+ * Development only: validates Stalelingo against a real WPML site.
  *
- * Run from the site root: `wp eval-file wp-content/plugins/translation-drift/bin/dev/wpml-check.php`.
+ * Run from the site root: `wp eval-file wp-content/plugins/stalelingo/bin/dev/wpml-check.php`.
  * Pass `--skip-baseline` as an argument to skip building the baseline.
  *
  * What it does:
@@ -14,22 +14,22 @@
  *
  * Use on a development copy with a database backup.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.WP.AlternativeFunctions
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Plugin;
+use Stalelingo\Domain\Status;
+use Stalelingo\Plugin;
 
 $container = Plugin::container();
 $provider  = $container->provider();
 $failures  = 0;
 
 // Keep every job in WP-Cron for this run, so the script can drive it even if Action Scheduler is loaded.
-add_filter( 'tdrift_use_action_scheduler', '__return_false' );
+add_filter( 'stalelingo_use_action_scheduler', '__return_false' );
 $skip_base = in_array( '--skip-baseline', $args ?? array(), true );
 
 $check = static function ( string $label, bool $ok, string $detail = '' ) use ( &$failures ): void {
@@ -103,7 +103,7 @@ if ( ! $skip_base ) {
 	WP_CLI::log( '3. Baseline (in-process)' );
 	$start = microtime( true );
 	$batch = $container->baseline();
-	$hook  = TranslationDrift\Services\BaselineJob::BASELINE_HOOK;
+	$hook  = Stalelingo\Services\BaselineJob::BASELINE_HOOK;
 	$batch->start_baseline();
 	// Follow the job's own queue: each batch schedules the next with its arguments.
 	for ( $loops = 0; $loops < 10000; $loops++ ) {
@@ -152,7 +152,7 @@ $link    = static function ( int $source, int $translation, string $post_type ) 
 };
 $status  = static fn( int $source ): ?Status => ( $container->sync_repository()->for_source( $source )['fr'] ?? null )?->status;
 $recalc  = static function ( int $source ) use ( $container ): void {
-	wp_unschedule_hook( TranslationDrift\Services\PostHooks::RECALC_SOURCE_HOOK );
+	wp_unschedule_hook( Stalelingo\Services\PostHooks::RECALC_SOURCE_HOOK );
 	$container->drift_service()->recalculate_source( $source );
 };
 
@@ -182,7 +182,7 @@ try {
 			array(
 				'post_type'    => 'page',
 				'post_status'  => 'draft',
-				'post_title'   => 'TDRIFT CHECK source',
+				'post_title'   => 'STALELINGO CHECK source',
 				'post_content' => wp_slash( $render( $banner ) ),
 			)
 		);
@@ -190,7 +190,7 @@ try {
 			array(
 				'post_type'    => 'page',
 				'post_status'  => 'draft',
-				'post_title'   => 'TDRIFT CHECK traduction',
+				'post_title'   => 'STALELINGO CHECK traduction',
 				'post_content' => '',
 			)
 		);
@@ -258,14 +258,14 @@ try {
 			array(
 				'post_type'   => $type,
 				'post_status' => 'draft',
-				'post_title'  => 'TDRIFT CHECK source',
+				'post_title'  => 'STALELINGO CHECK source',
 			)
 		);
 		$fr                              = wp_insert_post(
 			array(
 				'post_type'   => $type,
 				'post_status' => 'draft',
-				'post_title'  => 'TDRIFT CHECK traduction',
+				'post_title'  => 'STALELINGO CHECK traduction',
 			)
 		);
 		$link( $en, $fr, $type );
@@ -287,7 +287,7 @@ try {
 	foreach ( array_reverse( $created ) as $id ) {
 		wp_delete_post( $id, true );
 	}
-	wp_unschedule_hook( TranslationDrift\Services\PostHooks::RECALC_SOURCE_HOOK );
+	wp_unschedule_hook( Stalelingo\Services\PostHooks::RECALC_SOURCE_HOOK );
 	$left = 0;
 	foreach ( $created as $id ) {
 		$left += null === $container->sync_repository()->find_by_translation( $id ) && array() === $container->sync_repository()->for_source( $id ) ? 0 : 1;

@@ -2,20 +2,20 @@
 /**
  * Uninstall tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Capabilities;
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Uninstaller;
+use Stalelingo\Capabilities;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Database\Schema;
+use Stalelingo\Uninstaller;
 
 /**
- * @covers \TranslationDrift\Uninstaller
+ * @covers \Stalelingo\Uninstaller
  */
 final class UninstallTest extends TestCase {
 

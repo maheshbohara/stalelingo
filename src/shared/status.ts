@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Drift status of a translation, as stored in the `tdrift_sync` table.
+ * Drift status of a translation, as stored in the `stalelingo_sync` table.
  */
 export type DriftStatus = 'in_sync' | 'outdated' | 'missing' | 'untracked';
 
@@ -26,13 +26,13 @@ export const DRIFT_STATUSES: readonly DriftStatus[] = [
 export function getStatusLabel( status: DriftStatus ): string {
 	switch ( status ) {
 		case 'in_sync':
-			return __( 'Up to date', 'translation-drift' );
+			return __( 'Up to date', 'stalelingo' );
 		case 'outdated':
-			return __( 'Outdated', 'translation-drift' );
+			return __( 'Outdated', 'stalelingo' );
 		case 'missing':
-			return __( 'Missing', 'translation-drift' );
+			return __( 'Missing', 'stalelingo' );
 		case 'untracked':
-			return __( 'Not tracked yet', 'translation-drift' );
+			return __( 'Not tracked yet', 'stalelingo' );
 	}
 }
 

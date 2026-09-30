@@ -70,7 +70,7 @@ function values( filter: Filter ): string[] {
 }
 
 /**
- * Converts a DataViews view to `GET tdrift/v1/status` parameters.
+ * Converts a DataViews view to `GET stalelingo/v1/status` parameters.
  *
  * @param view View.
  * @return Query.

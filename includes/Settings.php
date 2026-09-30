@@ -2,17 +2,17 @@
 /**
  * Plugin settings.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Reads the `tdrift_settings` option, merged over defaults.
+ * Reads the `stalelingo_settings` option, merged over defaults.
  *
  * @since 1.0.0
  */
@@ -23,7 +23,7 @@ class Settings {
 	 *
 	 * @since 1.0.0
 	 */
-	public const OPTION = 'tdrift_settings';
+	public const OPTION = 'stalelingo_settings';
 
 	/**
 	 * Post fields that can be tracked.

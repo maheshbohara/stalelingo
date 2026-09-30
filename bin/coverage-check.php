@@ -7,7 +7,7 @@
  * - At least 70% line coverage overall.
  * - At least 85% on domain and service classes (includes/Domain, includes/Services).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );

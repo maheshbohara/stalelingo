@@ -2,19 +2,19 @@
 /**
  * ACF fields, ACF blocks and Elementor content drift.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
+use Stalelingo\Domain\Status;
 
 /**
- * @covers \TranslationDrift\Integrations\Acf
- * @covers \TranslationDrift\Integrations\Elementor
- * @covers \TranslationDrift\Services\Fingerprinter
+ * @covers \Stalelingo\Integrations\Acf
+ * @covers \Stalelingo\Integrations\Elementor
+ * @covers \Stalelingo\Services\Fingerprinter
  */
 final class AcfElementorTest extends TestCase {
 
@@ -27,35 +27,35 @@ final class AcfElementorTest extends TestCase {
 
 		acf_add_local_field_group(
 			array(
-				'key'      => 'group_tdrift_test',
+				'key'      => 'group_stalelingo_test',
 				'title'    => 'Drift test',
 				'fields'   => array(
 					array(
-						'key'   => 'field_tdrift_subtitle',
+						'key'   => 'field_stalelingo_subtitle',
 						'name'  => 'subtitle',
 						'label' => 'Subtitle',
 						'type'  => 'text',
 					),
 					array(
-						'key'   => 'field_tdrift_count',
+						'key'   => 'field_stalelingo_count',
 						'name'  => 'count',
 						'label' => 'Count',
 						'type'  => 'number',
 					),
 					array(
-						'key'        => 'field_tdrift_box',
+						'key'        => 'field_stalelingo_box',
 						'name'       => 'box',
 						'label'      => 'Box',
 						'type'       => 'group',
 						'sub_fields' => array(
 							array(
-								'key'   => 'field_tdrift_box_title',
+								'key'   => 'field_stalelingo_box_title',
 								'name'  => 'title',
 								'label' => 'Title',
 								'type'  => 'text',
 							),
 							array(
-								'key'     => 'field_tdrift_box_size',
+								'key'     => 'field_stalelingo_box_size',
 								'name'    => 'size',
 								'label'   => 'Size',
 								'type'    => 'select',
@@ -68,13 +68,13 @@ final class AcfElementorTest extends TestCase {
 					),
 					// Block fields (an ACF block's field group).
 					array(
-						'key'   => 'field_tdrift_heading',
+						'key'   => 'field_stalelingo_heading',
 						'name'  => 'heading',
 						'label' => 'Heading',
 						'type'  => 'text',
 					),
 					array(
-						'key'     => 'field_tdrift_intro_size',
+						'key'     => 'field_stalelingo_intro_size',
 						'name'    => 'intro_size',
 						'label'   => 'Intro size',
 						'type'    => 'select',
@@ -97,17 +97,17 @@ final class AcfElementorTest extends TestCase {
 		);
 		$this->container()->acf()->flush_cache();
 
-		add_filter( 'tdrift_is_acf_block', array( $this, 'is_acf_block' ), 10, 2 );
-		add_filter( 'tdrift_elementor_enabled', '__return_true' );
+		add_filter( 'stalelingo_is_acf_block', array( $this, 'is_acf_block' ), 10, 2 );
+		add_filter( 'stalelingo_elementor_enabled', '__return_true' );
 		$this->container()->elementor()->register();
 	}
 
 	public function tear_down(): void {
-		remove_filter( 'tdrift_is_acf_block', array( $this, 'is_acf_block' ) );
-		remove_filter( 'tdrift_elementor_enabled', '__return_true' );
-		remove_filter( 'tdrift_tracked_fields', array( $this->container()->elementor(), 'add_tracked_field' ) );
+		remove_filter( 'stalelingo_is_acf_block', array( $this, 'is_acf_block' ) );
+		remove_filter( 'stalelingo_elementor_enabled', '__return_true' );
+		remove_filter( 'stalelingo_tracked_fields', array( $this->container()->elementor(), 'add_tracked_field' ) );
 		if ( function_exists( 'acf_remove_local_field_group' ) ) {
-			acf_remove_local_field_group( 'group_tdrift_test' );
+			acf_remove_local_field_group( 'group_stalelingo_test' );
 		}
 		$this->container()->acf()->flush_cache();
 		parent::tear_down();
@@ -117,7 +117,7 @@ final class AcfElementorTest extends TestCase {
 	 * ACF free has no block API, so the test block is declared an ACF block through the filter.
 	 */
 	public function is_acf_block( bool $is_acf, string $name ): bool {
-		return $is_acf || 'tdrift-test/banner' === $name;
+		return $is_acf || 'stalelingo-test/banner' === $name;
 	}
 
 	private function recalc( int $source_id ): void {
@@ -185,17 +185,17 @@ final class AcfElementorTest extends TestCase {
 	 */
 	private function banner( array $data ): string {
 		$attrs = array(
-			'name' => 'tdrift-test/banner',
+			'name' => 'stalelingo-test/banner',
 			'data' => array(
 				'heading'     => $data['heading'],
-				'_heading'    => 'field_tdrift_heading',
+				'_heading'    => 'field_stalelingo_heading',
 				'intro_size'  => $data['intro_size'],
-				'_intro_size' => 'field_tdrift_intro_size',
+				'_intro_size' => 'field_stalelingo_intro_size',
 			),
 			'mode' => 'preview',
 		);
 
-		return '<!-- wp:tdrift-test/banner ' . wp_json_encode( $attrs ) . ' /-->';
+		return '<!-- wp:stalelingo-test/banner ' . wp_json_encode( $attrs ) . ' /-->';
 	}
 
 	public function test_acf_block_text_drifts_and_block_layout_does_not(): void {
@@ -290,6 +290,6 @@ final class AcfElementorTest extends TestCase {
 
 		$this->container()->sync_service()->mark_synced( $group['fr'] );
 
-		$this->assertSame( \TranslationDrift\Domain\Hasher::ABSENT, $this->row( $group['fr'] )->field_hashes['elementor'] );
+		$this->assertSame( \Stalelingo\Domain\Hasher::ABSENT, $this->row( $group['fr'] )->field_hashes['elementor'] );
 	}
 }

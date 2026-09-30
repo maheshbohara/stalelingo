@@ -2,19 +2,19 @@
 /**
  * Tests for Normalizer.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
 use Brain\Monkey\Filters;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\Normalizer
+ * @covers \Stalelingo\Domain\Normalizer
  */
 final class NormalizerTest extends TestCase {
 
@@ -159,7 +159,7 @@ final class NormalizerTest extends TestCase {
 	}
 
 	public function test_text_attributes_are_filterable_and_nested_strings_are_read(): void {
-		Filters\expectApplied( 'tdrift_block_text_attributes' )->andReturnUsing(
+		Filters\expectApplied( 'stalelingo_block_text_attributes' )->andReturnUsing(
 			static fn( array $map ): array => $map + array( 'acme/card' => array( 'heading', 'items' ) )
 		);
 		$card = $this->block(
@@ -179,7 +179,7 @@ final class NormalizerTest extends TestCase {
 	}
 
 	public function test_block_text_filter_can_add_text(): void {
-		Filters\expectApplied( 'tdrift_block_text' )->andReturnUsing(
+		Filters\expectApplied( 'stalelingo_block_text' )->andReturnUsing(
 			static fn( array $parts ): array => array_merge( $parts, array( 'extra' ) )
 		);
 

@@ -61,7 +61,7 @@ export async function rest< T >(
  * @param page Page.
  */
 export async function openDashboard( page: Page ): Promise< void > {
-	await page.goto( '/wp-admin/tools.php?page=translation-drift' );
+	await page.goto( '/wp-admin/tools.php?page=stalelingo' );
 	await expect( page.locator( '.dataviews-wrapper' ) ).toBeVisible();
 }
 
@@ -86,7 +86,7 @@ export async function findSource(
 		(
 			await rest< E2eSource[] >(
 				page,
-				`/tdrift/v1/status?status=${ wanted }&lang=${ lang }&post_type=${ postType }&per_page=100`
+				`/stalelingo/v1/status?status=${ wanted }&lang=${ lang }&post_type=${ postType }&per_page=100`
 			)
 		).find(
 			( item ) =>
@@ -100,7 +100,7 @@ export async function findSource(
 		const outdated = await matching( 'outdated' );
 		const id = outdated?.translations[ lang ]?.translation_id;
 		if ( outdated && id ) {
-			await rest( page, '/tdrift/v1/mark-synced', {
+			await rest( page, '/stalelingo/v1/mark-synced', {
 				method: 'POST',
 				data: { ids: [ id ] },
 			} );
@@ -135,7 +135,7 @@ export async function runCronUntil(
 				await page.request.get( '/wp-cron.php' );
 				const group = await rest< {
 					translations: Record< string, E2eTranslation >;
-				} >( page, `/tdrift/v1/group/${ sourceId }` );
+				} >( page, `/stalelingo/v1/group/${ sourceId }` );
 
 				return group.translations[ lang ]?.status;
 			},
@@ -147,7 +147,7 @@ export async function runCronUntil(
 }
 
 /**
- * Opens a post in the block editor with the Translation Drift panel expanded.
+ * Opens a post in the block editor with the Stalelingo panel expanded.
  *
  * @param page   Page.
  * @param postId Post ID.
@@ -176,7 +176,7 @@ export async function openEditor(
 		await settings.click();
 	}
 	const toggle = page.getByRole( 'button', {
-		name: 'Translation Drift',
+		name: 'Stalelingo',
 		exact: true,
 	} );
 	await expect( toggle ).toBeVisible();
@@ -186,11 +186,11 @@ export async function openEditor(
 }
 
 /**
- * The Translation Drift panel in the block editor.
+ * The Stalelingo panel in the block editor.
  *
  * @param page Page.
  * @return Locator.
  */
 export function editorPanel( page: Page ) {
-	return page.locator( '.tdrift-editor-panel' );
+	return page.locator( '.stalelingo-editor-panel' );
 }

@@ -2,16 +2,16 @@
 /**
  * Multisite support.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Schema;
+use Stalelingo\Database\Schema;
 
 /**
  * Keeps each site's tables in step with the network.
@@ -93,6 +93,6 @@ final class Multisite {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		return is_plugin_active_for_network( plugin_basename( TDRIFT_FILE ) );
+		return is_plugin_active_for_network( plugin_basename( STALELINGO_FILE ) );
 	}
 }

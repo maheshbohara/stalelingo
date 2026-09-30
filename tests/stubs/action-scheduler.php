@@ -2,7 +2,7 @@
 /**
  * Minimal Action Scheduler stubs for static analysis (optional runtime integration, never bundled).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 /**

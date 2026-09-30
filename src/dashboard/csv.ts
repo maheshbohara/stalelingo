@@ -35,16 +35,16 @@ export function csvCell( value: string | number | null ): string {
 export function toCsv( items: SourceItem[], langs: string[] | null ): string {
 	const rows: ( string | number | null )[][] = [
 		[
-			__( 'Source ID', 'translation-drift' ),
-			__( 'Title', 'translation-drift' ),
-			__( 'Post type', 'translation-drift' ),
-			__( 'Source language', 'translation-drift' ),
-			__( 'Language', 'translation-drift' ),
-			__( 'Status', 'translation-drift' ),
-			__( 'Changed fields', 'translation-drift' ),
-			__( 'Translation ID', 'translation-drift' ),
-			__( 'Last marked up to date (UTC)', 'translation-drift' ),
-			__( 'Source last changed (UTC)', 'translation-drift' ),
+			__( 'Source ID', 'stalelingo' ),
+			__( 'Title', 'stalelingo' ),
+			__( 'Post type', 'stalelingo' ),
+			__( 'Source language', 'stalelingo' ),
+			__( 'Language', 'stalelingo' ),
+			__( 'Status', 'stalelingo' ),
+			__( 'Changed fields', 'stalelingo' ),
+			__( 'Translation ID', 'stalelingo' ),
+			__( 'Last marked up to date (UTC)', 'stalelingo' ),
+			__( 'Source last changed (UTC)', 'stalelingo' ),
 		],
 	];
 

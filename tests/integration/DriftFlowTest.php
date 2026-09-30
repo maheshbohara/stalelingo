@@ -2,25 +2,25 @@
 /**
  * End-to-end drift detection through WordPress hooks.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Services\PostHooks;
-use TranslationDrift\Services\Repositories\EventRepository;
+use Stalelingo\Domain\Status;
+use Stalelingo\Services\PostHooks;
+use Stalelingo\Services\Repositories\EventRepository;
 
 /**
- * @covers \TranslationDrift\Services\PostHooks
- * @covers \TranslationDrift\Services\DriftService
- * @covers \TranslationDrift\Services\SyncService
- * @covers \TranslationDrift\Services\Fingerprinter
- * @covers \TranslationDrift\Services\Queue
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
- * @covers \TranslationDrift\Services\Repositories\EventRepository
+ * @covers \Stalelingo\Services\PostHooks
+ * @covers \Stalelingo\Services\DriftService
+ * @covers \Stalelingo\Services\SyncService
+ * @covers \Stalelingo\Services\Fingerprinter
+ * @covers \Stalelingo\Services\Queue
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Services\Repositories\EventRepository
  */
 final class DriftFlowTest extends TestCase {
 
@@ -60,7 +60,7 @@ final class DriftFlowTest extends TestCase {
 		$group = $this->create_synced_group();
 		$fired = array();
 		add_action(
-			'tdrift_drift_detected',
+			'stalelingo_drift_detected',
 			static function ( ...$args ) use ( &$fired ): void {
 				$fired[] = $args;
 			},
@@ -109,7 +109,7 @@ final class DriftFlowTest extends TestCase {
 		$this->run_jobs();
 		$fired = 0;
 		add_action(
-			'tdrift_marked_synced',
+			'stalelingo_marked_synced',
 			static function () use ( &$fired ): void {
 				++$fired;
 			}

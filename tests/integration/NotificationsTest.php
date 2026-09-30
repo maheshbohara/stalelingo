@@ -2,18 +2,18 @@
 /**
  * Email digests and immediate notifications.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Notifications\Notifier;
+use Stalelingo\Notifications\Notifier;
 
 /**
- * @covers \TranslationDrift\Notifications\Notifier
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Notifications\Notifier
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
  */
 final class NotificationsTest extends TestCase {
 
@@ -32,7 +32,7 @@ final class NotificationsTest extends TestCase {
 
 	public function tear_down(): void {
 		remove_filter( 'pre_wp_mail', array( $this, 'capture' ) );
-		remove_all_filters( 'tdrift_digest_items' );
+		remove_all_filters( 'stalelingo_digest_items' );
 		wp_unschedule_hook( Notifier::DIGEST_HOOK );
 		parent::tear_down();
 	}
@@ -115,12 +115,12 @@ final class NotificationsTest extends TestCase {
 		$this->assertStringContainsString( 'Changed: Title', (string) $translator['message'] );
 		$this->assertStringContainsString( 'post.php?post=' . $group['fr'] . '&action=edit', (string) $translator['message'] );
 		$this->assertStringContainsString( 'translator for FR', (string) $translator['message'] );
-		$this->assertStringNotContainsString( 'page=translation-drift', (string) $translator['message'], 'Translators without the capability get no dashboard link.' );
+		$this->assertStringNotContainsString( 'page=stalelingo', (string) $translator['message'], 'Translators without the capability get no dashboard link.' );
 
 		$boss = $this->mail_to( 'boss@example.test' );
 		$this->assertStringContainsString( '2 translations need updating', (string) $boss['subject'] );
 		$this->assertStringContainsString( 'Title es', (string) $boss['message'] );
-		$this->assertStringContainsString( 'page=translation-drift&status=outdated', (string) $boss['message'] );
+		$this->assertStringContainsString( 'page=stalelingo&status=outdated', (string) $boss['message'] );
 	}
 
 	public function test_no_digest_when_nothing_is_outdated(): void {
@@ -137,7 +137,7 @@ final class NotificationsTest extends TestCase {
 		$this->outdated_group();
 		$this->mails = array();
 		add_filter(
-			'tdrift_digest_items',
+			'stalelingo_digest_items',
 			static fn( array $items, string $email ): array => 'other@example.test' === $email ? array() : array_slice( $items, 0, 1 ),
 			10,
 			2
@@ -202,7 +202,7 @@ final class NotificationsTest extends TestCase {
 		$this->set_settings( array( 'digest_frequency' => 'daily' ) );
 		$this->notifier()->schedule();
 
-		\TranslationDrift\Deactivator::deactivate();
+		\Stalelingo\Deactivator::deactivate();
 
 		$this->assertFalse( wp_get_scheduled_event( Notifier::DIGEST_HOOK ) );
 	}

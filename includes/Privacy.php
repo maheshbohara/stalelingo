@@ -2,24 +2,24 @@
 /**
  * Personal data export, erasure and privacy policy text.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\Repositories\EventRepository;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Services\Repositories\EventRepository;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * Hooks the plugin into WordPress's privacy tools.
  *
  * The only personal data the plugin stores is user IDs: who marked a translation
- * as up to date (`tdrift_sync.synced_by`) and who caused an event
- * (`tdrift_events.user_id`). The exporters list those records; the eraser
+ * as up to date (`stalelingo_sync.synced_by`) and who caused an event
+ * (`stalelingo_events.user_id`). The exporters list those records; the eraser
  * anonymizes them (the user ID becomes 0) so the translation history stays usable.
  *
  * @since 1.0.0
@@ -38,7 +38,7 @@ final class Privacy {
 	 *
 	 * @since 1.0.0
 	 */
-	public const GROUP_ID = 'translation-drift';
+	public const GROUP_ID = 'stalelingo';
 
 	/**
 	 * Constructor.
@@ -73,12 +73,12 @@ final class Privacy {
 	public function register_exporters( $exporters ): array {
 		$exporters = (array) $exporters;
 
-		$exporters['translation-drift-sync']   = array(
-			'exporter_friendly_name' => __( 'Translation Drift: translations marked as up to date', 'translation-drift' ),
+		$exporters['stalelingo-sync']   = array(
+			'exporter_friendly_name' => __( 'Stalelingo: translations marked as up to date', 'stalelingo' ),
 			'callback'               => array( $this, 'export_sync' ),
 		);
-		$exporters['translation-drift-events'] = array(
-			'exporter_friendly_name' => __( 'Translation Drift: translation history', 'translation-drift' ),
+		$exporters['stalelingo-events'] = array(
+			'exporter_friendly_name' => __( 'Stalelingo: translation history', 'stalelingo' ),
 			'callback'               => array( $this, 'export_events' ),
 		);
 
@@ -96,8 +96,8 @@ final class Privacy {
 	public function register_erasers( $erasers ): array {
 		$erasers = (array) $erasers;
 
-		$erasers['translation-drift'] = array(
-			'eraser_friendly_name' => __( 'Translation Drift', 'translation-drift' ),
+		$erasers['stalelingo'] = array(
+			'eraser_friendly_name' => __( 'Stalelingo', 'stalelingo' ),
 			'callback'             => array( $this, 'erase' ),
 		);
 
@@ -127,15 +127,15 @@ final class Privacy {
 		foreach ( $rows as $row ) {
 			$data[] = array(
 				'group_id'    => self::GROUP_ID,
-				'group_label' => __( 'Translation Drift', 'translation-drift' ),
-				'item_id'     => 'tdrift-sync-' . $row->id,
+				'group_label' => __( 'Stalelingo', 'stalelingo' ),
+				'item_id'     => 'stalelingo-sync-' . $row->id,
 				'data'        => array(
 					array(
-						'name'  => __( 'Translation', 'translation-drift' ),
+						'name'  => __( 'Translation', 'stalelingo' ),
 						'value' => self::post_label( $row->translation_id, $row->lang ),
 					),
 					array(
-						'name'  => __( 'Marked as up to date (UTC)', 'translation-drift' ),
+						'name'  => __( 'Marked as up to date (UTC)', 'stalelingo' ),
 						'value' => (string) $row->synced_at,
 					),
 				),
@@ -172,19 +172,19 @@ final class Privacy {
 			$row    = (array) $row;
 			$data[] = array(
 				'group_id'    => self::GROUP_ID,
-				'group_label' => __( 'Translation Drift', 'translation-drift' ),
-				'item_id'     => 'tdrift-event-' . (int) ( $row['id'] ?? 0 ),
+				'group_label' => __( 'Stalelingo', 'stalelingo' ),
+				'item_id'     => 'stalelingo-event-' . (int) ( $row['id'] ?? 0 ),
 				'data'        => array(
 					array(
-						'name'  => __( 'Action', 'translation-drift' ),
+						'name'  => __( 'Action', 'stalelingo' ),
 						'value' => self::event_label( (string) ( $row['event'] ?? '' ) ),
 					),
 					array(
-						'name'  => __( 'Translation', 'translation-drift' ),
+						'name'  => __( 'Translation', 'stalelingo' ),
 						'value' => self::post_label( (int) ( $row['translation_id'] ?? 0 ), (string) ( $row['lang'] ?? '' ) ),
 					),
 					array(
-						'name'  => __( 'Date (UTC)', 'translation-drift' ),
+						'name'  => __( 'Date (UTC)', 'stalelingo' ),
 						'value' => (string) ( $row['created_at'] ?? '' ),
 					),
 				),
@@ -218,10 +218,10 @@ final class Privacy {
 				$messages[] = sprintf(
 					/* translators: %d: number of records. */
 					_n(
-						'Translation Drift: %d record no longer names this user.',
-						'Translation Drift: %d records no longer name this user.',
+						'Stalelingo: %d record no longer names this user.',
+						'Stalelingo: %d records no longer name this user.',
 						$count,
-						'translation-drift'
+						'stalelingo'
 					),
 					$count
 				);
@@ -246,11 +246,11 @@ final class Privacy {
 			return;
 		}
 
-		$content  = '<p class="privacy-policy-tutorial">' . esc_html__( 'Suggested text for sites that use Translation Drift:', 'translation-drift' ) . '</p>';
-		$content .= '<p>' . esc_html__( 'When a logged-in user marks a translation as up to date, or when their action changes the status of a translation, this site stores their user ID with that record. The records are kept to show the translation history and are deleted when the related posts are deleted. Old history entries are deleted automatically after 180 days. This data is not shared with anyone outside the site.', 'translation-drift' ) . '</p>';
-		$content .= '<p>' . esc_html__( 'If translators are set up to receive email digests, their email address is used to send them the list of outdated translations in their languages.', 'translation-drift' ) . '</p>';
+		$content  = '<p class="privacy-policy-tutorial">' . esc_html__( 'Suggested text for sites that use Stalelingo:', 'stalelingo' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'When a logged-in user marks a translation as up to date, or when their action changes the status of a translation, this site stores their user ID with that record. The records are kept to show the translation history and are deleted when the related posts are deleted. Old history entries are deleted automatically after 180 days. This data is not shared with anyone outside the site.', 'stalelingo' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'If translators are set up to receive email digests, their email address is used to send them the list of outdated translations in their languages.', 'stalelingo' ) . '</p>';
 
-		wp_add_privacy_policy_content( __( 'Translation Drift', 'translation-drift' ), wp_kses_post( $content ) );
+		wp_add_privacy_policy_content( __( 'Stalelingo', 'stalelingo' ), wp_kses_post( $content ) );
 	}
 
 	/**
@@ -261,10 +261,10 @@ final class Privacy {
 	 */
 	private static function post_label( int $post_id, string $lang ): string {
 		$post  = $post_id > 0 ? get_post( $post_id ) : null;
-		$title = $post instanceof \WP_Post ? html_entity_decode( $post->post_title, ENT_QUOTES, 'UTF-8' ) : __( '(deleted)', 'translation-drift' );
+		$title = $post instanceof \WP_Post ? html_entity_decode( $post->post_title, ENT_QUOTES, 'UTF-8' ) : __( '(deleted)', 'stalelingo' );
 
 		/* translators: 1: post title. 2: language code, e.g. FR. 3: post ID. */
-		return sprintf( __( '%1$s (%2$s, #%3$d)', 'translation-drift' ), $title, strtoupper( $lang ), $post_id );
+		return sprintf( __( '%1$s (%2$s, #%3$d)', 'stalelingo' ), $title, strtoupper( $lang ), $post_id );
 	}
 
 	/**
@@ -274,10 +274,10 @@ final class Privacy {
 	 */
 	private static function event_label( string $event ): string {
 		return match ( $event ) {
-			EventRepository::MARKED_SYNCED  => __( 'Marked as up to date', 'translation-drift' ),
-			EventRepository::AUTO_CLEARED   => __( 'Marked as up to date on save', 'translation-drift' ),
-			EventRepository::DRIFT_DETECTED => __( 'Became outdated', 'translation-drift' ),
-			EventRepository::DRIFT_RESOLVED => __( 'Became up to date again', 'translation-drift' ),
+			EventRepository::MARKED_SYNCED  => __( 'Marked as up to date', 'stalelingo' ),
+			EventRepository::AUTO_CLEARED   => __( 'Marked as up to date on save', 'stalelingo' ),
+			EventRepository::DRIFT_DETECTED => __( 'Became outdated', 'stalelingo' ),
+			EventRepository::DRIFT_RESOLVED => __( 'Became up to date again', 'stalelingo' ),
 			default                         => $event,
 		};
 	}

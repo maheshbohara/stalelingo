@@ -1,28 +1,28 @@
 <?php
 /**
- * REST API `tdrift/v1`.
+ * REST API `stalelingo/v1`.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Rest\MarkSyncedController;
-use TranslationDrift\Services\BaselineJob;
+use Stalelingo\Domain\Status;
+use Stalelingo\Rest\MarkSyncedController;
+use Stalelingo\Services\BaselineJob;
 
 /**
- * @covers \TranslationDrift\Rest\Controller
- * @covers \TranslationDrift\Rest\StatusController
- * @covers \TranslationDrift\Rest\GroupController
- * @covers \TranslationDrift\Rest\DiffController
- * @covers \TranslationDrift\Rest\MarkSyncedController
- * @covers \TranslationDrift\Rest\BaselineController
- * @covers \TranslationDrift\Rest\ItemPresenter
- * @covers \TranslationDrift\Services\DiffService
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Rest\Controller
+ * @covers \Stalelingo\Rest\StatusController
+ * @covers \Stalelingo\Rest\GroupController
+ * @covers \Stalelingo\Rest\DiffController
+ * @covers \Stalelingo\Rest\MarkSyncedController
+ * @covers \Stalelingo\Rest\BaselineController
+ * @covers \Stalelingo\Rest\ItemPresenter
+ * @covers \Stalelingo\Services\DiffService
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
  */
 final class RestTest extends TestCase {
 
@@ -44,7 +44,7 @@ final class RestTest extends TestCase {
 	 * @param array<string, mixed> $params Query or body parameters.
 	 */
 	private function request( string $method, string $route, array $params = array() ): \WP_REST_Response {
-		$request = new \WP_REST_Request( $method, '/tdrift/v1' . $route );
+		$request = new \WP_REST_Request( $method, '/stalelingo/v1' . $route );
 		if ( 'GET' === $method ) {
 			$request->set_query_params( $params );
 		} else {
@@ -90,9 +90,9 @@ final class RestTest extends TestCase {
 	}
 
 	public function test_routes_are_registered(): void {
-		$routes = rest_get_server()->get_routes( 'tdrift/v1' );
+		$routes = rest_get_server()->get_routes( 'stalelingo/v1' );
 
-		foreach ( array( '/tdrift/v1/status', '/tdrift/v1/status/summary', '/tdrift/v1/group/(?P<id>\d+)', '/tdrift/v1/diff/(?P<translation_id>\d+)', '/tdrift/v1/mark-synced', '/tdrift/v1/baseline' ) as $route ) {
+		foreach ( array( '/stalelingo/v1/status', '/stalelingo/v1/status/summary', '/stalelingo/v1/group/(?P<id>\d+)', '/stalelingo/v1/diff/(?P<translation_id>\d+)', '/stalelingo/v1/mark-synced', '/stalelingo/v1/baseline' ) as $route ) {
 			$this->assertArrayHasKey( $route, $routes );
 		}
 	}
@@ -527,7 +527,7 @@ final class RestTest extends TestCase {
 		$response = $this->request( 'GET', '/diff/' . $group['fr'] );
 
 		$this->assertSame( 404, $response->get_status() );
-		$this->assertSame( 'tdrift_not_tracked', $response->get_data()['code'] );
+		$this->assertSame( 'stalelingo_not_tracked', $response->get_data()['code'] );
 	}
 
 	public function test_baseline_is_queued_and_reports_progress(): void {
@@ -550,12 +550,12 @@ final class RestTest extends TestCase {
 		$group = $this->outdated_group();
 
 		$responses = array(
-			'/tdrift/v1/status'                       => $this->request( 'GET', '/status' ),
-			'/tdrift/v1/status/summary'               => $this->request( 'GET', '/status/summary' ),
-			'/tdrift/v1/group/(?P<id>\d+)'            => $this->request( 'GET', '/group/' . $group['fr'] ),
-			'/tdrift/v1/diff/(?P<translation_id>\d+)' => $this->request( 'GET', '/diff/' . $group['fr'] ),
-			'/tdrift/v1/baseline'                     => $this->request( 'GET', '/baseline' ),
-			'/tdrift/v1/mark-synced'                  => $this->request( 'POST', '/mark-synced', array( 'ids' => array( $group['fr'] ) ) ),
+			'/stalelingo/v1/status'                       => $this->request( 'GET', '/status' ),
+			'/stalelingo/v1/status/summary'               => $this->request( 'GET', '/status/summary' ),
+			'/stalelingo/v1/group/(?P<id>\d+)'            => $this->request( 'GET', '/group/' . $group['fr'] ),
+			'/stalelingo/v1/diff/(?P<translation_id>\d+)' => $this->request( 'GET', '/diff/' . $group['fr'] ),
+			'/stalelingo/v1/baseline'                     => $this->request( 'GET', '/baseline' ),
+			'/stalelingo/v1/mark-synced'                  => $this->request( 'POST', '/mark-synced', array( 'ids' => array( $group['fr'] ) ) ),
 		);
 
 		foreach ( $responses as $route => $response ) {
@@ -567,7 +567,7 @@ final class RestTest extends TestCase {
 
 			// JSON round trip: objects such as `translations` become arrays, as a client would see them.
 			$data = json_decode( (string) wp_json_encode( $response->get_data() ), true );
-			if ( '/tdrift/v1/status' === $route ) {
+			if ( '/stalelingo/v1/status' === $route ) {
 				$schema = array(
 					'type'  => 'array',
 					'items' => $schema,

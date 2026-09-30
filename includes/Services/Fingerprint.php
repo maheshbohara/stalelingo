@@ -2,12 +2,12 @@
 /**
  * Fingerprint of a source post.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 

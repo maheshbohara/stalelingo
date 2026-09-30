@@ -4,7 +4,7 @@
  *
  * This file lives in docker/ and is never shipped in the plugin zip.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ add_action(
 	'init',
 	static function (): void {
 		register_post_type(
-			'tdrift_book',
+			'stalelingo_book',
 			array(
 				'label'        => 'Books',
 				'public'       => true,
@@ -30,17 +30,17 @@ add_action(
 	static function (): void {
 		acf_add_local_field_group(
 			array(
-				'key'      => 'group_tdrift_dev_book',
+				'key'      => 'group_stalelingo_dev_book',
 				'title'    => 'Book details',
 				'fields'   => array(
 					array(
-						'key'   => 'field_tdrift_dev_subtitle',
+						'key'   => 'field_stalelingo_dev_subtitle',
 						'name'  => 'book_subtitle',
 						'label' => 'Subtitle',
 						'type'  => 'text',
 					),
 					array(
-						'key'   => 'field_tdrift_dev_pages',
+						'key'   => 'field_stalelingo_dev_pages',
 						'name'  => 'book_pages',
 						'label' => 'Pages',
 						'type'  => 'number',
@@ -51,7 +51,7 @@ add_action(
 						array(
 							'param'    => 'post_type',
 							'operator' => '==',
-							'value'    => 'tdrift_book',
+							'value'    => 'stalelingo_book',
 						),
 					),
 				),

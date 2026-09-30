@@ -29,13 +29,13 @@ async function setDigestSettings(
 	translator: string | null,
 	frequency: string
 ): Promise< void > {
-	await page.goto(
-		'/wp-admin/options-general.php?page=translation-drift-settings'
-	);
+	await page.goto( '/wp-admin/options-general.php?page=stalelingo-settings' );
 	await page
 		.getByLabel( 'Translators for FR' )
 		.selectOption( translator ? { label: translator } : [] );
-	await page.locator( '#tdrift-digest-frequency' ).selectOption( frequency );
+	await page
+		.locator( '#stalelingo-digest-frequency' )
+		.selectOption( frequency );
 	await page.getByRole( 'button', { name: 'Save Changes' } ).click();
 	await expect( page.getByText( 'Settings saved.' ) ).toBeVisible();
 }
@@ -56,7 +56,7 @@ async function runCronUntilIdle(
 				await page.request.get( '/wp-cron.php' );
 				const state = await rest< { queued: boolean } >(
 					page,
-					`/tdrift-dev/v1/queued/${ sourceId }`
+					`/stalelingo-dev/v1/queued/${ sourceId }`
 				);
 
 				return state.queued;
@@ -86,7 +86,7 @@ test.describe( 'Notifications and Elementor', () => {
 
 		const sent = await rest< { sent: number } >(
 			page,
-			'/tdrift-dev/v1/digest',
+			'/stalelingo-dev/v1/digest',
 			{ method: 'POST' }
 		);
 		expect( sent.sent ).toBeGreaterThan( 0 );
@@ -138,7 +138,7 @@ test.describe( 'Notifications and Elementor', () => {
 
 		await setDigestSettings( page, null, 'off' );
 		await openDashboard( page );
-		await rest( page, '/tdrift/v1/mark-synced', {
+		await rest( page, '/stalelingo/v1/mark-synced', {
 			method: 'POST',
 			data: { ids: [ fr ] },
 		} );
@@ -152,28 +152,28 @@ test.describe( 'Notifications and Elementor', () => {
 		// First save through Elementor: it rewrites the page's plain-text copy, which counts as a change.
 		const page1 = await rest< { source: number; fr: number } >(
 			page,
-			'/tdrift-dev/v1/elementor',
+			'/stalelingo-dev/v1/elementor',
 			{ method: 'POST', data: { mode: 'style' } }
 		);
 		await runCronUntilIdle( page, page1.source );
-		await rest( page, '/tdrift/v1/mark-synced', {
+		await rest( page, '/stalelingo/v1/mark-synced', {
 			method: 'POST',
 			data: { ids: [ page1.fr ] },
 		} );
 
 		// A style-only edit: the translation stays up to date.
-		await rest( page, '/tdrift-dev/v1/elementor', {
+		await rest( page, '/stalelingo-dev/v1/elementor', {
 			method: 'POST',
 			data: { mode: 'style' },
 		} );
 		await runCronUntilIdle( page, page1.source );
 		const afterStyle = await rest< {
 			translations: Record< string, { status: string } >;
-		} >( page, `/tdrift/v1/group/${ page1.source }` );
+		} >( page, `/stalelingo/v1/group/${ page1.source }` );
 		expect( afterStyle.translations.fr?.status ).toBe( 'in_sync' );
 
 		// A text edit: the translation becomes outdated.
-		await rest( page, '/tdrift-dev/v1/elementor', {
+		await rest( page, '/stalelingo-dev/v1/elementor', {
 			method: 'POST',
 			data: { mode: 'text' },
 		} );
@@ -181,11 +181,11 @@ test.describe( 'Notifications and Elementor', () => {
 
 		const diff = await rest< { fields: { key: string }[] } >(
 			page,
-			`/tdrift/v1/diff/${ page1.fr }`
+			`/stalelingo/v1/diff/${ page1.fr }`
 		);
 		expect( diff.fields.map( ( f ) => f.key ) ).toContain( 'elementor' );
 
-		await rest( page, '/tdrift/v1/mark-synced', {
+		await rest( page, '/stalelingo/v1/mark-synced', {
 			method: 'POST',
 			data: { ids: [ page1.fr ] },
 		} );

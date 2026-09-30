@@ -5,7 +5,7 @@
  * Deletes the plugin's tables, options and capability on every site where the
  * "Delete data on uninstall" setting is on.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
@@ -19,4 +19,4 @@ if ( ! is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-\TranslationDrift\Uninstaller::uninstall();
+\Stalelingo\Uninstaller::uninstall();

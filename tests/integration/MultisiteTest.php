@@ -4,24 +4,24 @@
  *
  * Runs with `make test-integration-ms` (WP_MULTISITE=1).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Activator;
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Multisite;
-use TranslationDrift\Uninstaller;
+use Stalelingo\Activator;
+use Stalelingo\Database\Schema;
+use Stalelingo\Multisite;
+use Stalelingo\Uninstaller;
 
 /**
  * @group ms-required
  *
- * @covers \TranslationDrift\Multisite
- * @covers \TranslationDrift\Activator
- * @covers \TranslationDrift\Uninstaller
+ * @covers \Stalelingo\Multisite
+ * @covers \Stalelingo\Activator
+ * @covers \Stalelingo\Uninstaller
  */
 final class MultisiteTest extends TestCase {
 
@@ -72,7 +72,7 @@ final class MultisiteTest extends TestCase {
 
 	private function set_network_active( bool $active ): void {
 		$plugins = (array) get_site_option( 'active_sitewide_plugins', array() );
-		$file    = plugin_basename( TDRIFT_FILE );
+		$file    = plugin_basename( STALELINGO_FILE );
 		if ( $active ) {
 			$plugins[ $file ] = time();
 		} else {
@@ -114,7 +114,7 @@ final class MultisiteTest extends TestCase {
 		foreach ( array( get_main_site_id(), $first, $second ) as $site_id ) {
 			$this->assertTrue( $this->site_has_tables( $site_id ), "Site {$site_id}" );
 			switch_to_blog( $site_id );
-			$this->assertTrue( get_role( 'editor' )->has_cap( \TranslationDrift\Capabilities::MANAGE ) );
+			$this->assertTrue( get_role( 'editor' )->has_cap( \Stalelingo\Capabilities::MANAGE ) );
 			restore_current_blog();
 		}
 	}

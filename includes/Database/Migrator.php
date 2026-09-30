@@ -2,12 +2,12 @@
 /**
  * Versioned schema migrations.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Database;
+namespace Stalelingo\Database;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,7 +34,7 @@ final class Migrator {
 	 *
 	 * @since 1.0.0
 	 */
-	public const OPTION = 'tdrift_db_version';
+	public const OPTION = 'stalelingo_db_version';
 
 	/**
 	 * Hooks the upgrade check. Plugin updates do not re-run activation, so the
@@ -95,7 +95,7 @@ final class Migrator {
 		 * @param int $from Schema version before the upgrade (0 on a fresh install).
 		 * @param int $to   Schema version after the upgrade.
 		 */
-		do_action( 'tdrift_migrated', $from, self::DB_VERSION );
+		do_action( 'stalelingo_migrated', $from, self::DB_VERSION );
 	}
 
 	/**

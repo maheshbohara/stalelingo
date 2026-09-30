@@ -12,9 +12,8 @@ import type { DashboardConfig } from '../../src/dashboard/config';
 
 export const config: DashboardConfig = {
 	ready: true,
-	namespace: 'tdrift/v1',
-	settingsUrl:
-		'/wp-admin/options-general.php?page=translation-drift-settings',
+	namespace: 'stalelingo/v1',
+	settingsUrl: '/wp-admin/options-general.php?page=stalelingo-settings',
 	languages: [
 		{ code: 'en', name: 'English' },
 		{ code: 'fr', name: 'Français' },
@@ -72,7 +71,7 @@ export function sourceItem(
 				synced_at: null,
 				edit_url: null,
 				create_url:
-					'/wp-admin/admin-post.php?action=tdrift_translation&source=10&lang=es',
+					'/wp-admin/admin-post.php?action=stalelingo_translation&source=10&lang=es',
 				can_mark: false,
 			} ),
 		},

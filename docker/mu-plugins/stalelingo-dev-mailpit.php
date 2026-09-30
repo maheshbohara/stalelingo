@@ -4,7 +4,7 @@
  *
  * This file lives in docker/ and is never shipped in the plugin zip.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;

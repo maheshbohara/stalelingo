@@ -2,20 +2,20 @@
 /**
  * Advanced Custom Fields integration.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Integrations;
+namespace Stalelingo\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\AcfTextExtractor;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Providers\ProviderDetector;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Settings;
+use Stalelingo\Domain\AcfTextExtractor;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Providers\ProviderDetector;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Settings;
 
 /**
  * Tracks ACF fields and ACF block text.
@@ -27,7 +27,7 @@ use TranslationDrift\Settings;
  * hold text are tracked.
  *
  * ACF blocks: the text fields of each block's data join that block's line in
- * the normalized content, through the `tdrift_block_text` filter.
+ * the normalized content, through the `stalelingo_block_text` filter.
  *
  * @since 1.0.0
  */
@@ -93,10 +93,10 @@ class Acf {
 			return;
 		}
 
-		add_filter( 'tdrift_tracked_fields', array( $this, 'add_tracked_fields' ), 10, 2 );
-		add_filter( 'tdrift_field_value', array( $this, 'field_value' ), 10, 3 );
-		add_filter( 'tdrift_pre_normalize_value', array( $this, 'normalize' ), 10, 4 );
-		add_filter( 'tdrift_block_text', array( $this, 'block_text' ), 10, 2 );
+		add_filter( 'stalelingo_tracked_fields', array( $this, 'add_tracked_fields' ), 10, 2 );
+		add_filter( 'stalelingo_field_value', array( $this, 'field_value' ), 10, 3 );
+		add_filter( 'stalelingo_pre_normalize_value', array( $this, 'normalize' ), 10, 4 );
+		add_filter( 'stalelingo_block_text', array( $this, 'block_text' ), 10, 2 );
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Acf {
 		 * @param bool   $is_acf Whether it is an ACF block.
 		 * @param string $name   Block name.
 		 */
-		return (bool) apply_filters( 'tdrift_is_acf_block', $is_acf, $name );
+		return (bool) apply_filters( 'stalelingo_is_acf_block', $is_acf, $name );
 	}
 
 	/**
@@ -231,7 +231,7 @@ class Acf {
 		 * @param string|null          $preference 'translate', 'copy_once', 'copy', 'ignore', or null when unset.
 		 * @param array<string, mixed> $field      Field definition.
 		 */
-		$preference = apply_filters( 'tdrift_acf_translation_preference', $preference, $field );
+		$preference = apply_filters( 'stalelingo_acf_translation_preference', $preference, $field );
 
 		return is_string( $preference ) ? $preference : null;
 	}

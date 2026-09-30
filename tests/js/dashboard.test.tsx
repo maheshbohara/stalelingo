@@ -43,10 +43,10 @@ function routes(
 ) {
 	mockFetch.mockImplementation( async ( options: FetchOptions ) => {
 		const path = options.path.split( '?' )[ 0 ] ?? '';
-		if ( path === '/tdrift/v1/status' ) {
+		if ( path === '/stalelingo/v1/status' ) {
 			return status( options );
 		}
-		if ( path === '/tdrift/v1/status/summary' ) {
+		if ( path === '/stalelingo/v1/status/summary' ) {
 			return summaryData;
 		}
 		const handler = extra[ path ];
@@ -63,8 +63,8 @@ function statusCalls(): string[] {
 		.map( ( [ options ] ) => ( options as FetchOptions ).path )
 		.filter(
 			( path ) =>
-				path.startsWith( '/tdrift/v1/status?' ) ||
-				path === '/tdrift/v1/status'
+				path.startsWith( '/stalelingo/v1/status?' ) ||
+				path === '/stalelingo/v1/status'
 		);
 }
 
@@ -82,7 +82,7 @@ describe( 'Dashboard', () => {
 		window.history.replaceState(
 			{},
 			'',
-			'/wp-admin/tools.php?page=translation-drift'
+			'/wp-admin/tools.php?page=stalelingo'
 		);
 	} );
 
@@ -102,7 +102,7 @@ describe( 'Dashboard', () => {
 			screen.getByRole( 'link', { name: 'ES: Missing' } )
 		).toHaveAttribute(
 			'href',
-			expect.stringContaining( 'action=tdrift_translation' )
+			expect.stringContaining( 'action=stalelingo_translation' )
 		);
 		expect(
 			screen.getByRole( 'table', { name: 'By language' } )
@@ -125,7 +125,7 @@ describe( 'Dashboard', () => {
 		window.history.replaceState(
 			{},
 			'',
-			'/wp-admin/tools.php?page=translation-drift&status=outdated'
+			'/wp-admin/tools.php?page=stalelingo&status=outdated'
 		);
 		routes( () => pagedResponse( [], 0 ) );
 
@@ -161,7 +161,7 @@ describe( 'Dashboard', () => {
 		routes(
 			() => pagedResponse( [], 0 ),
 			{
-				'/tdrift/v1/baseline': () => ( {
+				'/stalelingo/v1/baseline': () => ( {
 					queued: true,
 					state: { status: 'queued', processed: 0, updated_at: '' },
 				} ),
@@ -185,7 +185,7 @@ describe( 'Dashboard', () => {
 		);
 		expect( mockFetch ).toHaveBeenCalledWith(
 			expect.objectContaining( {
-				path: '/tdrift/v1/baseline',
+				path: '/stalelingo/v1/baseline',
 				method: 'POST',
 			} )
 		);
@@ -226,7 +226,7 @@ describe( 'Dashboard', () => {
 			translations: { fr: translation( { translation_id: 21 } ) },
 		} );
 		routes( () => pagedResponse( [ sourceItem(), second ], 2 ), {
-			'/tdrift/v1/mark-synced': ( options ) => ( {
+			'/stalelingo/v1/mark-synced': ( options ) => ( {
 				updated: options.data?.ids,
 				failed: [],
 				translations: {},
@@ -253,7 +253,7 @@ describe( 'Dashboard', () => {
 		await waitFor( () =>
 			expect( mockFetch ).toHaveBeenCalledWith(
 				expect.objectContaining( {
-					path: '/tdrift/v1/mark-synced',
+					path: '/stalelingo/v1/mark-synced',
 					method: 'POST',
 					data: { ids: [ 11, 21 ] },
 				} )
@@ -275,7 +275,7 @@ describe( 'Dashboard', () => {
 
 	it( 'opens the diff modal from an outdated badge', async () => {
 		routes( () => pagedResponse( [ sourceItem() ], 1 ), {
-			'/tdrift/v1/diff/11': () => ( {
+			'/stalelingo/v1/diff/11': () => ( {
 				...translation(),
 				source_id: 10,
 				synced_by: '',

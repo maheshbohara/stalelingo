@@ -1,18 +1,18 @@
 <?php
 /**
- * `tdrift_snapshots` table access.
+ * `stalelingo_snapshots` table access.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services\Repositories;
+namespace Stalelingo\Services\Repositories;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Domain\SnapshotCodec;
+use Stalelingo\Database\Schema;
+use Stalelingo\Domain\SnapshotCodec;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- The plugin's own table; snapshots are written once per sync point and read only by the diff viewer.
 
@@ -69,7 +69,7 @@ class SnapshotRepository {
 		 *
 		 * @param int $max Maximum fields. Default 50.
 		 */
-		$max = (int) apply_filters( 'tdrift_snapshot_max_fields', self::DEFAULT_MAX_FIELDS );
+		$max = (int) apply_filters( 'stalelingo_snapshot_max_fields', self::DEFAULT_MAX_FIELDS );
 		ksort( $values, SORT_STRING );
 		$now = current_time( 'mysql', true );
 

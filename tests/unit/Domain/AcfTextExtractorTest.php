@@ -3,20 +3,20 @@
  * Tests for AcfTextExtractor, with fixtures shaped like a real ACF block
  * (a page title banner block registered in a custom namespace).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
 use Brain\Monkey\Filters;
-use TranslationDrift\Domain\AcfTextExtractor;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\AcfTextExtractor;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\AcfTextExtractor
+ * @covers \Stalelingo\Domain\AcfTextExtractor
  */
 final class AcfTextExtractorTest extends TestCase {
 
@@ -264,7 +264,7 @@ final class AcfTextExtractorTest extends TestCase {
 	}
 
 	public function test_text_types_are_filterable(): void {
-		Filters\expectApplied( 'tdrift_acf_text_field_types' )->andReturn( array( 'text', 'select' ) );
+		Filters\expectApplied( 'stalelingo_acf_text_field_types' )->andReturn( array( 'text', 'select' ) );
 
 		$this->assertSame( array( 'large' ), $this->extractor()->field_text( self::FIELDS['field_intro_size'], 'large' ) );
 	}

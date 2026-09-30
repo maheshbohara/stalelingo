@@ -90,5 +90,5 @@ jobs:
       - run: make zip-smoke
       - uses: actions/upload-artifact@v4
         with:
-          name: translation-drift-zip
+          name: stalelingo-zip
           path: dist/*.zip

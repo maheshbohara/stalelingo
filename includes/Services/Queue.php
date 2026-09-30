@@ -2,12 +2,12 @@
 /**
  * Background job queue.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +26,7 @@ class Queue {
 	 *
 	 * @since 1.0.0
 	 */
-	public const GROUP = 'translation-drift';
+	public const GROUP = 'stalelingo';
 
 	/**
 	 * Whether Action Scheduler is loaded and ready.
@@ -43,7 +43,7 @@ class Queue {
 		 */
 		return function_exists( 'as_enqueue_async_action' )
 			&& did_action( 'action_scheduler_init' ) > 0
-			&& (bool) apply_filters( 'tdrift_use_action_scheduler', true );
+			&& (bool) apply_filters( 'stalelingo_use_action_scheduler', true );
 	}
 
 	/**

@@ -4,9 +4,9 @@
  *
  * Run with `wp eval-file bin/dev/make-drift.php` after the baseline is built.
  * Every third seeded source gets a new title; every fifth gets new content.
- * Idempotent: posts already edited (marked with `_tdrift_seed_drifted`) are skipped.
+ * Idempotent: posts already edited (marked with `_stalelingo_seed_drifted`) are skipped.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,8 +15,8 @@ defined( 'ABSPATH' ) || exit;
 
 $sources = get_posts(
 	array(
-		'post_type'   => array( 'post', 'page', 'tdrift_book' ),
-		'meta_key'    => '_tdrift_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
+		'post_type'   => array( 'post', 'page', 'stalelingo_book' ),
+		'meta_key'    => '_stalelingo_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
 		'lang'        => 'en', // Polylang; WPML filters get_posts() to the default language (en) already.
 		'numberposts' => -1,
 		'orderby'     => 'ID',
@@ -26,7 +26,7 @@ $sources = get_posts(
 
 $edited = 0;
 foreach ( $sources as $i => $post ) {
-	if ( get_post_meta( $post->ID, '_tdrift_seed_drifted', true ) ) {
+	if ( get_post_meta( $post->ID, '_stalelingo_seed_drifted', true ) ) {
 		continue;
 	}
 	$changes = array();
@@ -40,7 +40,7 @@ foreach ( $sources as $i => $post ) {
 		continue;
 	}
 	wp_update_post( array_merge( array( 'ID' => $post->ID ), $changes ) );
-	update_post_meta( $post->ID, '_tdrift_seed_drifted', 1 );
+	update_post_meta( $post->ID, '_stalelingo_seed_drifted', 1 );
 	++$edited;
 }
 

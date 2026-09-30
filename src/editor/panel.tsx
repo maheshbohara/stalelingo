@@ -24,7 +24,7 @@ interface Props {
 }
 
 /**
- * Translation Drift panel body.
+ * Stalelingo panel body.
  *
  * On a translation: its status, what changed in the source (inline diff), and
  * "Mark as up to date". On a source: the translations its changes affect.
@@ -68,7 +68,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 							e,
 							__(
 								'Translation status could not be loaded.',
-								'translation-drift'
+								'stalelingo'
 							)
 						)
 					);
@@ -84,17 +84,12 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 		setIsMarking( true );
 		try {
 			await markSynced( [ postId ] );
-			speak(
-				__( 'Translation marked as up to date.', 'translation-drift' )
-			);
+			speak( __( 'Translation marked as up to date.', 'stalelingo' ) );
 			reload();
 		} catch ( e ) {
 			const message = errorMessage(
 				e,
-				__(
-					'The translation could not be updated.',
-					'translation-drift'
-				)
+				__( 'The translation could not be updated.', 'stalelingo' )
 			);
 			setError( message );
 			speak( message, 'assertive' );
@@ -107,7 +102,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 			<Notice status="error" isDismissible={ false }>
 				<p>{ error }</p>
 				<Button variant="secondary" size="compact" onClick={ reload }>
-					{ __( 'Try again', 'translation-drift' ) }
+					{ __( 'Try again', 'stalelingo' ) }
 				</Button>
 			</Notice>
 		);
@@ -115,10 +110,10 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 
 	if ( ! group ) {
 		return (
-			<div className="tdrift-loading">
+			<div className="stalelingo-loading">
 				<Spinner />
 				<span className="screen-reader-text">
-					{ __( 'Loading translation status…', 'translation-drift' ) }
+					{ __( 'Loading translation status…', 'stalelingo' ) }
 				</span>
 			</div>
 		);
@@ -134,12 +129,9 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 				{ group.tracked
 					? __(
 							'This post has no source to compare with yet. Link it to its translations first.',
-							'translation-drift'
+							'stalelingo'
 						)
-					: __(
-							'This post type is not tracked.',
-							'translation-drift'
-						) }
+					: __( 'This post type is not tracked.', 'stalelingo' ) }
 			</p>
 		);
 	}
@@ -149,9 +141,9 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 		group.can_mark && ( ! translation || translation.status !== 'in_sync' );
 
 	return (
-		<div className="tdrift-editor-translation">
+		<div className="stalelingo-editor-translation">
 			{ translation ? (
-				<p className="tdrift-editor-status">
+				<p className="stalelingo-editor-status">
 					<StatusBadge
 						lang={ translation.lang }
 						status={ translation.status }
@@ -162,7 +154,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 				<p>
 					{ __(
 						'Not tracked yet. It will be once the baseline reaches it, or when you mark it as up to date.',
-						'translation-drift'
+						'stalelingo'
 					) }
 				</p>
 			) }
@@ -170,13 +162,13 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 				<p>
 					{ sprintf(
 						/* translators: %s: language name. */
-						__( 'Source (%s):', 'translation-drift' ),
+						__( 'Source (%s):', 'stalelingo' ),
 						group.source.language
 					) }{ ' ' }
 					{ group.source.edit_url ? (
 						<a href={ group.source.edit_url }>
 							{ group.source.title ||
-								__( '(no title)', 'translation-drift' ) }
+								__( '(no title)', 'stalelingo' ) }
 						</a>
 					) : (
 						group.source.title
@@ -188,13 +180,13 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 					<p>
 						{ __(
 							'Changed in the source since this translation was last marked up to date:',
-							'translation-drift'
+							'stalelingo'
 						) }
 					</p>
 					{ diff ? (
 						<DiffView fields={ diff.fields } headingLevel={ 3 } />
 					) : (
-						<ul className="tdrift-editor-fields">
+						<ul className="stalelingo-editor-fields">
 							{ translation.changed_fields.map( ( field ) => (
 								<li key={ field.key }>{ field.label }</li>
 							) ) }
@@ -205,10 +197,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 							variant="link"
 							onClick={ () => setIsModalOpen( true ) }
 						>
-							{ __(
-								'Compare side by side',
-								'translation-drift'
-							) }
+							{ __( 'Compare side by side', 'stalelingo' ) }
 						</Button>
 					) }
 				</>
@@ -217,7 +206,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 				<p className="description">
 					{ sprintf(
 						/* translators: %s: date and time. */
-						__( 'Last marked up to date: %s', 'translation-drift' ),
+						__( 'Last marked up to date: %s', 'stalelingo' ),
 						formatDateTime( translation.synced_at )
 					) }
 				</p>
@@ -230,7 +219,7 @@ export function DriftPanel( { postId, refreshKey = 0 }: Props ) {
 					disabled={ isMarking }
 					accessibleWhenDisabled
 				>
-					{ __( 'Mark as up to date', 'translation-drift' ) }
+					{ __( 'Mark as up to date', 'stalelingo' ) }
 				</Button>
 			) }
 			{ isModalOpen && (
@@ -255,22 +244,22 @@ function SourceStatus( { group }: { group: Group } ) {
 	const translations: Translation[] = Object.values( group.translations );
 
 	return (
-		<div className="tdrift-editor-source">
+		<div className="stalelingo-editor-source">
 			<p>
 				{ __(
 					'This is the source. Changing its tracked fields marks these translations as outdated:',
-					'translation-drift'
+					'stalelingo'
 				) }
 			</p>
 			{ translations.length === 0 ? (
 				<p>
 					{ __(
 						'Translation status will appear once the baseline reaches this post.',
-						'translation-drift'
+						'stalelingo'
 					) }
 				</p>
 			) : (
-				<ul className="tdrift-editor-translations">
+				<ul className="stalelingo-editor-translations">
 					{ translations.map( ( t ) => (
 						<li key={ t.lang }>
 							<StatusBadge
@@ -286,7 +275,7 @@ function SourceStatus( { group }: { group: Group } ) {
 			<p className="description">
 				{ __(
 					'Translations are checked again in the background shortly after you save.',
-					'translation-drift'
+					'stalelingo'
 				) }
 			</p>
 		</div>

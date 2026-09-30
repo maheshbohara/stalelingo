@@ -28,7 +28,7 @@ export interface Translation {
 }
 
 /**
- * A source with the status of each translation (`GET tdrift/v1/status`).
+ * A source with the status of each translation (`GET stalelingo/v1/status`).
  */
 export interface SourceItem {
 	id: number;
@@ -46,7 +46,7 @@ export interface SourceItem {
 export type StatusCounts = Partial< Record< DriftStatus, number > >;
 
 /**
- * `GET tdrift/v1/status/summary`.
+ * `GET stalelingo/v1/status/summary`.
  */
 export interface Summary {
 	totals: StatusCounts;
@@ -84,7 +84,7 @@ export interface FieldDiff {
 }
 
 /**
- * `GET tdrift/v1/diff/{id}`.
+ * `GET stalelingo/v1/diff/{id}`.
  */
 export interface Diff extends Translation {
 	source_id: number;
@@ -95,7 +95,7 @@ export interface Diff extends Translation {
 }
 
 /**
- * `GET tdrift/v1/group/{id}`.
+ * `GET stalelingo/v1/group/{id}`.
  */
 export interface Group {
 	post_id: number;
@@ -116,7 +116,7 @@ export interface Group {
 }
 
 /**
- * `POST tdrift/v1/mark-synced`.
+ * `POST stalelingo/v1/mark-synced`.
  */
 export interface MarkSyncedResult {
 	updated: number[];

@@ -2,14 +2,14 @@
 /**
  * Test helper.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration\Support;
+namespace Stalelingo\Tests\Integration\Support;
 
-use TranslationDrift\Admin\Actions;
+use Stalelingo\Admin\Actions;
 
 /**
  * Actions whose redirect throws, so tests can inspect it.

@@ -2,18 +2,18 @@
 /**
  * Source fingerprinting.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Hasher;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Settings;
+use Stalelingo\Domain\Hasher;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Settings;
 
 /**
  * Reads a post's tracked fields, normalizes them and hashes them.
@@ -95,7 +95,7 @@ class Fingerprinter {
 			 * @param int         $post_id    Post ID.
 			 * @param bool        $strict     Whether strict mode is on.
 			 */
-			$normalized = apply_filters( 'tdrift_normalize_value', $normalized, $field, $raw, $post->ID, $strict );
+			$normalized = apply_filters( 'stalelingo_normalize_value', $normalized, $field, $raw, $post->ID, $strict );
 
 			$values[ $field ] = is_scalar( $normalized ) ? (string) $normalized : null;
 		}//end foreach
@@ -181,7 +181,7 @@ class Fingerprinter {
 		}
 
 		/**
-		 * Filters the raw value of a custom tracked field (one added with `tdrift_tracked_fields`).
+		 * Filters the raw value of a custom tracked field (one added with `stalelingo_tracked_fields`).
 		 *
 		 * @since 1.0.0
 		 *
@@ -189,7 +189,7 @@ class Fingerprinter {
 		 * @param string   $field Field key.
 		 * @param \WP_Post $post  Post.
 		 */
-		return apply_filters( 'tdrift_field_value', null, $field, $post );
+		return apply_filters( 'stalelingo_field_value', null, $field, $post );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Fingerprinter {
 		 * @param mixed       $raw        Raw value.
 		 * @param bool        $strict     Whether strict mode is on.
 		 */
-		$pre = apply_filters( 'tdrift_pre_normalize_value', null, $field, $raw, $strict );
+		$pre = apply_filters( 'stalelingo_pre_normalize_value', null, $field, $raw, $strict );
 		if ( is_string( $pre ) ) {
 			return $pre;
 		}

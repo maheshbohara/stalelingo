@@ -29,7 +29,7 @@ describe( 'dashboard view', () => {
 
 	it( 'turns a status query argument into a filter and ignores unknown ones', () => {
 		expect(
-			initialView( [], '?page=translation-drift&status=outdated' ).filters
+			initialView( [], '?page=stalelingo&status=outdated' ).filters
 		).toEqual( [
 			{ field: 'status', operator: 'isAny', value: [ 'outdated' ] },
 		] );

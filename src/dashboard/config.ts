@@ -1,5 +1,5 @@
 /**
- * Settings printed by PHP before the dashboard script (`window.tdriftDashboard`).
+ * Settings printed by PHP before the dashboard script (`window.stalelingoDashboard`).
  */
 export interface DashboardConfig {
 	ready: boolean;
@@ -15,7 +15,7 @@ export interface DashboardConfig {
 
 declare global {
 	interface Window {
-		tdriftDashboard?: Partial< DashboardConfig >;
+		stalelingoDashboard?: Partial< DashboardConfig >;
 	}
 }
 
@@ -25,11 +25,11 @@ declare global {
  * @return Settings.
  */
 export function getConfig(): DashboardConfig {
-	const config = window.tdriftDashboard ?? {};
+	const config = window.stalelingoDashboard ?? {};
 
 	return {
 		ready: config.ready ?? false,
-		namespace: config.namespace ?? 'tdrift/v1',
+		namespace: config.namespace ?? 'stalelingo/v1',
 		settingsUrl: config.settingsUrl ?? '',
 		languages: config.languages ?? [],
 		sourceLanguage: config.sourceLanguage ?? '',

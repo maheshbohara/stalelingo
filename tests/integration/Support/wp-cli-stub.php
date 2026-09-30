@@ -5,12 +5,12 @@
  * Records messages and formatted items; WP_CLI::error() throws CliError like the real
  * one halts. Loaded only when WP-CLI itself isn't.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 // phpcs:ignoreFile -- A test double of WP-CLI's own API: its names, signatures and file layout mirror WP-CLI, not this plugin's standards.
 
-namespace TranslationDrift\Tests\Integration\Support {
+namespace Stalelingo\Tests\Integration\Support {
 
 	/**
 	 * Thrown by the stubbed WP_CLI::error().
@@ -64,7 +64,7 @@ namespace {
 
 			public static function error( string $message ): void {
 				self::$messages[] = array( 'error', $message );
-				throw new \TranslationDrift\Tests\Integration\Support\CliError( $message );
+				throw new \Stalelingo\Tests\Integration\Support\CliError( $message );
 			}
 
 			public static function add_command( string $name, mixed $callable ): bool {

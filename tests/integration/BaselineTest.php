@@ -2,32 +2,32 @@
 /**
  * Baseline job tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\Repositories\EventRepository;
+use Stalelingo\Domain\Status;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\Repositories\EventRepository;
 
 /**
- * @covers \TranslationDrift\Services\BaselineJob
- * @covers \TranslationDrift\Services\SyncService
- * @covers \TranslationDrift\Services\DriftService
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Services\BaselineJob
+ * @covers \Stalelingo\Services\SyncService
+ * @covers \Stalelingo\Services\DriftService
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
  */
 final class BaselineTest extends TestCase {
 
 	public function set_up(): void {
 		parent::set_up();
-		add_filter( 'tdrift_batch_size', array( $this, 'batch_of_two' ) );
+		add_filter( 'stalelingo_batch_size', array( $this, 'batch_of_two' ) );
 	}
 
 	public function tear_down(): void {
-		remove_filter( 'tdrift_batch_size', array( $this, 'batch_of_two' ) );
+		remove_filter( 'stalelingo_batch_size', array( $this, 'batch_of_two' ) );
 		parent::tear_down();
 	}
 

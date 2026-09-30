@@ -2,20 +2,20 @@
 /**
  * Tests for ElementorTextExtractor.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
 use Brain\Monkey\Filters;
-use TranslationDrift\Domain\ElementorTextExtractor;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\ElementorTextExtractor;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\ElementorTextExtractor
+ * @covers \Stalelingo\Domain\ElementorTextExtractor
  */
 final class ElementorTextExtractorTest extends TestCase {
 
@@ -164,7 +164,7 @@ final class ElementorTextExtractorTest extends TestCase {
 	}
 
 	public function test_text_settings_are_filterable(): void {
-		Filters\expectApplied( 'tdrift_elementor_text_settings' )->andReturn( array( 'heading' => array( 'header_size' ) ) );
+		Filters\expectApplied( 'stalelingo_elementor_text_settings' )->andReturn( array( 'heading' => array( 'header_size' ) ) );
 
 		$this->assertStringContainsString( '[elementor/heading] h2', $this->extract( $this->document() ) );
 	}

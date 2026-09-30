@@ -2,21 +2,21 @@
 /**
  * REST representation of sources and their translations.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\Actions;
-use TranslationDrift\Admin\StatusView;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRow;
+use Stalelingo\Admin\Actions;
+use Stalelingo\Admin\StatusView;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRow;
 
 /**
  * Turns sync rows into the arrays the REST API returns, and describes them as JSON Schema.
@@ -228,44 +228,44 @@ class ItemPresenter {
 			'type'       => 'object',
 			'properties' => array(
 				'lang'           => array(
-					'description' => __( 'Language code.', 'translation-drift' ),
+					'description' => __( 'Language code.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'language'       => array(
-					'description' => __( 'Language name.', 'translation-drift' ),
+					'description' => __( 'Language name.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'status'         => array(
-					'description' => __( 'Translation status.', 'translation-drift' ),
+					'description' => __( 'Translation status.', 'stalelingo' ),
 					'type'        => 'string',
 					'enum'        => self::statuses(),
 				),
 				'status_label'   => array(
-					'description' => __( 'Translation status, human-readable.', 'translation-drift' ),
+					'description' => __( 'Translation status, human-readable.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'translation_id' => array(
-					'description' => __( 'Translation post ID, 0 when the translation is missing.', 'translation-drift' ),
+					'description' => __( 'Translation post ID, 0 when the translation is missing.', 'stalelingo' ),
 					'type'        => 'integer',
 				),
-				'changed_fields' => self::fields_schema( __( 'Fields changed in the source since the translation was last marked up to date.', 'translation-drift' ) ),
+				'changed_fields' => self::fields_schema( __( 'Fields changed in the source since the translation was last marked up to date.', 'stalelingo' ) ),
 				'synced_at'      => array(
-					'description' => __( 'When the translation was last marked up to date (UTC).', 'translation-drift' ),
+					'description' => __( 'When the translation was last marked up to date (UTC).', 'stalelingo' ),
 					'type'        => array( 'string', 'null' ),
 					'format'      => 'date-time',
 				),
 				'edit_url'       => array(
-					'description' => __( 'Edit link, when the current user may edit the translation.', 'translation-drift' ),
+					'description' => __( 'Edit link, when the current user may edit the translation.', 'stalelingo' ),
 					'type'        => array( 'string', 'null' ),
 					'format'      => 'uri',
 				),
 				'create_url'     => array(
-					'description' => __( 'Link that starts a missing translation.', 'translation-drift' ),
+					'description' => __( 'Link that starts a missing translation.', 'stalelingo' ),
 					'type'        => array( 'string', 'null' ),
 					'format'      => 'uri',
 				),
 				'can_mark'       => array(
-					'description' => __( 'Whether the current user may mark the translation as up to date.', 'translation-drift' ),
+					'description' => __( 'Whether the current user may mark the translation as up to date.', 'stalelingo' ),
 					'type'        => 'boolean',
 				),
 			),
@@ -284,31 +284,31 @@ class ItemPresenter {
 			'type'       => 'object',
 			'properties' => array(
 				'id'              => array(
-					'description' => __( 'Source post ID.', 'translation-drift' ),
+					'description' => __( 'Source post ID.', 'stalelingo' ),
 					'type'        => 'integer',
 				),
 				'title'           => array(
-					'description' => __( 'Source title.', 'translation-drift' ),
+					'description' => __( 'Source title.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'post_type'       => array(
-					'description' => __( 'Post type.', 'translation-drift' ),
+					'description' => __( 'Post type.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'post_type_label' => array(
-					'description' => __( 'Post type name.', 'translation-drift' ),
+					'description' => __( 'Post type name.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'post_status'     => array(
-					'description' => __( 'Post status of the source.', 'translation-drift' ),
+					'description' => __( 'Post status of the source.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'source_lang'     => array(
-					'description' => __( 'Language code of the source.', 'translation-drift' ),
+					'description' => __( 'Language code of the source.', 'stalelingo' ),
 					'type'        => 'string',
 				),
 				'author'          => array(
-					'description' => __( 'Author of the source.', 'translation-drift' ),
+					'description' => __( 'Author of the source.', 'stalelingo' ),
 					'type'        => 'object',
 					'properties'  => array(
 						'id'   => array( 'type' => 'integer' ),
@@ -316,17 +316,17 @@ class ItemPresenter {
 					),
 				),
 				'modified'        => array(
-					'description' => __( 'When the source last changed (UTC).', 'translation-drift' ),
+					'description' => __( 'When the source last changed (UTC).', 'stalelingo' ),
 					'type'        => array( 'string', 'null' ),
 					'format'      => 'date-time',
 				),
 				'edit_url'        => array(
-					'description' => __( 'Edit link, when the current user may edit the source.', 'translation-drift' ),
+					'description' => __( 'Edit link, when the current user may edit the source.', 'stalelingo' ),
 					'type'        => array( 'string', 'null' ),
 					'format'      => 'uri',
 				),
 				'translations'    => array(
-					'description'          => __( 'Status of each translation, keyed by language code.', 'translation-drift' ),
+					'description'          => __( 'Status of each translation, keyed by language code.', 'stalelingo' ),
 					'type'                 => 'object',
 					'additionalProperties' => self::translation_schema(),
 				),

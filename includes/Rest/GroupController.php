@@ -1,27 +1,27 @@
 <?php
 /**
- * `tdrift/v1/group/{id}` route.
+ * `stalelingo/v1/group/{id}` route.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\TrackedFields;
 
 /**
  * The translation group of a post, as the block editor panel shows it.
  *
  * For a source: the status of each translation. For a translation: its own
  * status and its source. Open to anyone who may edit the post, so translators
- * without `tdrift_manage` see their own translations.
+ * without `stalelingo_manage` see their own translations.
  *
  * @since 1.0.0
  */
@@ -73,7 +73,7 @@ class GroupController extends Controller {
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => array( $this, 'get_item_permissions_check' ),
 					'args'                => array(
-						'id' => self::id_arg( __( 'ID of any post in the group.', 'translation-drift' ) ),
+						'id' => self::id_arg( __( 'ID of any post in the group.', 'stalelingo' ) ),
 					),
 				),
 				'schema' => array( $this, 'get_public_item_schema' ),
@@ -107,7 +107,7 @@ class GroupController extends Controller {
 		$post_id = (int) $request['id'];
 		$post    = get_post( $post_id );
 		if ( ! $post instanceof \WP_Post ) {
-			return new \WP_Error( 'rest_post_invalid_id', __( 'Invalid post ID.', 'translation-drift' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'rest_post_invalid_id', __( 'Invalid post ID.', 'stalelingo' ), array( 'status' => 404 ) );
 		}
 
 		$lang      = $this->provider->get_language( $post_id );
@@ -168,32 +168,32 @@ class GroupController extends Controller {
 			$translation  = ItemPresenter::translation_schema();
 			$this->schema = array(
 				'$schema'    => 'http://json-schema.org/draft-04/schema#',
-				'title'      => 'tdrift-group',
+				'title'      => 'stalelingo-group',
 				'type'       => 'object',
 				'properties' => array(
 					'post_id'      => array(
-						'description' => __( 'The requested post.', 'translation-drift' ),
+						'description' => __( 'The requested post.', 'stalelingo' ),
 						'type'        => 'integer',
 					),
 					'tracked'      => array(
-						'description' => __( 'Whether the post type is tracked.', 'translation-drift' ),
+						'description' => __( 'Whether the post type is tracked.', 'stalelingo' ),
 						'type'        => 'boolean',
 					),
 					'role'         => array(
-						'description' => __( 'Whether the post is the source of its group, a translation, or neither.', 'translation-drift' ),
+						'description' => __( 'Whether the post is the source of its group, a translation, or neither.', 'stalelingo' ),
 						'type'        => 'string',
 						'enum'        => array( self::ROLE_SOURCE, self::ROLE_TRANSLATION, self::ROLE_NONE ),
 					),
 					'lang'         => array(
-						'description' => __( 'Language code of the post.', 'translation-drift' ),
+						'description' => __( 'Language code of the post.', 'stalelingo' ),
 						'type'        => 'string',
 					),
 					'language'     => array(
-						'description' => __( 'Language name of the post.', 'translation-drift' ),
+						'description' => __( 'Language name of the post.', 'stalelingo' ),
 						'type'        => 'string',
 					),
 					'source'       => array(
-						'description' => __( 'The source, for a translation.', 'translation-drift' ),
+						'description' => __( 'The source, for a translation.', 'stalelingo' ),
 						'type'        => array( 'object', 'null' ),
 						'properties'  => array(
 							'id'       => array( 'type' => 'integer' ),
@@ -209,17 +209,17 @@ class GroupController extends Controller {
 					'translation'  => array_merge(
 						$translation,
 						array(
-							'description' => __( 'Status of the post, for a tracked translation.', 'translation-drift' ),
+							'description' => __( 'Status of the post, for a tracked translation.', 'stalelingo' ),
 							'type'        => array( 'object', 'null' ),
 						)
 					),
 					'translations' => array(
-						'description'          => __( 'Status of each translation, for a source.', 'translation-drift' ),
+						'description'          => __( 'Status of each translation, for a source.', 'stalelingo' ),
 						'type'                 => 'object',
 						'additionalProperties' => $translation,
 					),
 					'can_mark'     => array(
-						'description' => __( 'Whether the current user may mark this translation as up to date.', 'translation-drift' ),
+						'description' => __( 'Whether the current user may mark this translation as up to date.', 'stalelingo' ),
 						'type'        => 'boolean',
 					),
 				),

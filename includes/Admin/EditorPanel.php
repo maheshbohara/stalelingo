@@ -2,19 +2,19 @@
 /**
  * Block editor panel assets.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Services\TrackedFields;
 
 /**
- * Loads the Translation Drift panel in the block editor, for tracked post types only.
+ * Loads the Stalelingo panel in the block editor, for tracked post types only.
  *
  * The panel itself is a `@wordpress/editor` PluginDocumentSettingPanel (see `src/editor`).
  * The classic editor gets the {@see Metabox} instead.
@@ -28,7 +28,7 @@ class EditorPanel {
 	 *
 	 * @since 1.0.0
 	 */
-	public const HANDLE = 'tdrift-editor';
+	public const HANDLE = 'stalelingo-editor';
 
 	/**
 	 * Constructor.

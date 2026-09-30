@@ -2,12 +2,12 @@
 /**
  * ACF text extraction.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Domain;
+namespace Stalelingo\Domain;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -74,7 +74,7 @@ final class AcfTextExtractor {
 		 *
 		 * @param list<string> $types Field types. Default text, textarea, wysiwyg and link.
 		 */
-		$types = apply_filters( 'tdrift_acf_text_field_types', self::DEFAULT_TEXT_TYPES );
+		$types = apply_filters( 'stalelingo_acf_text_field_types', self::DEFAULT_TEXT_TYPES );
 
 		return array_values( array_filter( (array) $types, 'is_string' ) );
 	}

@@ -1,17 +1,17 @@
 <?php
 /**
- * `tdrift_events` table access.
+ * `stalelingo_events` table access.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services\Repositories;
+namespace Stalelingo\Services\Repositories;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Schema;
+use Stalelingo\Database\Schema;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- The plugin's own append-only log table.
 
@@ -156,7 +156,7 @@ class EventRepository {
 		 *
 		 * @param int $days Days. Default 180.
 		 */
-		$days   = max( 1, (int) apply_filters( 'tdrift_event_retention_days', self::DEFAULT_RETENTION_DAYS ) );
+		$days   = max( 1, (int) apply_filters( 'stalelingo_event_retention_days', self::DEFAULT_RETENTION_DAYS ) );
 		$cutoff = gmdate( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS );
 
 		return (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE created_at < %s', $this->table(), $cutoff ) );

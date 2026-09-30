@@ -19,8 +19,8 @@ export default defineConfig( {
 	use: {
 		baseURL,
 		storageState: './test-results/storage/admin.json',
-		// Lets the dev site stop spawning WP-Cron for test requests (docker/mu-plugins/tdrift-dev-e2e.php).
-		extraHTTPHeaders: { 'X-Tdrift-E2E': '1' },
+		// Lets the dev site stop spawning WP-Cron for test requests (docker/mu-plugins/stalelingo-dev-e2e.php).
+		extraHTTPHeaders: { 'X-Stalelingo-E2E': '1' },
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},

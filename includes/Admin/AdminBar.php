@@ -2,17 +2,17 @@
 /**
  * Admin bar counter.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * Shows the number of outdated translations in the admin bar, for users who manage translations.
@@ -26,14 +26,14 @@ class AdminBar {
 	 *
 	 * @since 1.0.0
 	 */
-	public const NODE = 'tdrift-outdated';
+	public const NODE = 'stalelingo-outdated';
 
 	/**
 	 * Transient caching the count.
 	 *
 	 * @since 1.0.0
 	 */
-	public const CACHE_KEY = 'tdrift_outdated_count';
+	public const CACHE_KEY = 'stalelingo_outdated_count';
 
 	/**
 	 * Constructor.
@@ -53,7 +53,7 @@ class AdminBar {
 	 */
 	public function register(): void {
 		add_action( 'admin_bar_menu', array( $this, 'add_node' ), 90 );
-		foreach ( array( 'tdrift_drift_detected', 'tdrift_marked_synced' ) as $hook ) {
+		foreach ( array( 'stalelingo_drift_detected', 'stalelingo_marked_synced' ) as $hook ) {
 			add_action( $hook, array( self::class, 'flush' ) );
 		}
 	}
@@ -100,7 +100,7 @@ class AdminBar {
 		}
 
 		/* translators: %s: number of outdated translations. */
-		$label = sprintf( _n( '%s outdated translation', '%s outdated translations', $count, 'translation-drift' ), number_format_i18n( $count ) );
+		$label = sprintf( _n( '%s outdated translation', '%s outdated translations', $count, 'stalelingo' ), number_format_i18n( $count ) );
 
 		$bar->add_node(
 			array(

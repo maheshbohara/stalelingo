@@ -2,20 +2,20 @@
 /**
  * Plugin bootstrap.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\AdminPage;
-use TranslationDrift\Admin\DependencyNotice;
-use TranslationDrift\Admin\SettingsPage;
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Providers\ProviderDetector;
+use Stalelingo\Admin\AdminPage;
+use Stalelingo\Admin\DependencyNotice;
+use Stalelingo\Admin\SettingsPage;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Providers\ProviderDetector;
 
 /**
  * Wires the plugin's services into WordPress.
@@ -97,7 +97,7 @@ final class Plugin {
 			add_action( 'rest_api_init', array( self::class, 'register_rest_routes' ) );
 
 			if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( '\WP_CLI' ) ) {
-				\WP_CLI::add_command( 'translation-drift', $container->cli_command() );
+				\WP_CLI::add_command( 'stalelingo', $container->cli_command() );
 			}
 		}
 
@@ -117,7 +117,7 @@ final class Plugin {
 	}
 
 	/**
-	 * Registers the `tdrift/v1` REST routes.
+	 * Registers the `stalelingo/v1` REST routes.
 	 *
 	 * @since 1.0.0
 	 */

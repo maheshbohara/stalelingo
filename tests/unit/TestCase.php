@@ -2,12 +2,12 @@
 /**
  * Base class for unit tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit;
+namespace Stalelingo\Tests\Unit;
 
 use Brain\Monkey;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

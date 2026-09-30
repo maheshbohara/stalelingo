@@ -2,18 +2,18 @@
 /**
  * Deactivation handler.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Notifications\Notifier;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\PostHooks;
+use Stalelingo\Notifications\Notifier;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\PostHooks;
 
 /**
  * Stops scheduled work on deactivation. Data is kept until uninstall.

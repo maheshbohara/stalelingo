@@ -2,20 +2,20 @@
 /**
  * Tests for Migrator.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Database;
+namespace Stalelingo\Tests\Unit\Database;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Database\Migrator
+ * @covers \Stalelingo\Database\Migrator
  */
 final class MigratorTest extends TestCase {
 
@@ -36,7 +36,7 @@ final class MigratorTest extends TestCase {
 		Functions\when( 'get_option' )->justReturn( 0 );
 		Functions\expect( 'dbDelta' )->once()->with( \Mockery::on( static fn( $sql ) => 3 === count( $sql ) ) );
 		Functions\expect( 'update_option' )->once()->with( Migrator::OPTION, Migrator::DB_VERSION, true );
-		Actions\expectDone( 'tdrift_migrated' )->once()->with( 0, Migrator::DB_VERSION );
+		Actions\expectDone( 'stalelingo_migrated' )->once()->with( 0, Migrator::DB_VERSION );
 
 		Migrator::maybe_upgrade();
 	}

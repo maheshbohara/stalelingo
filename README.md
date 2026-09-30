@@ -1,4 +1,4 @@
-# Translation Drift
+# Stalelingo
 
 Outdated translation tracker for Polylang and WPML. The WordPress.org readme is [`readme.txt`](readme.txt).
 

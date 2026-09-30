@@ -2,23 +2,23 @@
 /**
  * Email digests and immediate notifications.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Notifications;
+namespace Stalelingo\Notifications;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\AdminPage;
-use TranslationDrift\Admin\StatusView;
-use TranslationDrift\Capabilities;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\Repositories\SyncRow;
-use TranslationDrift\Settings;
+use Stalelingo\Admin\AdminPage;
+use Stalelingo\Admin\StatusView;
+use Stalelingo\Capabilities;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\Repositories\SyncRow;
+use Stalelingo\Settings;
 
 /**
  * Emails translators the outdated translations in their languages.
@@ -41,7 +41,7 @@ class Notifier {
 	 *
 	 * @since 1.0.0
 	 */
-	public const DIGEST_HOOK = 'tdrift_send_digest';
+	public const DIGEST_HOOK = 'stalelingo_send_digest';
 
 	/**
 	 * Most translations listed in one digest.
@@ -93,7 +93,7 @@ class Notifier {
 			}
 		);
 		add_action(
-			'tdrift_drift_detected',
+			'stalelingo_drift_detected',
 			function ( $translation_id, $source_id, $lang ): void {
 				$this->on_drift_detected( (int) $translation_id, (int) $source_id, (string) $lang );
 			},
@@ -173,7 +173,7 @@ class Notifier {
 			 * @param string                     $email Recipient.
 			 * @param list<string>|null          $langs Languages of the recipient; null for all.
 			 */
-			$items = apply_filters( 'tdrift_digest_items', $items, $email, $langs );
+			$items = apply_filters( 'stalelingo_digest_items', $items, $email, $langs );
 			$items = array_values( array_filter( (array) $items, 'is_array' ) );
 			if ( array() === $items ) {
 				continue;
@@ -181,11 +181,11 @@ class Notifier {
 
 			$subject = sprintf(
 				/* translators: 1: site name. 2: number of translations. */
-				_n( '[%1$s] %2$d translation needs updating', '[%1$s] %2$d translations need updating', count( $items ), 'translation-drift' ),
+				_n( '[%1$s] %2$d translation needs updating', '[%1$s] %2$d translations need updating', count( $items ), 'stalelingo' ),
 				self::site_name(),
 				count( $items )
 			);
-			$intro = __( 'These translations are out of date because their source changed:', 'translation-drift' );
+			$intro = __( 'These translations are out of date because their source changed:', 'stalelingo' );
 
 			if ( $this->mail( $email, $subject, $intro, $items, $more, $langs ) ) {
 				++$sent;
@@ -216,12 +216,12 @@ class Notifier {
 		$item    = $this->item( $row );
 		$subject = sprintf(
 			/* translators: 1: site name. 2: post title. 3: language code, e.g. FR. */
-			__( '[%1$s] Translation out of date: %2$s (%3$s)', 'translation-drift' ),
+			__( '[%1$s] Translation out of date: %2$s (%3$s)', 'stalelingo' ),
 			self::site_name(),
 			$item['translation_title'],
 			strtoupper( (string) $lang )
 		);
-		$intro = __( 'This translation is now out of date because its source changed:', 'translation-drift' );
+		$intro = __( 'This translation is now out of date because its source changed:', 'stalelingo' );
 
 		$sent = 0;
 		foreach ( $this->recipients() as $email => $langs ) {
@@ -315,40 +315,40 @@ class Notifier {
 			$lines[] = $language;
 			$lines[] = str_repeat( '-', max( 3, mb_strlen( $language ) ) );
 			foreach ( $group as $item ) {
-				$title   = '' !== (string) ( $item['translation_title'] ?? '' ) ? (string) $item['translation_title'] : __( '(no title)', 'translation-drift' );
+				$title   = '' !== (string) ( $item['translation_title'] ?? '' ) ? (string) $item['translation_title'] : __( '(no title)', 'stalelingo' );
 				$lines[] = '* ' . $title;
 				if ( '' !== (string) ( $item['source_title'] ?? '' ) ) {
 					/* translators: %s: title of the source post. */
-					$lines[] = '  ' . sprintf( __( 'Source: %s', 'translation-drift' ), (string) $item['source_title'] );
+					$lines[] = '  ' . sprintf( __( 'Source: %s', 'stalelingo' ), (string) $item['source_title'] );
 				}
 				$fields = array_filter( (array) ( $item['changed_fields'] ?? array() ), 'is_string' );
 				if ( array() !== $fields ) {
 					/* translators: %s: comma-separated field names, e.g. "Title, Content". */
-					$lines[] = '  ' . sprintf( __( 'Changed: %s', 'translation-drift' ), implode( ', ', $fields ) );
+					$lines[] = '  ' . sprintf( __( 'Changed: %s', 'stalelingo' ), implode( ', ', $fields ) );
 				}
 				/* translators: %s: URL of the translation's edit screen. */
-				$lines[] = '  ' . sprintf( __( 'Edit: %s', 'translation-drift' ), (string) ( $item['edit_url'] ?? '' ) );
+				$lines[] = '  ' . sprintf( __( 'Edit: %s', 'stalelingo' ), (string) ( $item['edit_url'] ?? '' ) );
 			}
 			$lines[] = '';
 		}
 
 		if ( $more ) {
 			/* translators: %d: number of translations listed. */
-			$lines[] = sprintf( __( 'Only the first %d are listed.', 'translation-drift' ), self::MAX_ITEMS );
+			$lines[] = sprintf( __( 'Only the first %d are listed.', 'stalelingo' ), self::MAX_ITEMS );
 		}
 
 		$user = get_user_by( 'email', $email );
 		if ( null === $langs || ( $user instanceof \WP_User && user_can( $user, Capabilities::MANAGE ) ) ) {
-			/* translators: %s: URL of the Translation Drift dashboard. */
-			$lines[] = sprintf( __( 'All outdated translations: %s', 'translation-drift' ), admin_url( 'tools.php?page=' . AdminPage::SLUG . '&status=outdated' ) );
+			/* translators: %s: URL of the Stalelingo dashboard. */
+			$lines[] = sprintf( __( 'All outdated translations: %s', 'stalelingo' ), admin_url( 'tools.php?page=' . AdminPage::SLUG . '&status=outdated' ) );
 		}
 
 		$lines[] = '';
 		$lines[] = null === $langs
 			/* translators: %s: site name. */
-			? sprintf( __( 'You receive this email because your address is listed as a digest recipient in the Translation Drift settings of %s.', 'translation-drift' ), self::site_name() )
+			? sprintf( __( 'You receive this email because your address is listed as a digest recipient in the Stalelingo settings of %s.', 'stalelingo' ), self::site_name() )
 			/* translators: 1: comma-separated language codes. 2: site name. */
-			: sprintf( __( 'You receive this email because you are a translator for %1$s in the Translation Drift settings of %2$s.', 'translation-drift' ), strtoupper( implode( ', ', $langs ) ), self::site_name() );
+			: sprintf( __( 'You receive this email because you are a translator for %1$s in the Stalelingo settings of %2$s.', 'stalelingo' ), strtoupper( implode( ', ', $langs ) ), self::site_name() );
 
 		return wp_mail( $email, $subject, implode( "\n", $lines ) );
 	}

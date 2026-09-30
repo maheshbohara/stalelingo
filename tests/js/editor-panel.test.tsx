@@ -30,13 +30,13 @@ const mockFetch = apiFetch as unknown as jest.Mock;
 function serve( data: ReturnType< typeof group > ) {
 	let current = data;
 	mockFetch.mockImplementation( async ( options: FetchOptions ) => {
-		if ( options.path.startsWith( '/tdrift/v1/group/' ) ) {
+		if ( options.path.startsWith( '/stalelingo/v1/group/' ) ) {
 			return current;
 		}
-		if ( options.path.startsWith( '/tdrift/v1/diff/' ) ) {
+		if ( options.path.startsWith( '/stalelingo/v1/diff/' ) ) {
 			return diff;
 		}
-		if ( options.path === '/tdrift/v1/mark-synced' ) {
+		if ( options.path === '/stalelingo/v1/mark-synced' ) {
 			current = {
 				...current,
 				translation: translation( {
@@ -64,10 +64,10 @@ describe( 'Editor panel', () => {
 			await screen.findByRole( 'heading', { name: 'Title' } )
 		).toBeInTheDocument();
 		expect( mockFetch ).toHaveBeenCalledWith( {
-			path: '/tdrift/v1/group/11',
+			path: '/stalelingo/v1/group/11',
 		} );
 		expect( mockFetch ).toHaveBeenCalledWith( {
-			path: '/tdrift/v1/diff/11?split=false',
+			path: '/stalelingo/v1/diff/11?split=false',
 		} );
 		expect( screen.getByText( 'FR: Outdated' ) ).toBeInTheDocument();
 		expect(
@@ -111,7 +111,7 @@ describe( 'Editor panel', () => {
 
 		expect( await screen.findByRole( 'dialog' ) ).toBeInTheDocument();
 		expect( mockFetch ).toHaveBeenCalledWith( {
-			path: '/tdrift/v1/diff/11?split=true',
+			path: '/stalelingo/v1/diff/11?split=true',
 		} );
 	} );
 

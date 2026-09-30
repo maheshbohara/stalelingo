@@ -2,19 +2,19 @@
 /**
  * Base REST controller.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\Permissions;
+use Stalelingo\Services\Permissions;
 
 /**
- * Shared namespace and permission helpers of the `tdrift/v1` routes.
+ * Shared namespace and permission helpers of the `stalelingo/v1` routes.
  *
  * @since 1.0.0
  */
@@ -25,7 +25,7 @@ abstract class Controller extends \WP_REST_Controller {
 	 *
 	 * @since 1.0.0
 	 */
-	public const REST_NAMESPACE = 'tdrift/v1';
+	public const REST_NAMESPACE = 'stalelingo/v1';
 
 	/**
 	 * Constructor.
@@ -39,7 +39,7 @@ abstract class Controller extends \WP_REST_Controller {
 	}
 
 	/**
-	 * Permission callback of the dashboard routes: the `tdrift_manage` capability.
+	 * Permission callback of the dashboard routes: the `stalelingo_manage` capability.
 	 *
 	 * @since 1.0.0
 	 *
@@ -59,7 +59,7 @@ abstract class Controller extends \WP_REST_Controller {
 	protected function forbidden( string $message = '' ): \WP_Error {
 		return new \WP_Error(
 			'rest_forbidden',
-			'' === $message ? __( 'Sorry, you are not allowed to do that.', 'translation-drift' ) : $message,
+			'' === $message ? __( 'Sorry, you are not allowed to do that.', 'stalelingo' ) : $message,
 			array( 'status' => rest_authorization_required_code() )
 		);
 	}
@@ -77,7 +77,7 @@ abstract class Controller extends \WP_REST_Controller {
 			return $this->forbidden();
 		}
 		if ( ! get_post( $post_id ) instanceof \WP_Post ) {
-			return new \WP_Error( 'rest_post_invalid_id', __( 'Invalid post ID.', 'translation-drift' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'rest_post_invalid_id', __( 'Invalid post ID.', 'stalelingo' ), array( 'status' => 404 ) );
 		}
 
 		return $this->permissions->can_view( get_current_user_id(), $post_id ) ? true : $this->forbidden();

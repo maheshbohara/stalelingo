@@ -6,20 +6,20 @@
  * Measures, against the spec's targets:
  *
  * - baseline: batches finish well inside a request timeout (reports the slowest batch);
- * - dashboard: the first page of `GET tdrift/v1/status` answers in under 500 ms;
+ * - dashboard: the first page of `GET stalelingo/v1/status` answers in under 500 ms;
  * - list table: the status column adds at most one query for a page of 20 posts;
  * - EXPLAIN of the main queries.
  *
  * It rebuilds the baseline (forced) as part of the measurement.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals, WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared -- Development script.
 
-use TranslationDrift\Plugin;
+use Stalelingo\Plugin;
 
 global $wpdb;
 
@@ -40,7 +40,7 @@ wp_set_current_user( (int) ( $admins[0] ?? 1 ) );
 $baseline = $container->baseline();
 $failures = array();
 
-WP_CLI::log( '# Translation Drift performance run' );
+WP_CLI::log( '# Stalelingo performance run' );
 WP_CLI::log( '' );
 WP_CLI::log( sprintf( 'Tracked posts: %d (batch size %d)', $baseline->count_posts(), $baseline->batch_size() ) );
 
@@ -72,13 +72,13 @@ WP_CLI::log( '- Rows: ' . implode( ', ', array_map( static fn( $k, $v ) => "{$k}
 $rest_times = array();
 for ( $i = 0; $i < 5; $i++ ) {
 	wp_cache_flush();
-	$request      = new WP_REST_Request( 'GET', '/tdrift/v1/status' );
+	$request      = new WP_REST_Request( 'GET', '/stalelingo/v1/status' );
 	$t            = microtime( true );
 	$response     = rest_do_request( $request );
 	$rest_times[] = ( microtime( true ) - $t ) * 1000;
 }
 sort( $rest_times );
-$filtered = new WP_REST_Request( 'GET', '/tdrift/v1/status' );
+$filtered = new WP_REST_Request( 'GET', '/stalelingo/v1/status' );
 $filtered->set_query_params(
 	array(
 		'status' => array( 'outdated' ),
@@ -91,7 +91,7 @@ rest_do_request( $filtered );
 $filtered_time = ( microtime( true ) - $t ) * 1000;
 wp_cache_flush();
 $t = microtime( true );
-rest_do_request( new WP_REST_Request( 'GET', '/tdrift/v1/status/summary' ) );
+rest_do_request( new WP_REST_Request( 'GET', '/stalelingo/v1/status/summary' ) );
 $summary_time = ( microtime( true ) - $t ) * 1000;
 
 WP_CLI::log( '' );
@@ -117,7 +117,7 @@ $table                      = $container->list_table();
 $before                     = $wpdb->num_queries;
 ob_start();
 foreach ( $posts as $post ) {
-	$table->render_column( \TranslationDrift\Admin\ListTable::COLUMN, $post->ID );
+	$table->render_column( \Stalelingo\Admin\ListTable::COLUMN, $post->ID );
 }
 ob_end_clean();
 $column_queries = $wpdb->num_queries - $before;
@@ -131,7 +131,7 @@ if ( $column_queries > 1 ) {
 // 4. EXPLAIN of the main queries, captured as the plugin runs them.
 $captured = array();
 $capture  = static function ( string $sql ) use ( &$captured ): string {
-	if ( str_contains( $sql, 'tdrift_' ) && 0 === stripos( ltrim( $sql ), 'SELECT' ) ) {
+	if ( str_contains( $sql, 'stalelingo_' ) && 0 === stripos( ltrim( $sql ), 'SELECT' ) ) {
 		$captured[] = $sql;
 	}
 	return $sql;
@@ -154,7 +154,7 @@ $sync->query_sources(
 );
 $sync->for_sources( $page['ids'] );
 $sync->summary();
-$sync->find_with_status( array( \TranslationDrift\Domain\Status::Outdated ), array( 'fr' ), 101 );
+$sync->find_with_status( array( \Stalelingo\Domain\Status::Outdated ), array( 'fr' ), 101 );
 remove_filter( 'query', $capture );
 
 WP_CLI::log( '' );

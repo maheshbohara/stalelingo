@@ -16,10 +16,10 @@ import type {
 	Summary,
 } from './types';
 
-export const NAMESPACE = 'tdrift/v1';
+export const NAMESPACE = 'stalelingo/v1';
 
 /**
- * Query parameters of `GET tdrift/v1/status`.
+ * Query parameters of `GET stalelingo/v1/status`.
  */
 export interface StatusQuery {
 	page?: number;

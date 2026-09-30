@@ -10,4 +10,4 @@ import { EditorPlugin } from './plugin';
 import '../shared/shared.scss';
 import './editor.scss';
 
-registerPlugin( 'translation-drift', { render: EditorPlugin } );
+registerPlugin( 'stalelingo', { render: EditorPlugin } );

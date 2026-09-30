@@ -5,7 +5,7 @@
  * WPML's public API is filter based (apply_filters( 'wpml_* ' )), so only the
  * detection surface is declared here.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 define( 'ICL_SITEPRESS_VERSION', '4.7.0' );

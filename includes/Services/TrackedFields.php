@@ -2,17 +2,17 @@
 /**
  * Tracked post types and fields.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Settings;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Settings;
 
 /**
  * Decides which post types and fields are tracked.
@@ -57,7 +57,7 @@ class TrackedFields {
 		 *
 		 * @param list<string> $types Post types.
 		 */
-		$types = apply_filters( 'tdrift_tracked_post_types', $types );
+		$types = apply_filters( 'stalelingo_tracked_post_types', $types );
 
 		return array_values( array_unique( array_filter( (array) $types, 'is_string' ) ) );
 	}
@@ -92,7 +92,7 @@ class TrackedFields {
 		 * @param list<string> $keys      Meta keys.
 		 * @param string       $post_type Post type.
 		 */
-		$keys = apply_filters( 'tdrift_tracked_meta_keys', array_values( $keys ), $post_type );
+		$keys = apply_filters( 'stalelingo_tracked_meta_keys', array_values( $keys ), $post_type );
 
 		return array_values( array_unique( array_filter( (array) $keys, static fn( $key ): bool => is_string( $key ) && '' !== $key ) ) );
 	}
@@ -119,7 +119,7 @@ class TrackedFields {
 		 * @param list<string> $fields    Field keys, e.g. 'title', 'content', 'meta:subtitle'.
 		 * @param string       $post_type Post type.
 		 */
-		$fields = apply_filters( 'tdrift_tracked_fields', $fields, $post_type );
+		$fields = apply_filters( 'stalelingo_tracked_fields', $fields, $post_type );
 
 		return array_values( array_unique( array_filter( (array) $fields, 'is_string' ) ) );
 	}

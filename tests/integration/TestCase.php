@@ -2,18 +2,18 @@
 /**
  * Base class for integration tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Container;
-use TranslationDrift\Deactivator;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Plugin;
-use TranslationDrift\Services\Repositories\SyncRow;
+use Stalelingo\Container;
+use Stalelingo\Deactivator;
+use Stalelingo\Domain\Status;
+use Stalelingo\Plugin;
+use Stalelingo\Services\Repositories\SyncRow;
 
 /**
  * Integration test base.
@@ -89,10 +89,10 @@ abstract class TestCase extends \WP_UnitTestCase {
 			$this->ran_ddl = false;
 			remove_filter( 'query', array( $this, '_create_temporary_tables' ) );
 			remove_filter( 'query', array( $this, '_drop_temporary_tables' ) );
-			delete_option( \TranslationDrift\Uninstaller::SETTINGS_OPTION );
-			delete_option( \TranslationDrift\Database\Migrator::OPTION );
+			delete_option( \Stalelingo\Uninstaller::SETTINGS_OPTION );
+			delete_option( \Stalelingo\Database\Migrator::OPTION );
 			wp_cache_flush();
-			\TranslationDrift\Activator::activate();
+			\Stalelingo\Activator::activate();
 			$this->clear_jobs();
 		}
 	}
@@ -116,7 +116,7 @@ abstract class TestCase extends \WP_UnitTestCase {
 	 * @param array<string, mixed> $settings Settings to merge.
 	 */
 	protected function set_settings( array $settings ): void {
-		update_option( \TranslationDrift\Settings::OPTION, array_merge( (array) get_option( \TranslationDrift\Settings::OPTION, array() ), $settings ) );
+		update_option( \Stalelingo\Settings::OPTION, array_merge( (array) get_option( \Stalelingo\Settings::OPTION, array() ), $settings ) );
 	}
 
 	/**
@@ -293,7 +293,7 @@ abstract class TestCase extends \WP_UnitTestCase {
 		$jobs = array();
 		foreach ( (array) _get_cron_array() as $timestamp => $hooks ) {
 			foreach ( (array) $hooks as $hook => $events ) {
-				if ( ! str_starts_with( (string) $hook, 'tdrift_' ) || 'tdrift_prune' === $hook ) {
+				if ( ! str_starts_with( (string) $hook, 'stalelingo_' ) || 'stalelingo_prune' === $hook ) {
 					continue;
 				}
 				foreach ( (array) $events as $event ) {

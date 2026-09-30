@@ -59,10 +59,7 @@ export function DiffModal( {
 				setError(
 					errorMessage(
 						e,
-						__(
-							'The changes could not be loaded.',
-							'translation-drift'
-						)
+						__( 'The changes could not be loaded.', 'stalelingo' )
 					)
 				)
 			);
@@ -74,18 +71,13 @@ export function DiffModal( {
 		setIsMarking( true );
 		try {
 			const result = await markSynced( [ translationId ] );
-			speak(
-				__( 'Translation marked as up to date.', 'translation-drift' )
-			);
+			speak( __( 'Translation marked as up to date.', 'stalelingo' ) );
 			onMarked?.( result );
 			onClose();
 		} catch ( e ) {
 			const message = errorMessage(
 				e,
-				__(
-					'The translation could not be updated.',
-					'translation-drift'
-				)
+				__( 'The translation could not be updated.', 'stalelingo' )
 			);
 			setError( message );
 			speak( message, 'assertive' );
@@ -96,47 +88,45 @@ export function DiffModal( {
 	const heading = diff
 		? sprintf(
 				/* translators: 1: source post title. 2: language name. */
-				__( 'Changes to “%1$s” for %2$s', 'translation-drift' ),
-				diff.source.title || __( '(no title)', 'translation-drift' ),
+				__( 'Changes to “%1$s” for %2$s', 'stalelingo' ),
+				diff.source.title || __( '(no title)', 'stalelingo' ),
 				diff.language
 			)
-		: ( title ?? __( 'Changes in the source', 'translation-drift' ) );
+		: ( title ?? __( 'Changes in the source', 'stalelingo' ) );
 
 	return (
 		<Modal
 			title={ heading }
 			onRequestClose={ onClose }
 			size="large"
-			className="tdrift-diff-modal"
+			className="stalelingo-diff-modal"
 		>
 			{ error && (
 				<Notice status="error" isDismissible={ false }>
 					<p>{ error }</p>
 					{ ! diff && (
 						<Button variant="secondary" onClick={ load }>
-							{ __( 'Try again', 'translation-drift' ) }
+							{ __( 'Try again', 'stalelingo' ) }
 						</Button>
 					) }
 				</Notice>
 			) }
 			{ ! diff && ! error && (
-				<Flex justify="center" className="tdrift-loading">
+				<Flex justify="center" className="stalelingo-loading">
 					<Spinner />
-					<span>
-						{ __( 'Loading changes…', 'translation-drift' ) }
-					</span>
+					<span>{ __( 'Loading changes…', 'stalelingo' ) }</span>
 				</Flex>
 			) }
 			{ diff && (
 				<>
 					{ diff.synced_at && (
-						<p className="tdrift-diff-meta">
+						<p className="stalelingo-diff-meta">
 							{ diff.synced_by
 								? sprintf(
 										/* translators: 1: date and time. 2: user name. */
 										__(
 											'Compared with the source as it was when this translation was marked up to date on %1$s by %2$s.',
-											'translation-drift'
+											'stalelingo'
 										),
 										formatDateTime( diff.synced_at ),
 										diff.synced_by
@@ -145,7 +135,7 @@ export function DiffModal( {
 										/* translators: %s: date and time. */
 										__(
 											'Compared with the source as it was when this translation was marked up to date on %s.',
-											'translation-drift'
+											'stalelingo'
 										),
 										formatDateTime( diff.synced_at )
 									) }
@@ -153,7 +143,7 @@ export function DiffModal( {
 					) }
 					<DiffView fields={ diff.fields } headingLevel={ 2 } />
 					<HStack
-						className="tdrift-diff-actions"
+						className="stalelingo-diff-actions"
 						justify="flex-start"
 						wrap
 					>
@@ -165,7 +155,7 @@ export function DiffModal( {
 										diff.source.view_url ) as string
 								}
 							>
-								{ __( 'Open source', 'translation-drift' ) }
+								{ __( 'Open source', 'stalelingo' ) }
 							</Button>
 						) }
 						{ ( diff.translation.edit_url ||
@@ -177,10 +167,7 @@ export function DiffModal( {
 										diff.translation.view_url ) as string
 								}
 							>
-								{ __(
-									'Open translation',
-									'translation-drift'
-								) }
+								{ __( 'Open translation', 'stalelingo' ) }
 							</Button>
 						) }
 						{ diff.can_mark && diff.status !== 'in_sync' && (
@@ -191,10 +178,7 @@ export function DiffModal( {
 								disabled={ isMarking }
 								accessibleWhenDisabled
 							>
-								{ __(
-									'Mark as up to date',
-									'translation-drift'
-								) }
+								{ __( 'Mark as up to date', 'stalelingo' ) }
 							</Button>
 						) }
 					</HStack>

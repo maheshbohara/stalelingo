@@ -2,24 +2,24 @@
 /**
  * Tests for DriftEvaluator and Status.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
 use Brain\Monkey\Filters;
-use TranslationDrift\Domain\DriftEvaluator;
-use TranslationDrift\Domain\Evaluation;
-use TranslationDrift\Domain\Hasher;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\DriftEvaluator;
+use Stalelingo\Domain\Evaluation;
+use Stalelingo\Domain\Hasher;
+use Stalelingo\Domain\Status;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\DriftEvaluator
- * @covers \TranslationDrift\Domain\Evaluation
- * @covers \TranslationDrift\Domain\Status
+ * @covers \Stalelingo\Domain\DriftEvaluator
+ * @covers \Stalelingo\Domain\Evaluation
+ * @covers \Stalelingo\Domain\Status
  */
 final class DriftEvaluatorTest extends TestCase {
 
@@ -75,7 +75,7 @@ final class DriftEvaluatorTest extends TestCase {
 	}
 
 	public function test_material_change_filter_can_ignore_a_field(): void {
-		Filters\expectApplied( 'tdrift_is_material_change' )
+		Filters\expectApplied( 'stalelingo_is_material_change' )
 			->twice()
 			->andReturnUsing( static fn( bool $material, string $field ): bool => 'excerpt' !== $field );
 

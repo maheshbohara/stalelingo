@@ -12,11 +12,11 @@ import { findSource, openDashboard, rest, runCronUntil } from './helpers/wp';
 test.describe( 'Admin UI', () => {
 	test( 'settings page saves and passes axe', async ( { page } ) => {
 		await page.goto(
-			'/wp-admin/options-general.php?page=translation-drift-settings'
+			'/wp-admin/options-general.php?page=stalelingo-settings'
 		);
 		await expect(
 			page.getByRole( 'heading', {
-				name: 'Translation Drift settings',
+				name: 'Stalelingo settings',
 				level: 1,
 			} )
 		).toBeVisible();
@@ -54,7 +54,7 @@ test.describe( 'Admin UI', () => {
 		await page.goto( '/wp-admin/edit.php?post_type=post&lang=en' );
 
 		const outdated = page
-			.locator( '.column-tdrift-status .tdrift-badge-outdated' )
+			.locator( '.column-stalelingo-status .stalelingo-badge-outdated' )
 			.first();
 		await expect( outdated ).toBeVisible();
 		await expect( outdated ).toContainText( /Outdated/ );
@@ -64,13 +64,13 @@ test.describe( 'Admin UI', () => {
 			.getByLabel( 'Filter by translation status' )
 			.selectOption( 'outdated' );
 		await page.getByRole( 'button', { name: 'Filter' } ).click();
-		await expect( page ).toHaveURL( /tdrift_status=outdated/ );
+		await expect( page ).toHaveURL( /stalelingo_status=outdated/ );
 		const rows = page.locator( '#the-list tr' );
 		const count = await rows.count();
 		expect( count ).toBeGreaterThan( 0 );
 		for ( let i = 0; i < count; i++ ) {
 			await expect(
-				rows.nth( i ).locator( '.tdrift-badge-outdated' ).first()
+				rows.nth( i ).locator( '.stalelingo-badge-outdated' ).first()
 			).toBeVisible();
 		}
 
@@ -82,7 +82,7 @@ test.describe( 'Admin UI', () => {
 		await firstRow.locator( 'input[type="checkbox"]' ).first().check();
 		await page
 			.locator( '#bulk-action-selector-top' )
-			.selectOption( 'tdrift_mark_synced' );
+			.selectOption( 'stalelingo_mark_synced' );
 		await page.locator( '#doaction' ).click();
 		await expect(
 			page.getByText( /translations? marked as up to date/ )
@@ -92,14 +92,14 @@ test.describe( 'Admin UI', () => {
 		const row = page.locator( '#the-list tr', {
 			has: page.getByRole( 'link', { name: title, exact: true } ),
 		} );
-		await expect( row.locator( '.tdrift-badge-outdated' ) ).toHaveCount(
+		await expect( row.locator( '.stalelingo-badge-outdated' ) ).toHaveCount(
 			0
 		);
 	} );
 
 	test( 'admin bar shows the outdated count', async ( { page } ) => {
 		await page.goto( '/wp-admin/' );
-		const node = page.locator( '#wp-admin-bar-tdrift-outdated' );
+		const node = page.locator( '#wp-admin-bar-stalelingo-outdated' );
 		await expect( node ).toBeVisible();
 		await expect( node ).toContainText( /outdated translations?/ );
 	} );

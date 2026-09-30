@@ -1,4 +1,4 @@
-# Translation Drift – development tasks. Everything runs in Docker; the host needs Docker, Compose v2 and make.
+# Stalelingo – development tasks. Everything runs in Docker; the host needs Docker, Compose v2 and make.
 #
 #   make up && make setup      bilingual Polylang site at http://localhost:8080 (admin / password)
 #   make test                  all test suites
@@ -11,14 +11,14 @@ PROVIDER ?= polylang
 PHP_VERSION ?= 8.3
 WP_VERSION ?= latest
 N ?= 5000
-TYPES ?= post,page,tdrift_book
+TYPES ?= post,page,stalelingo_book
 
 DC      := docker compose
 RUN     := $(DC) run --rm -T
 PHP     := $(RUN) php
 NODE    := $(RUN) node
 WPCLI   := $(RUN) wpcli
-PLUGIN  := wp-content/plugins/translation-drift
+PLUGIN  := wp-content/plugins/stalelingo
 
 .DEFAULT_GOAL := help
 .PHONY: help up down reset setup logs shell composer npm deps build watch \
@@ -146,10 +146,10 @@ perf: ## Performance run: seeds 5000 posts x 3 languages, then measures baseline
 	$(WPCLI) php -d memory_limit=1G /usr/local/bin/wp eval-file $(PLUGIN)/bin/dev/perf.php
 	@echo "The dev site now holds the performance data; 'make reset' restores the small seed."
 
-pot: ## Generate languages/translation-drift.pot
+pot: ## Generate languages/stalelingo.pot
 	# The dashboard bundle (DataViews) is large; the JS parser needs more than the default 128 MB.
-	$(WPCLI) php -d memory_limit=1G /usr/local/bin/wp i18n make-pot $(PLUGIN) $(PLUGIN)/languages/translation-drift.pot \
-		--slug=translation-drift --domain=translation-drift \
+	$(WPCLI) php -d memory_limit=1G /usr/local/bin/wp i18n make-pot $(PLUGIN) $(PLUGIN)/languages/stalelingo.pot \
+		--slug=stalelingo --domain=stalelingo \
 		--exclude=node_modules,vendor,tests,dist,docker,bin,coverage,test-results,src
 
 zip: deps ## Build the WordPress.org zip in dist/

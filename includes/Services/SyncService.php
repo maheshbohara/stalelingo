@@ -2,20 +2,20 @@
 /**
  * Marking translations as up to date.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Repositories\EventRepository;
-use TranslationDrift\Services\Repositories\SnapshotRepository;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Repositories\EventRepository;
+use Stalelingo\Services\Repositories\SnapshotRepository;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * Records sync points: the source's field hashes at the moment a translation is marked up to date.
@@ -112,7 +112,7 @@ class SyncService {
 		 * @param int    $user_id        Acting user, 0 for the system.
 		 * @param string $context        'manual', 'baseline', 'created' or 'auto_clear'.
 		 */
-		do_action( 'tdrift_marked_synced', $translation_id, $source_id, $lang, $user_id, $context );
+		do_action( 'stalelingo_marked_synced', $translation_id, $source_id, $lang, $user_id, $context );
 
 		return true;
 	}

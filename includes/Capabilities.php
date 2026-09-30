@@ -2,17 +2,17 @@
 /**
  * Custom capability.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Grants and revokes the `tdrift_manage` capability.
+ * Grants and revokes the `stalelingo_manage` capability.
  *
  * @since 1.0.0
  */
@@ -23,7 +23,7 @@ final class Capabilities {
 	 *
 	 * @since 1.0.0
 	 */
-	public const MANAGE = 'tdrift_manage';
+	public const MANAGE = 'stalelingo_manage';
 
 	/**
 	 * Returns the roles that receive the capability on activation.
@@ -34,13 +34,13 @@ final class Capabilities {
 	 */
 	public static function roles(): array {
 		/**
-		 * Filters the roles granted the `tdrift_manage` capability on activation.
+		 * Filters the roles granted the `stalelingo_manage` capability on activation.
 		 *
 		 * @since 1.0.0
 		 *
 		 * @param list<string> $roles Role slugs. Default administrator and editor.
 		 */
-		$roles = apply_filters( 'tdrift_capability_roles', array( 'administrator', 'editor' ) );
+		$roles = apply_filters( 'stalelingo_capability_roles', array( 'administrator', 'editor' ) );
 
 		return array_values( array_filter( (array) $roles, 'is_string' ) );
 	}

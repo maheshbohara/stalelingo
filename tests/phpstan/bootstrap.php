@@ -2,10 +2,10 @@
 /**
  * PHPStan bootstrap: constants defined at runtime by the main plugin file.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
-define( 'TDRIFT_VERSION', '0.0.0' );
-define( 'TDRIFT_FILE', __FILE__ );
-define( 'TDRIFT_DIR', dirname( __DIR__, 2 ) . '/' );
-define( 'TDRIFT_URL', 'http://example.org/' );
+define( 'STALELINGO_VERSION', '0.0.0' );
+define( 'STALELINGO_FILE', __FILE__ );
+define( 'STALELINGO_DIR', dirname( __DIR__, 2 ) . '/' );
+define( 'STALELINGO_URL', 'http://example.org/' );

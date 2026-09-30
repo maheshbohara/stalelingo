@@ -2,22 +2,22 @@
 /**
  * Tests for PolylangProvider (Polylang API mocked).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Providers;
+namespace Stalelingo\Tests\Unit\Providers;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Providers\PolylangProvider;
-use TranslationDrift\Settings;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Providers\PolylangProvider;
+use Stalelingo\Settings;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Providers\PolylangProvider
+ * @covers \Stalelingo\Providers\PolylangProvider
  */
 final class PolylangProviderTest extends TestCase {
 
@@ -86,7 +86,7 @@ final class PolylangProviderTest extends TestCase {
 	}
 
 	public function test_source_language_filter(): void {
-		Filters\expectApplied( 'tdrift_source_language' )->with( 'en', 11 )->andReturn( 'es' );
+		Filters\expectApplied( 'stalelingo_source_language' )->with( 'en', 11 )->andReturn( 'es' );
 
 		$this->assertSame( 12, $this->provider()->get_source( 11 ) );
 	}

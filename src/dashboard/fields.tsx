@@ -18,7 +18,7 @@ import { langField } from './query';
  * DataViews fields: the title, one column per language, post type, author and last change,
  * plus filter-only fields for status, language and translator.
  *
- * Filtering, sorting and paging happen on the server (`tdrift/v1/status`).
+ * Filtering, sorting and paging happen on the server (`stalelingo/v1/status`).
  *
  * @param config     Dashboard settings.
  * @param onOpenDiff Opens the diff of a translation.
@@ -39,8 +39,8 @@ export function buildFields(
 			render: ( { item } ) => {
 				if ( item.source_lang === language.code ) {
 					return (
-						<span className="tdrift-source-cell">
-							{ __( 'Source', 'translation-drift' ) }
+						<span className="stalelingo-source-cell">
+							{ __( 'Source', 'stalelingo' ) }
 						</span>
 					);
 				}
@@ -53,7 +53,7 @@ export function buildFields(
 						<StatusBadge
 							lang={ language.code }
 							status="outdated"
-							action={ __( 'View changes', 'translation-drift' ) }
+							action={ __( 'View changes', 'stalelingo' ) }
 							onClick={ () => onOpenDiff( item, translation ) }
 						/>
 					);
@@ -73,13 +73,12 @@ export function buildFields(
 	return [
 		{
 			id: 'title',
-			label: __( 'Title', 'translation-drift' ),
+			label: __( 'Title', 'stalelingo' ),
 			enableHiding: false,
 			enableGlobalSearch: true,
 			getValue: ( { item } ) => item.title,
 			render: ( { item } ) => {
-				const title =
-					item.title || __( '(no title)', 'translation-drift' );
+				const title = item.title || __( '(no title)', 'stalelingo' );
 
 				return item.edit_url ? (
 					<a href={ item.edit_url }>{ title }</a>
@@ -91,7 +90,7 @@ export function buildFields(
 		...languageFields,
 		{
 			id: 'post_type',
-			label: __( 'Post type', 'translation-drift' ),
+			label: __( 'Post type', 'stalelingo' ),
 			enableSorting: false,
 			elements: config.postTypes.map( ( type ) => ( {
 				value: type.slug,
@@ -103,7 +102,7 @@ export function buildFields(
 		},
 		{
 			id: 'author',
-			label: __( 'Author', 'translation-drift' ),
+			label: __( 'Author', 'stalelingo' ),
 			enableSorting: false,
 			elements: config.authors.map( ( author ) => ( {
 				value: String( author.id ),
@@ -116,7 +115,7 @@ export function buildFields(
 		{
 			id: 'modified',
 			type: 'date',
-			label: __( 'Source last changed', 'translation-drift' ),
+			label: __( 'Source last changed', 'stalelingo' ),
 			filterBy: { operators: [ 'after', 'before' ] },
 			getValue: ( { item } ) => item.modified ?? '',
 			render: ( { item } ) => (
@@ -127,7 +126,7 @@ export function buildFields(
 		},
 		{
 			id: 'status',
-			label: __( 'Status', 'translation-drift' ),
+			label: __( 'Status', 'stalelingo' ),
 			enableHiding: false,
 			enableSorting: false,
 			elements: DRIFT_STATUSES.map( ( status ) => ( {
@@ -143,7 +142,7 @@ export function buildFields(
 		},
 		{
 			id: 'lang',
-			label: __( 'Language', 'translation-drift' ),
+			label: __( 'Language', 'stalelingo' ),
 			enableHiding: false,
 			enableSorting: false,
 			elements: config.languages.map( ( language ) => ( {
@@ -157,7 +156,7 @@ export function buildFields(
 		},
 		{
 			id: 'translator',
-			label: __( 'Translator', 'translation-drift' ),
+			label: __( 'Translator', 'stalelingo' ),
 			enableHiding: false,
 			enableSorting: false,
 			elements: config.translators.map( ( translator ) => ( {

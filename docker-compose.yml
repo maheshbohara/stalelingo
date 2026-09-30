@@ -1,12 +1,12 @@
-# Translation Drift development stack.
+# Stalelingo development stack.
 # Everything (build, lint, tests) runs inside these containers; the host needs only Docker, Compose v2 and make.
 
-name: translation-drift
+name: translation-drift # Compose project name, kept so the existing Docker volumes survive the rename.
 
 x-plugin-mount: &plugin-mount
   type: bind
   source: .
-  target: /var/www/html/wp-content/plugins/translation-drift
+  target: /var/www/html/wp-content/plugins/stalelingo
 
 x-mu-plugins-mount: &mu-plugins-mount
   type: bind

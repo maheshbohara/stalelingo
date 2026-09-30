@@ -46,9 +46,9 @@ export function EditorPlugin() {
 
 	return (
 		<PluginDocumentSettingPanel
-			name="tdrift-panel"
-			title={ __( 'Translation Drift', 'translation-drift' ) }
-			className="tdrift-editor-panel"
+			name="stalelingo-panel"
+			title={ __( 'Stalelingo', 'stalelingo' ) }
+			className="stalelingo-editor-panel"
 		>
 			<DriftPanel postId={ postId } refreshKey={ saves } />
 		</PluginDocumentSettingPanel>

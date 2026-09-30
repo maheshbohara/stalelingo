@@ -2,21 +2,21 @@
 /**
  * Drift recalculation.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\DriftEvaluator;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Repositories\EventRepository;
-use TranslationDrift\Services\Repositories\SnapshotRepository;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Domain\DriftEvaluator;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Repositories\EventRepository;
+use Stalelingo\Services\Repositories\SnapshotRepository;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * Recomputes the cached status of every language of a source post.
@@ -118,10 +118,10 @@ class DriftService {
 	/**
 	 * Writes a `missing` or `untracked` row.
 	 *
-	 * @param \WP_Post                                             $source         Source post.
-	 * @param string                                               $lang           Language code.
-	 * @param int                                                  $translation_id Translation ID, 0 when missing.
-	 * @param \TranslationDrift\Services\Repositories\SyncRow|null $row       Existing row.
+	 * @param \WP_Post                                       $source         Source post.
+	 * @param string                                         $lang           Language code.
+	 * @param int                                            $translation_id Translation ID, 0 when missing.
+	 * @param \Stalelingo\Services\Repositories\SyncRow|null $row       Existing row.
 	 */
 	private function write_without_sync_point( \WP_Post $source, string $lang, int $translation_id, $row ): void {
 		$status = Status::resolve( 0 !== $translation_id, false, null );
@@ -168,7 +168,7 @@ class DriftService {
 			 * @param string       $lang           Language code.
 			 * @param list<string> $changed_fields Changed field keys.
 			 */
-			do_action( 'tdrift_drift_detected', $translation_id, $source_id, $lang, $changed_fields );
+			do_action( 'stalelingo_drift_detected', $translation_id, $source_id, $lang, $changed_fields );
 		} elseif ( Status::InSync === $to && Status::Outdated === $from ) {
 			// The source changed back to what the translation was synced against.
 			$this->events->log( EventRepository::DRIFT_RESOLVED, $translation_id, $source_id, $lang );

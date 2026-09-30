@@ -3,14 +3,14 @@
  * Development only: seeds translated content.
  *
  * Run with `wp eval-file bin/dev/seed.php <provider> <count> [<types>]`. For every
- * post type (post, page, tdrift_book, or the comma-separated <types>) it creates <count> English sources with
+ * post type (post, page, stalelingo_book, or the comma-separated <types>) it creates <count> English sources with
  * French translations for all of them and Spanish translations for half, so
  * the site has both translated and missing languages. FR/ES translations are
  * authored by translator-fr / translator-es.
  *
- * Seed posts are tagged with the `_tdrift_seed` meta key so re-runs are idempotent.
+ * Seed posts are tagged with the `_stalelingo_seed` meta key so re-runs are idempotent.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 $provider = $args[0] ?? 'polylang';
 $count    = max( 1, (int) ( $args[1] ?? 6 ) );
-$types    = array_values( array_intersect( array( 'post', 'page', 'tdrift_book' ), explode( ',', (string) ( $args[2] ?? 'post,page,tdrift_book' ) ) ) );
+$types    = array_values( array_intersect( array( 'post', 'page', 'stalelingo_book' ), explode( ',', (string) ( $args[2] ?? 'post,page,stalelingo_book' ) ) ) );
 
 /**
  * Sets a post's language and links it to its translation group.
@@ -84,7 +84,7 @@ foreach ( $types as $post_type ) {
 	$existing = get_posts(
 		array(
 			'post_type'   => $post_type,
-			'meta_key'    => '_tdrift_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
+			'meta_key'    => '_stalelingo_seed', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
 			'fields'      => 'ids',
 			'numberposts' => -1,
 			'post_status' => 'any',
@@ -105,7 +105,7 @@ foreach ( $types as $post_type ) {
 					'post_content' => "<!-- wp:paragraph -->\n<p>{$texts[ $lang ][1]}</p>\n<!-- /wp:paragraph -->",
 					'post_excerpt' => $texts[ $lang ][1],
 					'post_author'  => 'en' === $lang ? 1 : $translators[ $lang ],
-					'meta_input'   => array( '_tdrift_seed' => 1 ),
+					'meta_input'   => array( '_stalelingo_seed' => 1 ),
 				),
 				true
 			);
@@ -123,10 +123,10 @@ foreach ( $types as $post_type ) {
 if ( function_exists( 'update_field' ) ) {
 	foreach ( get_posts(
 		array(
-			'post_type'   => 'tdrift_book',
+			'post_type'   => 'stalelingo_book',
 			'numberposts' => -1,
 			'lang'        => '',
-			'meta_key'    => '_tdrift_seed',
+			'meta_key'    => '_stalelingo_seed',
 		)
 	) as $book ) { // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key
 		if ( '' === (string) get_field( 'book_subtitle', $book->ID, false ) ) {
@@ -180,7 +180,7 @@ $elementor_data = static function ( string $title, string $text, string $button 
 if ( ! get_posts(
 	array(
 		'post_type'   => 'page',
-		'meta_key'    => '_tdrift_seed_elementor',
+		'meta_key'    => '_stalelingo_seed_elementor',
 		'lang'        => '',
 		'fields'      => 'ids',
 		'post_status' => 'any',
@@ -199,11 +199,11 @@ if ( ! get_posts(
 				'post_content' => "<p>{$copy[1]}</p>",
 				'post_author'  => 'en' === $lang ? 1 : $translators['fr'],
 				'meta_input'   => array(
-					'_tdrift_seed'             => 1,
-					'_tdrift_seed_elementor'   => 1,
-					'_elementor_edit_mode'     => 'builder',
-					'_elementor_template_type' => 'wp-page',
-					'_elementor_data'          => wp_slash( $elementor_data( $copy[0], $copy[1], $copy[2] ) ),
+					'_stalelingo_seed'           => 1,
+					'_stalelingo_seed_elementor' => 1,
+					'_elementor_edit_mode'       => 'builder',
+					'_elementor_template_type'   => 'wp-page',
+					'_elementor_data'            => wp_slash( $elementor_data( $copy[0], $copy[1], $copy[2] ) ),
 				),
 			)
 		);

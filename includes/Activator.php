@@ -2,17 +2,17 @@
 /**
  * Activation handler.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Services\PostHooks;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Services\PostHooks;
 
 /**
  * Creates tables and grants capabilities on activation.
@@ -86,6 +86,6 @@ final class Activator {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'tdrift_activated_site' );
+		do_action( 'stalelingo_activated_site' );
 	}
 }

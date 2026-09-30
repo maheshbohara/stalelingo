@@ -2,23 +2,23 @@
 /**
  * Deletion, language changes and maintenance.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Services\PostHooks;
+use Stalelingo\Domain\Status;
+use Stalelingo\Services\PostHooks;
 
 /**
- * @covers \TranslationDrift\Services\PostHooks
- * @covers \TranslationDrift\Services\DriftService
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
- * @covers \TranslationDrift\Services\Repositories\SnapshotRepository
- * @covers \TranslationDrift\Services\Repositories\EventRepository
- * @covers \TranslationDrift\Providers\PolylangProvider
+ * @covers \Stalelingo\Services\PostHooks
+ * @covers \Stalelingo\Services\DriftService
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Services\Repositories\SnapshotRepository
+ * @covers \Stalelingo\Services\Repositories\EventRepository
+ * @covers \Stalelingo\Providers\PolylangProvider
  */
 final class LifecycleTest extends TestCase {
 
@@ -111,7 +111,7 @@ final class LifecycleTest extends TestCase {
 
 		$this->container()->sync_repository()->delete_ids( array( $sync_id ) );
 		$wpdb->update(
-			\TranslationDrift\Database\Schema::table( \TranslationDrift\Database\Schema::TABLE_EVENTS ),
+			\Stalelingo\Database\Schema::table( \Stalelingo\Database\Schema::TABLE_EVENTS ),
 			array( 'created_at' => '2000-01-01 00:00:00' ),
 			array( 'translation_id' => $group['fr'] )
 		);
@@ -123,7 +123,7 @@ final class LifecycleTest extends TestCase {
 	}
 
 	public function test_snapshot_field_cap(): void {
-		add_filter( 'tdrift_snapshot_max_fields', static fn(): int => 1 );
+		add_filter( 'stalelingo_snapshot_max_fields', static fn(): int => 1 );
 		$this->set_settings( array( 'meta_keys' => array( 'a', 'b' ) ) );
 		$group = $this->create_group( array( 'en', 'fr' ) );
 		update_post_meta( $group['en'], 'a', '1' );

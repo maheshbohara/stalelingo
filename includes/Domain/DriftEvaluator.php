@@ -2,12 +2,12 @@
 /**
  * Drift evaluation.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Domain;
+namespace Stalelingo\Domain;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +30,7 @@ final class DriftEvaluator {
 	 *
 	 * @param array<string, string> $baseline Field hashes at the sync point.
 	 * @param array<string, string> $current  Current field hashes of the source.
-	 * @param array<string, mixed>  $context  Passed to the `tdrift_is_material_change` filter
+	 * @param array<string, mixed>  $context  Passed to the `stalelingo_is_material_change` filter
 	 *                                        (translation_id, source_id, lang).
 	 */
 	public function evaluate( array $baseline, array $current, array $context = array() ): Evaluation {
@@ -53,7 +53,7 @@ final class DriftEvaluator {
 			 * @param string               $field       Field key, e.g. 'title' or 'meta:subtitle'.
 			 * @param array<string, mixed> $context     translation_id, source_id and lang when known.
 			 */
-			if ( apply_filters( 'tdrift_is_material_change', true, (string) $field, $context ) ) {
+			if ( apply_filters( 'stalelingo_is_material_change', true, (string) $field, $context ) ) {
 				$changed[] = (string) $field;
 			}
 		}//end foreach

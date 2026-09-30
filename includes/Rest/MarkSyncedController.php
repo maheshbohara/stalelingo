@@ -1,19 +1,19 @@
 <?php
 /**
- * `tdrift/v1/mark-synced` route.
+ * `stalelingo/v1/mark-synced` route.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\SyncService;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\SyncService;
 
 /**
  * Marks one or more translations as up to date.
@@ -68,7 +68,7 @@ class MarkSyncedController extends Controller {
 					'permission_callback' => array( $this, 'create_item_permissions_check' ),
 					'args'                => array(
 						'ids' => array(
-							'description' => __( 'Translation post IDs.', 'translation-drift' ),
+							'description' => __( 'Translation post IDs.', 'stalelingo' ),
 							'type'        => 'array',
 							'items'       => array(
 								'type'    => 'integer',
@@ -105,7 +105,7 @@ class MarkSyncedController extends Controller {
 			if ( ! $this->permissions->can_mark_synced( $user_id, (int) $id ) ) {
 				return $this->forbidden(
 					/* translators: %d: post ID. */
-					sprintf( __( 'Sorry, you are not allowed to mark post %d as up to date.', 'translation-drift' ), (int) $id )
+					sprintf( __( 'Sorry, you are not allowed to mark post %d as up to date.', 'stalelingo' ), (int) $id )
 				);
 			}
 		}
@@ -132,8 +132,8 @@ class MarkSyncedController extends Controller {
 			if ( ! $this->syncer->mark_synced( $id, $user_id, SyncService::CONTEXT_MANUAL ) ) {
 				$failed[] = array(
 					'id'      => $id,
-					'code'    => 'tdrift_not_translation',
-					'message' => __( 'This post is not a translation of a tracked source.', 'translation-drift' ),
+					'code'    => 'stalelingo_not_translation',
+					'message' => __( 'This post is not a translation of a tracked source.', 'stalelingo' ),
 				);
 				continue;
 			}
@@ -165,16 +165,16 @@ class MarkSyncedController extends Controller {
 		if ( null === $this->schema ) {
 			$this->schema = array(
 				'$schema'    => 'http://json-schema.org/draft-04/schema#',
-				'title'      => 'tdrift-mark-synced',
+				'title'      => 'stalelingo-mark-synced',
 				'type'       => 'object',
 				'properties' => array(
 					'updated'      => array(
-						'description' => __( 'Translations marked as up to date.', 'translation-drift' ),
+						'description' => __( 'Translations marked as up to date.', 'stalelingo' ),
 						'type'        => 'array',
 						'items'       => array( 'type' => 'integer' ),
 					),
 					'failed'       => array(
-						'description' => __( 'Translations that could not be marked, with the reason.', 'translation-drift' ),
+						'description' => __( 'Translations that could not be marked, with the reason.', 'stalelingo' ),
 						'type'        => 'array',
 						'items'       => array(
 							'type'       => 'object',
@@ -186,7 +186,7 @@ class MarkSyncedController extends Controller {
 						),
 					),
 					'translations' => array(
-						'description'          => __( 'New status of each updated translation, keyed by ID.', 'translation-drift' ),
+						'description'          => __( 'New status of each updated translation, keyed by ID.', 'stalelingo' ),
 						'type'                 => 'object',
 						'additionalProperties' => ItemPresenter::translation_schema(),
 					),

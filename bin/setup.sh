@@ -8,7 +8,7 @@ set -euo pipefail
 PROVIDER="${PROVIDER:-polylang}"
 WP_PORT="${WP_PORT:-8080}"
 URL="http://localhost:${WP_PORT}"
-PLUGIN_DIR="wp-content/plugins/translation-drift"
+PLUGIN_DIR="wp-content/plugins/stalelingo"
 
 wp() { command wp --quiet "$@"; }
 
@@ -26,7 +26,7 @@ fi
 
 echo "==> Installing WordPress"
 if ! wp core is-installed 2>/dev/null; then
-	wp core install --url="$URL" --title="Translation Drift Dev" \
+	wp core install --url="$URL" --title="Stalelingo Dev" \
 		--admin_user=admin --admin_password=password --admin_email=admin@example.test --skip-email
 fi
 wp rewrite structure '/%postname%/' --hard
@@ -62,8 +62,8 @@ case "$PROVIDER" in
 		;;
 esac
 
-echo "==> Activating Translation Drift"
-wp plugin activate translation-drift
+echo "==> Activating Stalelingo"
+wp plugin activate stalelingo
 
 echo "==> Configuring languages (EN default, FR, ES)"
 wp eval-file "$PLUGIN_DIR/bin/dev/languages.php" "$PROVIDER"
@@ -86,7 +86,7 @@ wp eval-file "$PLUGIN_DIR/bin/dev/seed.php" "$PROVIDER" "${SEED_N:-6}"
 run_jobs() {
 	for _ in $(seq 1 500); do
 		command wp cron event run --due-now --quiet >/dev/null 2>&1 || true
-		pending=$(command wp cron event list --fields=hook --format=csv 2>/dev/null | grep -cE '^tdrift_(baseline|recalc)' || true)
+		pending=$(command wp cron event list --fields=hook --format=csv 2>/dev/null | grep -cE '^stalelingo_(baseline|recalc)' || true)
 		[[ "$pending" == "0" ]] && return 0
 	done
 	echo "Jobs still pending after 500 runs." >&2
@@ -94,14 +94,14 @@ run_jobs() {
 }
 
 echo "==> Building the baseline"
-wp eval 'TranslationDrift\Plugin::container()->baseline()->start_baseline();'
+wp eval 'Stalelingo\Plugin::container()->baseline()->start_baseline();'
 run_jobs
 
 echo "==> Editing some sources so their translations drift"
 wp eval-file "$PLUGIN_DIR/bin/dev/make-drift.php"
 run_jobs
 
-command wp eval 'foreach ( TranslationDrift\Plugin::container()->sync_repository()->count_by_status() as $s => $n ) { WP_CLI::log( sprintf( "  %-10s %d", $s, $n ) ); }'
+command wp eval 'foreach ( Stalelingo\Plugin::container()->sync_repository()->count_by_status() as $s => $n ) { WP_CLI::log( sprintf( "  %-10s %d", $s, $n ) ); }'
 
 echo
 echo "Ready: $URL/wp-admin (admin / password). Mailpit: http://localhost:${MAILPIT_PORT:-8025}"

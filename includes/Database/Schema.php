@@ -2,12 +2,12 @@
 /**
  * Custom table definitions.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Database;
+namespace Stalelingo\Database;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,9 +23,9 @@ final class Schema {
 	 *
 	 * @since 1.0.0
 	 */
-	public const TABLE_SYNC      = 'tdrift_sync';
-	public const TABLE_SNAPSHOTS = 'tdrift_snapshots';
-	public const TABLE_EVENTS    = 'tdrift_events';
+	public const TABLE_SYNC      = 'stalelingo_sync';
+	public const TABLE_SNAPSHOTS = 'stalelingo_snapshots';
+	public const TABLE_EVENTS    = 'stalelingo_events';
 
 	/**
 	 * Returns the full name of a plugin table for the current site.
@@ -58,7 +58,7 @@ final class Schema {
 	/**
 	 * Returns the `CREATE TABLE` statements in the format `dbDelta()` expects.
 	 *
-	 * One `tdrift_sync` row exists per (source, language) pair. A row whose
+	 * One `stalelingo_sync` row exists per (source, language) pair. A row whose
 	 * `translation_id` is 0 records a missing translation.
 	 *
 	 * @since 1.0.0

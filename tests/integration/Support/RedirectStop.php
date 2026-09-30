@@ -2,12 +2,12 @@
 /**
  * Test helper.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration\Support;
+namespace Stalelingo\Tests\Integration\Support;
 
 /**
  * Stops a handler at its redirect instead of exiting.

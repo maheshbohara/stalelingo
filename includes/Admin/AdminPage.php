@@ -1,20 +1,20 @@
 <?php
 /**
- * Tools → Translation Drift screen.
+ * Tools → Stalelingo screen.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Capabilities;
-use TranslationDrift\Container;
-use TranslationDrift\Plugin;
-use TranslationDrift\Rest\Controller;
+use Stalelingo\Capabilities;
+use Stalelingo\Container;
+use Stalelingo\Plugin;
+use Stalelingo\Rest\Controller;
 
 /**
  * Registers the dashboard screen and loads its assets on that screen only.
@@ -28,14 +28,14 @@ final class AdminPage {
 	 *
 	 * @since 1.0.0
 	 */
-	public const SLUG = 'translation-drift';
+	public const SLUG = 'stalelingo';
 
 	/**
 	 * Script and style handle of the dashboard bundle.
 	 *
 	 * @since 1.0.0
 	 */
-	public const HANDLE = 'tdrift-dashboard';
+	public const HANDLE = 'stalelingo-dashboard';
 
 	/**
 	 * Hook suffix returned by add_management_page().
@@ -72,8 +72,8 @@ final class AdminPage {
 	 */
 	public function add_page(): void {
 		$hook_suffix = add_management_page(
-			__( 'Translation Drift', 'translation-drift' ),
-			__( 'Translation Drift', 'translation-drift' ),
+			__( 'Stalelingo', 'stalelingo' ),
+			__( 'Stalelingo', 'stalelingo' ),
 			Capabilities::MANAGE,
 			self::SLUG,
 			array( $this, 'render' )
@@ -114,7 +114,7 @@ final class AdminPage {
 		}
 
 		// JSON_HEX_TAG keeps user-controlled names (authors, translators) from ever closing the script tag.
-		wp_add_inline_script( self::HANDLE, 'window.tdriftDashboard = ' . wp_json_encode( $this->config(), JSON_HEX_TAG | JSON_HEX_AMP ) . ';', 'before' );
+		wp_add_inline_script( self::HANDLE, 'window.stalelingoDashboard = ' . wp_json_encode( $this->config(), JSON_HEX_TAG | JSON_HEX_AMP ) . ';', 'before' );
 	}
 
 	/**
@@ -206,12 +206,12 @@ final class AdminPage {
 	 */
 	public function render(): void {
 		if ( ! current_user_can( Capabilities::MANAGE ) ) {
-			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'translation-drift' ), 403 );
+			wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'stalelingo' ), 403 );
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Translation Drift', 'translation-drift' ); ?></h1>
-			<div id="tdrift-dashboard-root" class="tdrift-dashboard"></div>
+			<h1><?php esc_html_e( 'Stalelingo', 'stalelingo' ); ?></h1>
+			<div id="stalelingo-dashboard-root" class="stalelingo-dashboard"></div>
 		</div>
 		<?php
 	}

@@ -36,7 +36,7 @@ describe( 'DiffModal', () => {
 			name: 'Changes to “Hello world” for Français',
 		} );
 		expect( mockFetch ).toHaveBeenCalledWith( {
-			path: '/tdrift/v1/diff/11?split=true',
+			path: '/stalelingo/v1/diff/11?split=true',
 		} );
 		expect(
 			screen.getByRole( 'heading', { level: 2, name: 'Title' } )
@@ -110,7 +110,7 @@ describe( 'DiffModal', () => {
 		await waitFor( () => expect( onClose ).toHaveBeenCalled() );
 		expect( mockFetch ).toHaveBeenCalledWith(
 			expect.objectContaining( {
-				path: '/tdrift/v1/mark-synced',
+				path: '/stalelingo/v1/mark-synced',
 				data: { ids: [ 11 ] },
 			} )
 		);

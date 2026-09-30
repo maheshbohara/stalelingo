@@ -2,16 +2,16 @@
 /**
  * Permission checks.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Capabilities;
+use Stalelingo\Capabilities;
 
 /**
  * Who may do what.
@@ -71,6 +71,6 @@ class Permissions {
 		 * @param int  $user_id        User ID.
 		 * @param int  $translation_id Translation post ID.
 		 */
-		return (bool) apply_filters( 'tdrift_can_mark_synced', $allowed, $user_id, $translation_id );
+		return (bool) apply_filters( 'stalelingo_can_mark_synced', $allowed, $user_id, $translation_id );
 	}
 }

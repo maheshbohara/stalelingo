@@ -73,12 +73,12 @@ interface OpenDiff {
 }
 
 interface Props {
-	/** Settings; defaults to `window.tdriftDashboard`. */
+	/** Settings; defaults to `window.stalelingoDashboard`. */
 	config?: DashboardConfig;
 }
 
 /**
- * Tools → Translation Drift: summary counts and a DataViews matrix of sources × languages.
+ * Tools → Stalelingo: summary counts and a DataViews matrix of sources × languages.
  *
  * @param props        Props.
  * @param props.config Dashboard settings.
@@ -140,7 +140,7 @@ export function Dashboard( { config: configProp }: Props ) {
 					e,
 					__(
 						'Translation status could not be loaded.',
-						'translation-drift'
+						'stalelingo'
 					)
 				);
 				setError( message );
@@ -211,7 +211,7 @@ export function Dashboard( { config: configProp }: Props ) {
 		() => [
 			{
 				id: 'mark-synced',
-				label: __( 'Mark as up to date', 'translation-drift' ),
+				label: __( 'Mark as up to date', 'stalelingo' ),
 				isPrimary: true,
 				supportsBulk: true,
 				isEligible: ( item ) =>
@@ -232,7 +232,7 @@ export function Dashboard( { config: configProp }: Props ) {
 										/* translators: 1: number marked. 2: number that failed. */
 										__(
 											'%1$d translations marked as up to date; %2$d could not be marked.',
-											'translation-drift'
+											'stalelingo'
 										),
 										count,
 										result.failed.length
@@ -243,7 +243,7 @@ export function Dashboard( { config: configProp }: Props ) {
 											'%d translation marked as up to date.',
 											'%d translations marked as up to date.',
 											count,
-											'translation-drift'
+											'stalelingo'
 										),
 										count
 									)
@@ -256,7 +256,7 @@ export function Dashboard( { config: configProp }: Props ) {
 								e,
 								__(
 									'The translations could not be updated.',
-									'translation-drift'
+									'stalelingo'
 								)
 							)
 						);
@@ -286,10 +286,7 @@ export function Dashboard( { config: configProp }: Props ) {
 		try {
 			const all = await fetchAllStatus( query );
 			const date = new Date().toISOString().slice( 0, 10 );
-			downloadCsv(
-				toCsv( all, langs ),
-				`translation-drift-${ date }.csv`
-			);
+			downloadCsv( toCsv( all, langs ), `stalelingo-${ date }.csv` );
 			speak(
 				sprintf(
 					/* translators: %d: number of posts. */
@@ -297,7 +294,7 @@ export function Dashboard( { config: configProp }: Props ) {
 						'Exported %d post.',
 						'Exported %d posts.',
 						all.length,
-						'translation-drift'
+						'stalelingo'
 					),
 					all.length
 				)
@@ -305,10 +302,7 @@ export function Dashboard( { config: configProp }: Props ) {
 		} catch ( e ) {
 			announce(
 				'error',
-				errorMessage(
-					e,
-					__( 'The export failed.', 'translation-drift' )
-				)
+				errorMessage( e, __( 'The export failed.', 'stalelingo' ) )
 			);
 		}
 		setIsExporting( false );
@@ -324,7 +318,7 @@ export function Dashboard( { config: configProp }: Props ) {
 				'info',
 				__(
 					'The baseline build is queued. It runs in the background.',
-					'translation-drift'
+					'stalelingo'
 				)
 			);
 		} catch ( e ) {
@@ -334,7 +328,7 @@ export function Dashboard( { config: configProp }: Props ) {
 					e,
 					__(
 						'The baseline build could not be started.',
-						'translation-drift'
+						'stalelingo'
 					)
 				)
 			);
@@ -343,11 +337,11 @@ export function Dashboard( { config: configProp }: Props ) {
 
 	if ( ! config.ready ) {
 		return (
-			<div className="tdrift-dashboard-body">
+			<div className="stalelingo-dashboard-body">
 				<Notice status="warning" isDismissible={ false }>
 					{ __(
-						'Translation Drift needs Polylang or WPML with at least one language.',
-						'translation-drift'
+						'Stalelingo needs Polylang or WPML with at least one language.',
+						'stalelingo'
 					) }
 				</Notice>
 			</div>
@@ -362,7 +356,7 @@ export function Dashboard( { config: configProp }: Props ) {
 		Object.values( summary.totals ).every( ( n ) => ! n );
 
 	return (
-		<div className="tdrift-dashboard-body">
+		<div className="stalelingo-dashboard-body">
 			{ notice && (
 				<Notice
 					status={ notice.status }
@@ -377,7 +371,7 @@ export function Dashboard( { config: configProp }: Props ) {
 						/* translators: %d: number of posts processed so far. */
 						__(
 							'Building the baseline in the background: %d posts checked so far.',
-							'translation-drift'
+							'stalelingo'
 						),
 						summary.baseline.processed
 					) }
@@ -388,11 +382,11 @@ export function Dashboard( { config: configProp }: Props ) {
 					<p>
 						{ __(
 							'No translations are tracked yet. Build the baseline to start: every existing translation is marked as up to date with its source.',
-							'translation-drift'
+							'stalelingo'
 						) }
 					</p>
 					<Button variant="primary" onClick={ buildBaseline }>
-						{ __( 'Build baseline', 'translation-drift' ) }
+						{ __( 'Build baseline', 'stalelingo' ) }
 					</Button>
 				</Notice>
 			) }
@@ -403,7 +397,7 @@ export function Dashboard( { config: configProp }: Props ) {
 				<Notice status="error" isDismissible={ false }>
 					<p>{ error }</p>
 					<Button variant="secondary" onClick={ reload }>
-						{ __( 'Try again', 'translation-drift' ) }
+						{ __( 'Try again', 'stalelingo' ) }
 					</Button>
 				</Notice>
 			) }
@@ -418,7 +412,7 @@ export function Dashboard( { config: configProp }: Props ) {
 				paginationInfo={ pagination }
 				defaultLayouts={ { table: {} } }
 				config={ { perPageSizes: PER_PAGE_SIZES } }
-				searchLabel={ __( 'Search titles', 'translation-drift' ) }
+				searchLabel={ __( 'Search titles', 'stalelingo' ) }
 				header={
 					<Button
 						variant="secondary"
@@ -428,7 +422,7 @@ export function Dashboard( { config: configProp }: Props ) {
 						disabled={ isExporting || pagination.totalItems === 0 }
 						accessibleWhenDisabled
 					>
-						{ __( 'Export CSV', 'translation-drift' ) }
+						{ __( 'Export CSV', 'stalelingo' ) }
 					</Button>
 				}
 				empty={
@@ -436,11 +430,11 @@ export function Dashboard( { config: configProp }: Props ) {
 						{ hasFilters
 							? __(
 									'No posts match these filters.',
-									'translation-drift'
+									'stalelingo'
 								)
 							: __(
 									'No tracked translations yet.',
-									'translation-drift'
+									'stalelingo'
 								) }
 					</p>
 				}

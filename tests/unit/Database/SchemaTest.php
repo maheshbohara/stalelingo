@@ -2,18 +2,18 @@
 /**
  * Tests for Schema.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Database;
+namespace Stalelingo\Tests\Unit\Database;
 
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Database\Schema;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Database\Schema
+ * @covers \Stalelingo\Database\Schema
  */
 final class SchemaTest extends TestCase {
 
@@ -29,7 +29,7 @@ final class SchemaTest extends TestCase {
 
 	public function test_table_names_use_the_site_prefix(): void {
 		$this->assertSame(
-			array( 'wp_7_tdrift_sync', 'wp_7_tdrift_snapshots', 'wp_7_tdrift_events' ),
+			array( 'wp_7_stalelingo_sync', 'wp_7_stalelingo_snapshots', 'wp_7_stalelingo_events' ),
 			Schema::tables()
 		);
 	}
@@ -39,7 +39,7 @@ final class SchemaTest extends TestCase {
 
 		$this->assertCount( 3, $statements );
 		foreach ( $statements as $sql ) {
-			$this->assertMatchesRegularExpression( '/^CREATE TABLE wp_7_tdrift_\w+ \(\n/', $sql );
+			$this->assertMatchesRegularExpression( '/^CREATE TABLE wp_7_stalelingo_\w+ \(\n/', $sql );
 			// dbDelta() requires exactly two spaces between PRIMARY KEY and the column list.
 			$this->assertStringContainsString( 'PRIMARY KEY  (id)', $sql );
 			$this->assertStringEndsWith( ') DEFAULT CHARSET=utf8mb4;', $sql );

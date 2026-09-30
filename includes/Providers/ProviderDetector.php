@@ -2,12 +2,12 @@
 /**
  * Multilingual plugin detection.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Providers;
+namespace Stalelingo\Providers;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -91,7 +91,7 @@ class ProviderDetector {
 		 * @param string|null  $provider  'polylang', 'wpml', or null when neither is active.
 		 * @param list<string> $available Providers whose APIs are loaded.
 		 */
-		$provider = apply_filters( 'tdrift_provider', $provider, $available );
+		$provider = apply_filters( 'stalelingo_provider', $provider, $available );
 
 		return is_string( $provider ) && in_array( $provider, $available, true ) ? $provider : null;
 	}

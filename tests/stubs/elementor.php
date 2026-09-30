@@ -2,7 +2,7 @@
 /**
  * Minimal Elementor stubs for static analysis.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 namespace Elementor;

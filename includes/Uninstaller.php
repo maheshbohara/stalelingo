@@ -2,17 +2,17 @@
 /**
  * Data removal.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Database\Schema;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Database\Schema;
 
 /**
  * Removes plugin data when the site owner opted in.

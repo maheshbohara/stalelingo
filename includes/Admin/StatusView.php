@@ -2,16 +2,16 @@
 /**
  * Status labels and badges.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
+use Stalelingo\Domain\Status;
 
 /**
  * Renders statuses and field names for the admin UI.
@@ -32,10 +32,10 @@ final class StatusView {
 	 */
 	public static function label( Status $status ): string {
 		return match ( $status ) {
-			Status::InSync    => __( 'Up to date', 'translation-drift' ),
-			Status::Outdated  => __( 'Outdated', 'translation-drift' ),
-			Status::Missing   => __( 'Missing', 'translation-drift' ),
-			Status::Untracked => __( 'Not tracked yet', 'translation-drift' ),
+			Status::InSync    => __( 'Up to date', 'stalelingo' ),
+			Status::Outdated  => __( 'Outdated', 'stalelingo' ),
+			Status::Missing   => __( 'Missing', 'stalelingo' ),
+			Status::Untracked => __( 'Not tracked yet', 'stalelingo' ),
 		};
 	}
 
@@ -66,14 +66,14 @@ final class StatusView {
 	 */
 	public static function badge( string $lang, Status $status, ?string $url = null ): string {
 		/* translators: 1: language code, e.g. FR. 2: translation status, e.g. Outdated. */
-		$full  = sprintf( __( '%1$s: %2$s', 'translation-drift' ), strtoupper( $lang ), self::label( $status ) );
+		$full  = sprintf( __( '%1$s: %2$s', 'stalelingo' ), strtoupper( $lang ), self::label( $status ) );
 		$inner = sprintf(
-			'<span aria-hidden="true">%1$s <span class="tdrift-badge-symbol">%2$s</span></span><span class="screen-reader-text">%3$s</span>',
+			'<span aria-hidden="true">%1$s <span class="stalelingo-badge-symbol">%2$s</span></span><span class="screen-reader-text">%3$s</span>',
 			esc_html( strtoupper( $lang ) ),
 			esc_html( self::symbol( $status ) ),
 			esc_html( $full )
 		);
-		$class = 'tdrift-badge tdrift-badge-' . str_replace( '_', '-', $status->value );
+		$class = 'stalelingo-badge stalelingo-badge-' . str_replace( '_', '-', $status->value );
 
 		if ( null !== $url && '' !== $url ) {
 			return sprintf( '<a class="%1$s" href="%2$s" title="%3$s">%4$s</a>', esc_attr( $class ), esc_url( $url ), esc_attr( $full ), $inner );
@@ -103,7 +103,7 @@ final class StatusView {
 		foreach ( $labels as $type => $label ) {
 			if ( $counts[ $label ] > 1 ) {
 				/* translators: 1: post type name, e.g. Events. 2: post type key, e.g. mec-events. */
-				$labels[ $type ] = sprintf( __( '%1$s (%2$s)', 'translation-drift' ), $label, $type );
+				$labels[ $type ] = sprintf( __( '%1$s (%2$s)', 'stalelingo' ), $label, $type );
 			}
 		}
 
@@ -119,12 +119,12 @@ final class StatusView {
 	 */
 	public static function field_label( string $field ): string {
 		$labels = array(
-			'title'          => __( 'Title', 'translation-drift' ),
-			'content'        => __( 'Content', 'translation-drift' ),
-			'excerpt'        => __( 'Excerpt', 'translation-drift' ),
-			'slug'           => __( 'Slug', 'translation-drift' ),
-			'featured_image' => __( 'Featured image', 'translation-drift' ),
-			'elementor'      => __( 'Elementor content', 'translation-drift' ),
+			'title'          => __( 'Title', 'stalelingo' ),
+			'content'        => __( 'Content', 'stalelingo' ),
+			'excerpt'        => __( 'Excerpt', 'stalelingo' ),
+			'slug'           => __( 'Slug', 'stalelingo' ),
+			'featured_image' => __( 'Featured image', 'stalelingo' ),
+			'elementor'      => __( 'Elementor content', 'stalelingo' ),
 		);
 
 		if ( isset( $labels[ $field ] ) ) {
@@ -133,10 +133,10 @@ final class StatusView {
 			$acf_field = function_exists( 'acf_get_field' ) ? acf_get_field( substr( $field, 4 ) ) : false;
 			$name      = is_array( $acf_field ) && ! empty( $acf_field['label'] ) ? (string) $acf_field['label'] : substr( $field, 4 );
 			/* translators: %s: ACF field label. */
-			$label = sprintf( __( 'Field “%s”', 'translation-drift' ), $name );
+			$label = sprintf( __( 'Field “%s”', 'stalelingo' ), $name );
 		} elseif ( str_starts_with( $field, 'meta:' ) ) {
 			/* translators: %s: custom field (post meta) key. */
-			$label = sprintf( __( 'Custom field “%s”', 'translation-drift' ), substr( $field, 5 ) );
+			$label = sprintf( __( 'Custom field “%s”', 'stalelingo' ), substr( $field, 5 ) );
 		} else {
 			$label = $field;
 		}
@@ -149,6 +149,6 @@ final class StatusView {
 		 * @param string $label Label.
 		 * @param string $field Field key.
 		 */
-		return (string) apply_filters( 'tdrift_field_label', $label, $field );
+		return (string) apply_filters( 'stalelingo_field_label', $label, $field );
 	}
 }

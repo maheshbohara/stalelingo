@@ -2,12 +2,12 @@
 /**
  * Value normalization.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Domain;
+namespace Stalelingo\Domain;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -140,7 +140,7 @@ final class Normalizer {
 		 *
 		 * @param array<string, list<string>> $map Attribute names keyed by block name.
 		 */
-		$map = apply_filters( 'tdrift_block_text_attributes', self::DEFAULT_BLOCK_TEXT_ATTRIBUTES );
+		$map = apply_filters( 'stalelingo_block_text_attributes', self::DEFAULT_BLOCK_TEXT_ATTRIBUTES );
 
 		$attributes = is_array( $map ) && isset( $map[ $block_name ] ) && is_array( $map[ $block_name ] ) ? $map[ $block_name ] : array();
 
@@ -215,7 +215,7 @@ final class Normalizer {
 		 * @param list<string>         $parts Normalized text parts.
 		 * @param array<string, mixed> $block The parsed block.
 		 */
-		$parts = apply_filters( 'tdrift_block_text', $parts, $block );
+		$parts = apply_filters( 'stalelingo_block_text', $parts, $block );
 
 		return trim( implode( ' ', array_filter( (array) $parts, static fn( $part ): bool => is_string( $part ) && '' !== $part ) ) );
 	}

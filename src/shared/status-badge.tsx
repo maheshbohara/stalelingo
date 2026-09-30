@@ -35,25 +35,25 @@ export function StatusBadge( { lang, status, href, onClick, action }: Props ) {
 	const code = lang.toUpperCase();
 	let full: string = sprintf(
 		/* translators: 1: language code, e.g. FR. 2: translation status, e.g. Outdated. */
-		__( '%1$s: %2$s', 'translation-drift' ),
+		__( '%1$s: %2$s', 'stalelingo' ),
 		code,
 		getStatusLabel( status )
 	);
 	if ( action ) {
 		full = sprintf(
 			/* translators: 1: language and status, e.g. "FR: Outdated". 2: action, e.g. "View changes". */
-			__( '%1$s – %2$s', 'translation-drift' ),
+			__( '%1$s – %2$s', 'stalelingo' ),
 			full,
 			action
 		);
 	}
 
-	const className = `tdrift-badge tdrift-badge-${ status.replace( '_', '-' ) }`;
+	const className = `stalelingo-badge stalelingo-badge-${ status.replace( '_', '-' ) }`;
 	const inner = (
 		<>
 			<span aria-hidden="true">
 				{ code }{ ' ' }
-				<span className="tdrift-badge-symbol">
+				<span className="stalelingo-badge-symbol">
 					{ getStatusSymbol( status ) }
 				</span>
 			</span>

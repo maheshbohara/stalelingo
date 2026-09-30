@@ -2,21 +2,21 @@
 /**
  * Tests for Permissions.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Services;
+namespace Stalelingo\Tests\Unit\Services;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Capabilities;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Capabilities;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Services\Permissions
+ * @covers \Stalelingo\Services\Permissions
  */
 final class PermissionsTest extends TestCase {
 
@@ -61,7 +61,7 @@ final class PermissionsTest extends TestCase {
 
 	public function test_filter_has_the_last_word(): void {
 		$this->grant( array() );
-		Filters\expectApplied( 'tdrift_can_mark_synced' )->once()->with( false, 5, 11 )->andReturn( true );
+		Filters\expectApplied( 'stalelingo_can_mark_synced' )->once()->with( false, 5, 11 )->andReturn( true );
 
 		$this->assertTrue( ( new Permissions() )->can_mark_synced( 5, 11 ) );
 	}

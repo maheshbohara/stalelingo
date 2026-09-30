@@ -1,19 +1,19 @@
 <?php
 /**
- * `tdrift/v1/diff/{translation_id}` route.
+ * `stalelingo/v1/diff/{translation_id}` route.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\DiffService;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Services\DiffService;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * What changed in a translation's source since it was last marked up to date, field by field.
@@ -57,9 +57,9 @@ class DiffController extends Controller {
 					'callback'            => array( $this, 'get_item' ),
 					'permission_callback' => array( $this, 'get_item_permissions_check' ),
 					'args'                => array(
-						'translation_id' => self::id_arg( __( 'Translation post ID.', 'translation-drift' ) ),
+						'translation_id' => self::id_arg( __( 'Translation post ID.', 'stalelingo' ) ),
 						'split'          => array(
-							'description' => __( 'Show old and new text in two columns.', 'translation-drift' ),
+							'description' => __( 'Show old and new text in two columns.', 'stalelingo' ),
 							'type'        => 'boolean',
 							'default'     => true,
 						),
@@ -99,7 +99,7 @@ class DiffController extends Controller {
 		$translation    = get_post( $translation_id );
 
 		if ( null === $row || ! $source instanceof \WP_Post || ! $translation instanceof \WP_Post ) {
-			return new \WP_Error( 'tdrift_not_tracked', __( 'This post is not a tracked translation.', 'translation-drift' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'stalelingo_not_tracked', __( 'This post is not a tracked translation.', 'stalelingo' ), array( 'status' => 404 ) );
 		}
 
 		$synced_by = $row->synced_by > 0 ? get_userdata( $row->synced_by ) : false;
@@ -166,21 +166,21 @@ class DiffController extends Controller {
 			$translation  = ItemPresenter::translation_schema();
 			$this->schema = array(
 				'$schema'    => 'http://json-schema.org/draft-04/schema#',
-				'title'      => 'tdrift-diff',
+				'title'      => 'stalelingo-diff',
 				'type'       => 'object',
 				'properties' => array_merge(
 					$translation['properties'],
 					array(
 						'source_id'   => array(
-							'description' => __( 'Source post ID.', 'translation-drift' ),
+							'description' => __( 'Source post ID.', 'stalelingo' ),
 							'type'        => 'integer',
 						),
 						'synced_by'   => array(
-							'description' => __( 'Name of the user who last marked the translation up to date.', 'translation-drift' ),
+							'description' => __( 'Name of the user who last marked the translation up to date.', 'stalelingo' ),
 							'type'        => 'string',
 						),
 						'fields'      => array(
-							'description' => __( 'Changed fields with their diffs.', 'translation-drift' ),
+							'description' => __( 'Changed fields with their diffs.', 'stalelingo' ),
 							'type'        => 'array',
 							'items'       => array(
 								'type'       => 'object',
@@ -188,22 +188,22 @@ class DiffController extends Controller {
 									'key'       => array( 'type' => 'string' ),
 									'label'     => array( 'type' => 'string' ),
 									'available' => array(
-										'description' => __( 'False when no copy of the old value was stored.', 'translation-drift' ),
+										'description' => __( 'False when no copy of the old value was stored.', 'stalelingo' ),
 										'type'        => 'boolean',
 									),
 									'truncated' => array(
-										'description' => __( 'Whether the stored old value was cut short.', 'translation-drift' ),
+										'description' => __( 'Whether the stored old value was cut short.', 'stalelingo' ),
 										'type'        => 'boolean',
 									),
 									'diff'      => array(
-										'description' => __( 'Diff table (HTML); empty when only formatting changed.', 'translation-drift' ),
+										'description' => __( 'Diff table (HTML); empty when only formatting changed.', 'stalelingo' ),
 										'type'        => 'string',
 									),
 								),
 							),
 						),
-						'source'      => array_merge( $post, array( 'description' => __( 'The source post.', 'translation-drift' ) ) ),
-						'translation' => array_merge( $post, array( 'description' => __( 'The translation post.', 'translation-drift' ) ) ),
+						'source'      => array_merge( $post, array( 'description' => __( 'The source post.', 'stalelingo' ) ) ),
+						'translation' => array_merge( $post, array( 'description' => __( 'The translation post.', 'stalelingo' ) ) ),
 					)
 				),
 			);

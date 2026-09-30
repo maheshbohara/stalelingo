@@ -66,7 +66,7 @@ test.describe( 'React UI', () => {
 			page.getByRole( 'region', { name: 'Summary' } )
 		).toBeVisible();
 		const dashboardAxe = await new AxeBuilder( { page } )
-			.include( '#tdrift-dashboard-root' )
+			.include( '#stalelingo-dashboard-root' )
 			.analyze();
 		expect( dashboardAxe.violations ).toEqual( [] );
 
@@ -139,12 +139,12 @@ test.describe( 'React UI', () => {
 
 		const context = await browser.newContext( {
 			storageState: { cookies: [], origins: [] },
-			extraHTTPHeaders: { 'X-Tdrift-E2E': '1' },
+			extraHTTPHeaders: { 'X-Stalelingo-E2E': '1' },
 		} );
 		const translator = await context.newPage();
 		await login( translator, 'translator-fr', 'password' );
 
-		await translator.goto( '/wp-admin/tools.php?page=translation-drift' );
+		await translator.goto( '/wp-admin/tools.php?page=stalelingo' );
 		await expect(
 			translator.getByText( /not allowed to access this page/ )
 		).toBeVisible();
@@ -153,7 +153,7 @@ test.describe( 'React UI', () => {
 		const panel = editorPanel( translator );
 		await expect( panel.getByText( 'FR: Outdated' ) ).toBeAttached();
 		const code = await translator.evaluate( () =>
-			window.wp.apiFetch( { path: '/tdrift/v1/status' } ).then(
+			window.wp.apiFetch( { path: '/stalelingo/v1/status' } ).then(
 				() => 'allowed',
 				( e: { code?: string } ) => e.code
 			)
@@ -167,7 +167,7 @@ test.describe( 'React UI', () => {
 
 		const group = await rest< {
 			translations: Record< string, { status: string } >;
-		} >( page, `/tdrift/v1/group/${ source.id }` );
+		} >( page, `/stalelingo/v1/group/${ source.id }` );
 		expect( group.translations.fr?.status ).toBe( 'in_sync' );
 	} );
 } );

@@ -2,12 +2,12 @@
 /**
  * WPML adapter.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Providers;
+namespace Stalelingo\Providers;
 
 defined( 'ABSPATH' ) || exit;
 

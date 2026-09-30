@@ -2,50 +2,50 @@
 /**
  * Service container.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift;
+namespace Stalelingo;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\Actions;
-use TranslationDrift\Admin\AdminBar;
-use TranslationDrift\Admin\EditorPanel;
-use TranslationDrift\Cli\Command;
-use TranslationDrift\Admin\ListTable;
-use TranslationDrift\Admin\Metabox;
-use TranslationDrift\Domain\DriftEvaluator;
-use TranslationDrift\Domain\Hasher;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Domain\SnapshotCodec;
-use TranslationDrift\Integrations\Acf;
-use TranslationDrift\Integrations\Elementor;
-use TranslationDrift\Notifications\Notifier;
-use TranslationDrift\Providers\PolylangProvider;
-use TranslationDrift\Providers\ProviderDetector;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Providers\WpmlProvider;
-use TranslationDrift\Rest\BaselineController;
-use TranslationDrift\Rest\DiffController;
-use TranslationDrift\Rest\GroupController;
-use TranslationDrift\Rest\ItemPresenter;
-use TranslationDrift\Rest\MarkSyncedController;
-use TranslationDrift\Rest\StatusController;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\DiffService;
-use TranslationDrift\Services\DriftService;
-use TranslationDrift\Services\Fingerprinter;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\PostHooks;
-use TranslationDrift\Services\Queue;
-use TranslationDrift\Services\Repositories\EventRepository;
-use TranslationDrift\Services\Repositories\SnapshotRepository;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\SyncService;
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Admin\Actions;
+use Stalelingo\Admin\AdminBar;
+use Stalelingo\Admin\EditorPanel;
+use Stalelingo\Cli\Command;
+use Stalelingo\Admin\ListTable;
+use Stalelingo\Admin\Metabox;
+use Stalelingo\Domain\DriftEvaluator;
+use Stalelingo\Domain\Hasher;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Domain\SnapshotCodec;
+use Stalelingo\Integrations\Acf;
+use Stalelingo\Integrations\Elementor;
+use Stalelingo\Notifications\Notifier;
+use Stalelingo\Providers\PolylangProvider;
+use Stalelingo\Providers\ProviderDetector;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Providers\WpmlProvider;
+use Stalelingo\Rest\BaselineController;
+use Stalelingo\Rest\DiffController;
+use Stalelingo\Rest\GroupController;
+use Stalelingo\Rest\ItemPresenter;
+use Stalelingo\Rest\MarkSyncedController;
+use Stalelingo\Rest\StatusController;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\DiffService;
+use Stalelingo\Services\DriftService;
+use Stalelingo\Services\Fingerprinter;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\PostHooks;
+use Stalelingo\Services\Queue;
+use Stalelingo\Services\Repositories\EventRepository;
+use Stalelingo\Services\Repositories\SnapshotRepository;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\SyncService;
+use Stalelingo\Services\TrackedFields;
 
 /**
  * Builds services lazily, once each.
@@ -112,7 +112,7 @@ final class Container {
 			 *
 			 * @param TranslationProvider|null $provider Adapter, or null when no supported plugin is active.
 			 */
-			$provider = apply_filters( 'tdrift_provider_instance', $provider );
+			$provider = apply_filters( 'stalelingo_provider_instance', $provider );
 			if ( $provider instanceof TranslationProvider && $provider->is_ready() ) {
 				$this->instances['provider'] = $provider;
 			} else {
@@ -177,7 +177,7 @@ final class Container {
 				 *
 				 * @param int $max_bytes Bytes. Default 65536.
 				 */
-				$max_bytes = (int) apply_filters( 'tdrift_snapshot_max_bytes', SnapshotCodec::DEFAULT_MAX_BYTES );
+				$max_bytes = (int) apply_filters( 'stalelingo_snapshot_max_bytes', SnapshotCodec::DEFAULT_MAX_BYTES );
 
 				return new SnapshotRepository( new SnapshotCodec( $max_bytes ) );
 			}
@@ -376,7 +376,7 @@ final class Container {
 	}
 
 	/**
-	 * The `wp translation-drift` command.
+	 * The `wp stalelingo` command.
 	 *
 	 * @since 1.0.0
 	 */
@@ -415,11 +415,11 @@ final class Container {
 	}
 
 	/**
-	 * REST controllers of the `tdrift/v1` namespace.
+	 * REST controllers of the `stalelingo/v1` namespace.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return list<\TranslationDrift\Rest\Controller>
+	 * @return list<\Stalelingo\Rest\Controller>
 	 */
 	public function rest_controllers(): array {
 		$permissions = $this->permissions();
@@ -442,7 +442,7 @@ final class Container {
 	private function require_provider(): TranslationProvider {
 		$provider = $this->provider();
 		if ( null === $provider ) {
-			throw new \LogicException( 'Translation Drift: no multilingual plugin is ready.' );
+			throw new \LogicException( 'Stalelingo: no multilingual plugin is ready.' );
 		}
 
 		return $provider;

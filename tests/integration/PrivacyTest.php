@@ -2,17 +2,17 @@
 /**
  * Personal data exporters, eraser and privacy policy text.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
 /**
- * @covers \TranslationDrift\Privacy
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
- * @covers \TranslationDrift\Services\Repositories\EventRepository
+ * @covers \Stalelingo\Privacy
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Services\Repositories\EventRepository
  */
 final class PrivacyTest extends TestCase {
 
@@ -41,10 +41,10 @@ final class PrivacyTest extends TestCase {
 		$exporters = apply_filters( 'wp_privacy_personal_data_exporters', array() );
 		$erasers   = apply_filters( 'wp_privacy_personal_data_erasers', array() );
 
-		$this->assertArrayHasKey( 'translation-drift-sync', $exporters );
-		$this->assertArrayHasKey( 'translation-drift-events', $exporters );
-		$this->assertArrayHasKey( 'translation-drift', $erasers );
-		$this->assertIsCallable( $erasers['translation-drift']['callback'] );
+		$this->assertArrayHasKey( 'stalelingo-sync', $exporters );
+		$this->assertArrayHasKey( 'stalelingo-events', $exporters );
+		$this->assertArrayHasKey( 'stalelingo', $erasers );
+		$this->assertIsCallable( $erasers['stalelingo']['callback'] );
 	}
 
 	public function test_exports_what_the_user_marked_and_did(): void {
@@ -53,7 +53,7 @@ final class PrivacyTest extends TestCase {
 		$sync = $this->container()->privacy()->export_sync( 'marker@example.test', 1 );
 		$this->assertTrue( $sync['done'] );
 		$this->assertCount( 1, $sync['data'] );
-		$this->assertSame( 'translation-drift', $sync['data'][0]['group_id'] );
+		$this->assertSame( 'stalelingo', $sync['data'][0]['group_id'] );
 		$this->assertSame( 'Hello (FR, #' . $data['group']['fr'] . ')', $sync['data'][0]['data'][0]['value'] );
 
 		$events = $this->container()->privacy()->export_events( 'marker@example.test', 1 );
@@ -63,14 +63,14 @@ final class PrivacyTest extends TestCase {
 
 	public function test_export_pages_through_many_records(): void {
 		$user_id = self::factory()->user->create( array( 'user_email' => 'many@example.test' ) );
-		for ( $i = 0; $i < \TranslationDrift\Privacy::PAGE_SIZE + 1; $i++ ) {
+		for ( $i = 0; $i < \Stalelingo\Privacy::PAGE_SIZE + 1; $i++ ) {
 			$this->container()->event_repository()->log( 'marked_synced', 1, 2, 'fr', $user_id );
 		}
 
 		$first  = $this->container()->privacy()->export_events( 'many@example.test', 1 );
 		$second = $this->container()->privacy()->export_events( 'many@example.test', 2 );
 
-		$this->assertCount( \TranslationDrift\Privacy::PAGE_SIZE, $first['data'] );
+		$this->assertCount( \Stalelingo\Privacy::PAGE_SIZE, $first['data'] );
 		$this->assertFalse( $first['done'] );
 		$this->assertCount( 1, $second['data'] );
 		$this->assertTrue( $second['done'] );
@@ -114,7 +114,7 @@ final class PrivacyTest extends TestCase {
 
 		$suggested = \WP_Privacy_Policy_Content::get_suggested_policy_text();
 		$names     = array_column( $suggested, 'plugin_name' );
-		$this->assertContains( 'Translation Drift', $names );
+		$this->assertContains( 'Stalelingo', $names );
 		set_current_screen( 'front' );
 	}
 }

@@ -2,31 +2,31 @@
 /**
  * Integration test bootstrap: loads the WordPress test suite with Polylang (or WPML) and the plugin.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-$tdrift_root = dirname( __DIR__, 2 );
+$stalelingo_root = dirname( __DIR__, 2 );
 
-require_once $tdrift_root . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+require_once $stalelingo_root . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
-$tdrift_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/opt/wp-tests/lib';
-$tdrift_core_dir  = getenv( 'WP_CORE_DIR' ) ? getenv( 'WP_CORE_DIR' ) : '/opt/wp-tests/core';
-$tdrift_provider  = getenv( 'PROVIDER' ) ? getenv( 'PROVIDER' ) : 'polylang';
+$stalelingo_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/opt/wp-tests/lib';
+$stalelingo_core_dir  = getenv( 'WP_CORE_DIR' ) ? getenv( 'WP_CORE_DIR' ) : '/opt/wp-tests/core';
+$stalelingo_provider  = getenv( 'PROVIDER' ) ? getenv( 'PROVIDER' ) : 'polylang';
 
-if ( ! is_readable( $tdrift_tests_dir . '/includes/functions.php' ) ) {
-	fwrite( STDERR, "WordPress test suite not found in {$tdrift_tests_dir}. Run `make test-integration`.\n" );
+if ( ! is_readable( $stalelingo_tests_dir . '/includes/functions.php' ) ) {
+	fwrite( STDERR, "WordPress test suite not found in {$stalelingo_tests_dir}. Run `make test-integration`.\n" );
 	exit( 1 );
 }
 
-require_once $tdrift_tests_dir . '/includes/functions.php';
+require_once $stalelingo_tests_dir . '/includes/functions.php';
 
 tests_add_filter(
 	'muplugins_loaded',
-	static function () use ( $tdrift_root, $tdrift_core_dir, $tdrift_provider ): void {
-		if ( 'wpml' === $tdrift_provider ) {
-			$wpml = $tdrift_core_dir . '/wp-content/plugins/sitepress-multilingual-cms/sitepress.php';
+	static function () use ( $stalelingo_root, $stalelingo_core_dir, $stalelingo_provider ): void {
+		if ( 'wpml' === $stalelingo_provider ) {
+			$wpml = $stalelingo_core_dir . '/wp-content/plugins/sitepress-multilingual-cms/sitepress.php';
 			if ( ! is_readable( $wpml ) ) {
 				fwrite( STDERR, "PROVIDER=wpml but WPML is not installed in the test environment (put its zips in ./private/wpml/).\n" );
 				exit( 1 );
@@ -40,21 +40,21 @@ tests_add_filter(
 				icl_sitepress_activate();
 			}
 		} else {
-			require_once $tdrift_core_dir . '/wp-content/plugins/polylang/polylang.php';
+			require_once $stalelingo_core_dir . '/wp-content/plugins/polylang/polylang.php';
 		}
-		$acf = $tdrift_core_dir . '/wp-content/plugins/advanced-custom-fields/acf.php';
+		$acf = $stalelingo_core_dir . '/wp-content/plugins/advanced-custom-fields/acf.php';
 		if ( is_readable( $acf ) ) {
 			require_once $acf;
 		}
-		require_once $tdrift_root . '/translation-drift.php';
+		require_once $stalelingo_root . '/stalelingo.php';
 	}
 );
 
 // Polylang loads its API only when languages exist, so create EN (default), FR and ES before it boots (priority 1).
 tests_add_filter(
 	'plugins_loaded',
-	static function () use ( $tdrift_provider ): void {
-		if ( 'polylang' !== $tdrift_provider || ! class_exists( 'PLL_Admin_Model' ) ) {
+	static function () use ( $stalelingo_provider ): void {
+		if ( 'polylang' !== $stalelingo_provider || ! class_exists( 'PLL_Admin_Model' ) ) {
 			return;
 		}
 		// Reading Polylang's model this early is deliberate; silence its "called too early" notice.
@@ -84,9 +84,9 @@ tests_add_filter(
 // WPML: run its setup wizard steps (EN default, FR, ES). $sitepress exists as soon as WPML is included.
 tests_add_filter(
 	'plugins_loaded',
-	static function () use ( $tdrift_provider ): void {
+	static function () use ( $stalelingo_provider ): void {
 		global $wpdb, $sitepress;
-		if ( 'wpml' !== $tdrift_provider || ! class_exists( 'WPML_Installation' ) || ! $sitepress ) {
+		if ( 'wpml' !== $stalelingo_provider || ! class_exists( 'WPML_Installation' ) || ! $sitepress ) {
 			return;
 		}
 		if ( ! icl_get_setting( 'setup_complete' ) ) {
@@ -115,16 +115,16 @@ tests_add_filter(
 			}
 		}
 	},
-	5 // Before Translation Drift boots (10), which checks that the provider is ready.
+	5 // Before Stalelingo boots (10), which checks that the provider is ready.
 );
 
 // Tables are created once, outside the per-test transactions (which turn CREATE TABLE into temporary tables).
 tests_add_filter(
 	'init',
 	static function (): void {
-		\TranslationDrift\Activator::activate( is_multisite() );
+		\Stalelingo\Activator::activate( is_multisite() );
 	},
 	0
 );
 
-require $tdrift_tests_dir . '/includes/bootstrap.php';
+require $stalelingo_tests_dir . '/includes/bootstrap.php';

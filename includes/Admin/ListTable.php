@@ -2,22 +2,22 @@
 /**
  * Posts list table integration.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\Repositories\SyncRow;
-use TranslationDrift\Services\SyncService;
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\Repositories\SyncRow;
+use Stalelingo\Services\SyncService;
+use Stalelingo\Services\TrackedFields;
 
 /**
  * Adds a translation status column, a status filter and a bulk action to tracked post types.
@@ -34,21 +34,21 @@ class ListTable {
 	 *
 	 * @since 1.0.0
 	 */
-	public const COLUMN = 'tdrift-status';
+	public const COLUMN = 'stalelingo-status';
 
 	/**
 	 * Filter query var.
 	 *
 	 * @since 1.0.0
 	 */
-	public const FILTER = 'tdrift_status';
+	public const FILTER = 'stalelingo_status';
 
 	/**
 	 * Bulk action key.
 	 *
 	 * @since 1.0.0
 	 */
-	public const BULK_ACTION = 'tdrift_mark_synced';
+	public const BULK_ACTION = 'stalelingo_mark_synced';
 
 	/**
 	 * Rows of the posts on the current page: keyed by source ID, then language.
@@ -129,11 +129,11 @@ class ListTable {
 		foreach ( (array) $columns as $key => $label ) {
 			$added[ $key ] = $label;
 			if ( 'title' === $key ) {
-				$added[ self::COLUMN ] = __( 'Translations', 'translation-drift' );
+				$added[ self::COLUMN ] = __( 'Translations', 'stalelingo' );
 			}
 		}
 		if ( ! isset( $added[ self::COLUMN ] ) ) {
-			$added[ self::COLUMN ] = __( 'Translations', 'translation-drift' );
+			$added[ self::COLUMN ] = __( 'Translations', 'stalelingo' );
 		}
 
 		return $added;
@@ -168,11 +168,11 @@ class ListTable {
 		}
 
 		if ( array() === $badges ) {
-			echo '<span aria-hidden="true">—</span><span class="screen-reader-text">' . esc_html__( 'No translation status', 'translation-drift' ) . '</span>';
+			echo '<span aria-hidden="true">—</span><span class="screen-reader-text">' . esc_html__( 'No translation status', 'stalelingo' ) . '</span>';
 			return;
 		}
 
-		echo '<div class="tdrift-badges">' . implode( '', $badges ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- StatusView::badge() escapes every part.
+		echo '<div class="stalelingo-badges">' . implode( '', $badges ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- StatusView::badge() escapes every part.
 	}
 
 	/**
@@ -188,9 +188,9 @@ class ListTable {
 		}
 
 		$current = $this->requested_status();
-		echo '<label class="screen-reader-text" for="tdrift-status-filter">' . esc_html__( 'Filter by translation status', 'translation-drift' ) . '</label>';
-		echo '<select name="' . esc_attr( self::FILTER ) . '" id="tdrift-status-filter">';
-		echo '<option value="">' . esc_html__( 'All translation statuses', 'translation-drift' ) . '</option>';
+		echo '<label class="screen-reader-text" for="stalelingo-status-filter">' . esc_html__( 'Filter by translation status', 'stalelingo' ) . '</label>';
+		echo '<select name="' . esc_attr( self::FILTER ) . '" id="stalelingo-status-filter">';
+		echo '<option value="">' . esc_html__( 'All translation statuses', 'stalelingo' ) . '</option>';
 		foreach ( Status::cases() as $status ) {
 			printf(
 				'<option value="%1$s"%2$s>%3$s</option>',
@@ -232,7 +232,7 @@ class ListTable {
 	 */
 	public function add_bulk_action( $actions ): array {
 		$actions                      = (array) $actions;
-		$actions[ self::BULK_ACTION ] = __( 'Mark translations as up to date', 'translation-drift' );
+		$actions[ self::BULK_ACTION ] = __( 'Mark translations as up to date', 'stalelingo' );
 
 		return $actions;
 	}
@@ -270,10 +270,10 @@ class ListTable {
 
 		return add_query_arg(
 			array(
-				'tdrift_marked' => $marked,
-				'tdrift_denied' => $denied,
+				'stalelingo_marked' => $marked,
+				'stalelingo_denied' => $denied,
 			),
-			remove_query_arg( array( 'tdrift_marked', 'tdrift_denied' ), (string) $redirect )
+			remove_query_arg( array( 'stalelingo_marked', 'stalelingo_denied' ), (string) $redirect )
 		);
 	}
 
@@ -284,18 +284,18 @@ class ListTable {
 	 */
 	public function bulk_notice(): void {
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only counts added to the redirect by handle_bulk_action().
-		if ( ! isset( $_GET['tdrift_marked'] ) ) {
+		if ( ! isset( $_GET['stalelingo_marked'] ) ) {
 			return;
 		}
-		$marked = absint( wp_unslash( $_GET['tdrift_marked'] ) );
-		$denied = isset( $_GET['tdrift_denied'] ) ? absint( wp_unslash( $_GET['tdrift_denied'] ) ) : 0;
+		$marked = absint( wp_unslash( $_GET['stalelingo_marked'] ) );
+		$denied = isset( $_GET['stalelingo_denied'] ) ? absint( wp_unslash( $_GET['stalelingo_denied'] ) ) : 0;
 		// phpcs:enable
 
 		/* translators: %d: number of translations. */
-		$message = sprintf( _n( '%d translation marked as up to date.', '%d translations marked as up to date.', $marked, 'translation-drift' ), $marked );
+		$message = sprintf( _n( '%d translation marked as up to date.', '%d translations marked as up to date.', $marked, 'stalelingo' ), $marked );
 		if ( $denied > 0 ) {
 			/* translators: %d: number of translations. */
-			$message .= ' ' . sprintf( _n( 'You are not allowed to update %d translation.', 'You are not allowed to update %d translations.', $denied, 'translation-drift' ), $denied );
+			$message .= ' ' . sprintf( _n( 'You are not allowed to update %d translation.', 'You are not allowed to update %d translations.', $denied, 'stalelingo' ), $denied );
 		}
 
 		wp_admin_notice(

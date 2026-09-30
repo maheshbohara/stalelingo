@@ -2,17 +2,17 @@
 /**
  * Drift status.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Domain;
+namespace Stalelingo\Domain;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * The drift status of one translation, as stored in `tdrift_sync.status`.
+ * The drift status of one translation, as stored in `stalelingo_sync.status`.
  *
  * @since 1.0.0
  */

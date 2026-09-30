@@ -2,18 +2,18 @@
 /**
  * Field diffs between a sync point and the current source.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\StatusView;
-use TranslationDrift\Services\Repositories\SnapshotRepository;
-use TranslationDrift\Services\Repositories\SyncRow;
+use Stalelingo\Admin\StatusView;
+use Stalelingo\Services\Repositories\SnapshotRepository;
+use Stalelingo\Services\Repositories\SyncRow;
 
 /**
  * Shows what changed in a source since its translation was last marked up to date.
@@ -136,8 +136,8 @@ class DiffService {
 			$before,
 			$after,
 			array(
-				'title_left'      => __( 'At last sync', 'translation-drift' ),
-				'title_right'     => __( 'Now', 'translation-drift' ),
+				'title_left'      => __( 'At last sync', 'stalelingo' ),
+				'title_right'     => __( 'Now', 'stalelingo' ),
 				'show_split_view' => $split,
 			)
 		);

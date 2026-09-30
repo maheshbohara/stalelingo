@@ -2,22 +2,22 @@
 /**
  * WP-CLI commands.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Cli;
+namespace Stalelingo\Cli;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\StatusView;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\SyncService;
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Admin\StatusView;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\SyncService;
+use Stalelingo\Services\TrackedFields;
 
 /**
  * Reports on outdated translations and clears the backlog from the command line.
@@ -25,17 +25,17 @@ use TranslationDrift\Services\TrackedFields;
  * ## EXAMPLES
  *
  *     # Outdated French translations as CSV.
- *     $ wp translation-drift report --lang=fr --status=outdated --format=csv
+ *     $ wp stalelingo report --lang=fr --status=outdated --format=csv
  *
  *     # Mark two translations as up to date.
- *     $ wp translation-drift mark-synced 123 456
+ *     $ wp stalelingo mark-synced 123 456
  *
  *     # Mark every outdated Spanish translation as up to date.
- *     $ wp translation-drift mark-synced --all --lang=es
+ *     $ wp stalelingo mark-synced --all --lang=es
  *
  *     # See what a baseline build would do, then run it.
- *     $ wp translation-drift baseline --dry-run
- *     $ wp translation-drift baseline
+ *     $ wp stalelingo baseline --dry-run
+ *     $ wp stalelingo baseline
  *
  * @since 1.0.0
  */
@@ -109,8 +109,8 @@ class Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp translation-drift report --status=outdated
-	 *     $ wp translation-drift report --lang=fr --post_type=page --format=json
+	 *     $ wp stalelingo report --status=outdated
+	 *     $ wp stalelingo report --lang=fr --post_type=page --format=json
 	 *
 	 * @since 1.0.0
 	 *
@@ -153,8 +153,8 @@ class Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp translation-drift mark-synced 123 456
-	 *     $ wp translation-drift mark-synced --all --lang=fr
+	 *     $ wp stalelingo mark-synced 123 456
+	 *     $ wp stalelingo mark-synced --all --lang=fr
 	 *
 	 * @subcommand mark-synced
 	 *
@@ -223,8 +223,8 @@ class Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp translation-drift baseline --dry-run
-	 *     $ wp translation-drift baseline
+	 *     $ wp stalelingo baseline --dry-run
+	 *     $ wp stalelingo baseline
 	 *
 	 * @since 1.0.0
 	 *
@@ -259,7 +259,7 @@ class Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp translation-drift recalc
+	 *     $ wp stalelingo recalc
 	 *
 	 * @since 1.0.0
 	 *

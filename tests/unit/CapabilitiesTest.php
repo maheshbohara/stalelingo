@@ -2,19 +2,19 @@
 /**
  * Tests for Capabilities.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit;
+namespace Stalelingo\Tests\Unit;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Capabilities;
+use Stalelingo\Capabilities;
 
 /**
- * @covers \TranslationDrift\Capabilities
+ * @covers \Stalelingo\Capabilities
  */
 final class CapabilitiesTest extends TestCase {
 
@@ -23,7 +23,7 @@ final class CapabilitiesTest extends TestCase {
 	}
 
 	public function test_roles_filter_output_is_sanitized(): void {
-		Filters\expectApplied( 'tdrift_capability_roles' )->andReturn( array( 'shop_manager', 42, null, 'author' ) );
+		Filters\expectApplied( 'stalelingo_capability_roles' )->andReturn( array( 'shop_manager', 42, null, 'author' ) );
 
 		$this->assertSame( array( 'shop_manager', 'author' ), Capabilities::roles() );
 	}

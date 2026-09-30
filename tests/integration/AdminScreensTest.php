@@ -2,21 +2,21 @@
 /**
  * Admin screen and notice tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Admin\AdminPage;
-use TranslationDrift\Admin\EditorPanel;
+use Stalelingo\Admin\AdminPage;
+use Stalelingo\Admin\EditorPanel;
 
 /**
- * @covers \TranslationDrift\Admin\AdminPage
- * @covers \TranslationDrift\Admin\EditorPanel
- * @covers \TranslationDrift\Admin\Assets
- * @covers \TranslationDrift\Admin\StatusView
+ * @covers \Stalelingo\Admin\AdminPage
+ * @covers \Stalelingo\Admin\EditorPanel
+ * @covers \Stalelingo\Admin\Assets
+ * @covers \Stalelingo\Admin\StatusView
  */
 final class AdminScreensTest extends TestCase {
 
@@ -35,7 +35,7 @@ final class AdminScreensTest extends TestCase {
 		( new AdminPage() )->render();
 		$html = (string) ob_get_clean();
 
-		$this->assertStringContainsString( 'id="tdrift-dashboard-root"', $html );
+		$this->assertStringContainsString( 'id="stalelingo-dashboard-root"', $html );
 	}
 
 	public function test_assets_are_not_enqueued_on_other_screens(): void {
@@ -50,7 +50,7 @@ final class AdminScreensTest extends TestCase {
 	}
 
 	public function test_assets_load_with_translations_on_the_dashboard_screen(): void {
-		if ( ! is_readable( TDRIFT_DIR . 'build/dashboard/index.asset.php' ) ) {
+		if ( ! is_readable( STALELINGO_DIR . 'build/dashboard/index.asset.php' ) ) {
 			$this->markTestSkipped( 'Run `make build` first.' );
 		}
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -64,7 +64,7 @@ final class AdminScreensTest extends TestCase {
 		$this->assertTrue( wp_script_is( AdminPage::HANDLE, 'enqueued' ) );
 		$this->assertTrue( wp_style_is( AdminPage::HANDLE, 'enqueued' ) );
 		$this->assertContains( 'wp-element', wp_scripts()->registered[ AdminPage::HANDLE ]->deps );
-		$this->assertSame( 'translation-drift', wp_scripts()->registered[ AdminPage::HANDLE ]->textdomain );
+		$this->assertSame( 'stalelingo', wp_scripts()->registered[ AdminPage::HANDLE ]->textdomain );
 	}
 
 	public function test_dashboard_config_lists_filter_choices(): void {
@@ -80,7 +80,7 @@ final class AdminScreensTest extends TestCase {
 		$config = ( new AdminPage( $this->container() ) )->config();
 
 		$this->assertTrue( $config['ready'] );
-		$this->assertSame( 'tdrift/v1', $config['namespace'] );
+		$this->assertSame( 'stalelingo/v1', $config['namespace'] );
 		$this->assertSame( array( 'en', 'fr', 'es' ), array_column( $config['languages'], 'code' ) );
 		$this->assertContains( 'post', array_column( $config['postTypes'], 'slug' ) );
 		$this->assertNotContains( 'attachment', array_column( $config['postTypes'], 'slug' ) );
@@ -118,19 +118,19 @@ final class AdminScreensTest extends TestCase {
 			)
 		);
 
-		$labels = \TranslationDrift\Admin\StatusView::post_type_labels( array( 'post', 'events', 'mec-events' ) );
+		$labels = \Stalelingo\Admin\StatusView::post_type_labels( array( 'post', 'events', 'mec-events' ) );
 
 		$this->assertSame( 'Posts', $labels['post'] );
 		$this->assertSame( 'Events (events)', $labels['events'] );
 		$this->assertSame( 'Events (mec-events)', $labels['mec-events'] );
-		$this->assertSame( 'Event (mec-events)', \TranslationDrift\Admin\StatusView::post_type_labels( array( 'events', 'mec-events' ), true )['mec-events'] );
+		$this->assertSame( 'Event (mec-events)', \Stalelingo\Admin\StatusView::post_type_labels( array( 'events', 'mec-events' ), true )['mec-events'] );
 
 		unregister_post_type( 'events' );
 		unregister_post_type( 'mec-events' );
 	}
 
 	public function test_dashboard_script_gets_its_config_inline(): void {
-		if ( ! is_readable( TDRIFT_DIR . 'build/dashboard/index.asset.php' ) ) {
+		if ( ! is_readable( STALELINGO_DIR . 'build/dashboard/index.asset.php' ) ) {
 			$this->markTestSkipped( 'Run `make build` first.' );
 		}
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -141,12 +141,12 @@ final class AdminScreensTest extends TestCase {
 		$page->enqueue( get_plugin_page_hookname( AdminPage::SLUG, 'tools.php' ) );
 
 		$before = implode( '', (array) wp_scripts()->get_data( AdminPage::HANDLE, 'before' ) );
-		$this->assertStringContainsString( 'window.tdriftDashboard = {', $before );
-		$this->assertTrue( wp_style_is( \TranslationDrift\Admin\Assets::ADMIN_STYLE, 'enqueued' ), 'Badge styles.' );
+		$this->assertStringContainsString( 'window.stalelingoDashboard = {', $before );
+		$this->assertTrue( wp_style_is( \Stalelingo\Admin\Assets::ADMIN_STYLE, 'enqueued' ), 'Badge styles.' );
 	}
 
 	public function test_editor_panel_loads_for_tracked_post_types_only(): void {
-		if ( ! is_readable( TDRIFT_DIR . 'build/editor/index.asset.php' ) ) {
+		if ( ! is_readable( STALELINGO_DIR . 'build/editor/index.asset.php' ) ) {
 			$this->markTestSkipped( 'Run `make build` first.' );
 		}
 		$panel = $this->container()->editor_panel();
@@ -166,7 +166,7 @@ final class AdminScreensTest extends TestCase {
 		$this->assertContains( 'wp-editor', $deps );
 		$this->assertContains( 'wp-plugins', $deps );
 		$this->assertNotContains( 'wp-edit-post', $deps, 'The deprecated edit-post slots are not used.' );
-		$this->assertSame( 'translation-drift', wp_scripts()->registered[ EditorPanel::HANDLE ]->textdomain );
+		$this->assertSame( 'stalelingo', wp_scripts()->registered[ EditorPanel::HANDLE ]->textdomain );
 
 		set_current_screen( 'front' );
 	}
@@ -176,25 +176,25 @@ final class AdminScreensTest extends TestCase {
 		set_current_screen( 'plugins' );
 
 		ob_start();
-		( new \TranslationDrift\Admin\DependencyNotice( new \TranslationDrift\Providers\ProviderDetector() ) )->maybe_render();
+		( new \Stalelingo\Admin\DependencyNotice( new \Stalelingo\Providers\ProviderDetector() ) )->maybe_render();
 		$this->assertSame( '', ob_get_clean() );
 	}
 
 	public function test_dependency_notice_shows_when_no_provider_is_active(): void {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 		set_current_screen( 'plugins' );
-		add_filter( 'tdrift_provider', '__return_null' );
-		$detector = new class() extends \TranslationDrift\Providers\ProviderDetector {
+		add_filter( 'stalelingo_provider', '__return_null' );
+		$detector = new class() extends \Stalelingo\Providers\ProviderDetector {
 			public function available(): array {
 				return array();
 			}
 		};
 
 		ob_start();
-		( new \TranslationDrift\Admin\DependencyNotice( $detector ) )->maybe_render();
+		( new \Stalelingo\Admin\DependencyNotice( $detector ) )->maybe_render();
 		$html = (string) ob_get_clean();
 
-		$this->assertStringContainsString( 'tdrift-dependency-notice', $html );
+		$this->assertStringContainsString( 'stalelingo-dependency-notice', $html );
 		$this->assertStringContainsString( 'notice-warning', $html );
 		$this->assertStringContainsString( 'Polylang or WPML', $html );
 	}

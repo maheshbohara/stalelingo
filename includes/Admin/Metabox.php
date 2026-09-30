@@ -2,20 +2,20 @@
 /**
  * Classic editor metabox.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\TrackedFields;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\TrackedFields;
 
 /**
  * Shows translation status in the classic editor. The block editor uses a sidebar panel instead.
@@ -29,7 +29,7 @@ class Metabox {
 	 *
 	 * @since 1.0.0
 	 */
-	public const ID = 'tdrift-status';
+	public const ID = 'stalelingo-status';
 
 	/**
 	 * Constructor.
@@ -72,7 +72,7 @@ class Metabox {
 
 		add_meta_box(
 			self::ID,
-			__( 'Translation Drift', 'translation-drift' ),
+			__( 'Stalelingo', 'stalelingo' ),
 			array( $this, 'render' ),
 			(string) $post_type,
 			'side',
@@ -96,7 +96,7 @@ class Metabox {
 
 		$source_id = $this->provider->get_source( $post->ID );
 		if ( null === $source_id ) {
-			echo '<p>' . esc_html__( 'This post has no source to compare with yet.', 'translation-drift' ) . '</p>';
+			echo '<p>' . esc_html__( 'This post has no source to compare with yet.', 'stalelingo' ) . '</p>';
 			return;
 		}
 
@@ -115,9 +115,9 @@ class Metabox {
 	private function render_source( \WP_Post $post ): void {
 		$rows = $this->sync->for_source( $post->ID );
 
-		echo '<p>' . esc_html__( 'This is the source. Changing its tracked fields marks its translations as outdated.', 'translation-drift' ) . '</p>';
+		echo '<p>' . esc_html__( 'This is the source. Changing its tracked fields marks its translations as outdated.', 'stalelingo' ) . '</p>';
 		if ( array() === $rows ) {
-			echo '<p>' . esc_html__( 'Translation status will appear once the baseline reaches this post.', 'translation-drift' ) . '</p>';
+			echo '<p>' . esc_html__( 'Translation status will appear once the baseline reaches this post.', 'stalelingo' ) . '</p>';
 			return;
 		}
 
@@ -125,7 +125,7 @@ class Metabox {
 		foreach ( $rows as $lang => $row ) {
 			$badges[] = StatusView::badge( $lang, $row->status, Actions::translation_url( $row ) );
 		}
-		echo '<div class="tdrift-badges">' . implode( '', $badges ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- StatusView::badge() escapes every part.
+		echo '<div class="stalelingo-badges">' . implode( '', $badges ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- StatusView::badge() escapes every part.
 	}
 
 	/**
@@ -136,16 +136,16 @@ class Metabox {
 	private function render_translation( \WP_Post $post ): void {
 		$row = $this->sync->find_by_translation( $post->ID );
 		if ( null === $row ) {
-			echo '<p>' . esc_html__( 'Not tracked yet. It will be once the baseline reaches it, or when you mark it as up to date.', 'translation-drift' ) . '</p>';
+			echo '<p>' . esc_html__( 'Not tracked yet. It will be once the baseline reaches it, or when you mark it as up to date.', 'stalelingo' ) . '</p>';
 		} else {
 			printf(
 				'<p>%1$s %2$s</p>',
-				esc_html__( 'Status:', 'translation-drift' ),
+				esc_html__( 'Status:', 'stalelingo' ),
 				StatusView::badge( $row->lang, $row->status ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by StatusView::badge().
 			);
 
 			if ( Status::Outdated === $row->status && array() !== $row->changed_fields ) {
-				echo '<p>' . esc_html__( 'Changed in the source since the last sync:', 'translation-drift' ) . '</p><ul class="tdrift-metabox-fields">';
+				echo '<p>' . esc_html__( 'Changed in the source since the last sync:', 'stalelingo' ) . '</p><ul class="stalelingo-metabox-fields">';
 				foreach ( $row->changed_fields as $field ) {
 					echo '<li>' . esc_html( StatusView::field_label( $field ) ) . '</li>';
 				}
@@ -157,9 +157,9 @@ class Metabox {
 				$when = human_time_diff( (int) strtotime( $row->synced_at . ' UTC' ) );
 				$text = $user instanceof \WP_User
 					/* translators: 1: time ago, e.g. "3 days". 2: user display name. */
-					? sprintf( __( 'Last marked up to date %1$s ago by %2$s.', 'translation-drift' ), $when, $user->display_name )
+					? sprintf( __( 'Last marked up to date %1$s ago by %2$s.', 'stalelingo' ), $when, $user->display_name )
 					/* translators: %s: time ago, e.g. "3 days". */
-					: sprintf( __( 'Last marked up to date %s ago.', 'translation-drift' ), $when );
+					: sprintf( __( 'Last marked up to date %s ago.', 'stalelingo' ), $when );
 				echo '<p class="description">' . esc_html( $text ) . '</p>';
 			}
 		}//end if
@@ -168,7 +168,7 @@ class Metabox {
 			printf(
 				'<p><a class="button" href="%1$s">%2$s</a></p>',
 				esc_url( Actions::mark_synced_url( $post->ID ) ),
-				esc_html__( 'Mark as up to date', 'translation-drift' )
+				esc_html__( 'Mark as up to date', 'stalelingo' )
 			);
 		}
 	}

@@ -1,17 +1,17 @@
 <?php
 /**
- * A `tdrift_sync` row.
+ * A `stalelingo_sync` row.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services\Repositories;
+namespace Stalelingo\Services\Repositories;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
+use Stalelingo\Domain\Status;
 
 /**
  * The sync point and cached status of one (source, language) pair.

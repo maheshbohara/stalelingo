@@ -2,17 +2,17 @@
 /**
  * WPML scenarios. Run with PROVIDER=wpml when WPML is installed in the test environment.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Domain\Status;
+use Stalelingo\Domain\Status;
 
 /**
- * @covers \TranslationDrift\Providers\WpmlProvider
+ * @covers \Stalelingo\Providers\WpmlProvider
  */
 final class WpmlTest extends TestCase {
 

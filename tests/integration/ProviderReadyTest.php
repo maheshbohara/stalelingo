@@ -2,16 +2,16 @@
 /**
  * Polylang environment sanity checks.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
 /**
- * @covers \TranslationDrift\Container
- * @covers \TranslationDrift\Providers\PolylangProvider
+ * @covers \Stalelingo\Container
+ * @covers \Stalelingo\Providers\PolylangProvider
  */
 final class ProviderReadyTest extends TestCase {
 

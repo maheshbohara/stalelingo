@@ -2,16 +2,16 @@
 /**
  * Polylang adapter.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Providers;
+namespace Stalelingo\Providers;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Settings;
+use Stalelingo\Settings;
 
 /**
  * Polylang implementation of {@see TranslationProvider}, built on Polylang's documented `pll_*` API.
@@ -30,7 +30,7 @@ final class PolylangProvider implements TranslationProvider {
 	 *
 	 * @since 1.0.0
 	 */
-	public const SOURCE_META = '_tdrift_is_source';
+	public const SOURCE_META = '_stalelingo_is_source';
 
 	/**
 	 * Constructor.
@@ -225,7 +225,7 @@ final class PolylangProvider implements TranslationProvider {
 		 *                        or the multilingual plugin's default language.
 		 * @param int    $post_id A post in the group.
 		 */
-		$lang = apply_filters( 'tdrift_source_language', $lang, $post_id );
+		$lang = apply_filters( 'stalelingo_source_language', $lang, $post_id );
 
 		return is_string( $lang ) ? $lang : '';
 	}

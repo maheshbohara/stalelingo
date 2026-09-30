@@ -29,27 +29,27 @@ export function DiffView( { fields, headingLevel = 3 }: Props ) {
 
 	if ( fields.length === 0 ) {
 		return (
-			<p className="tdrift-diff-empty">
+			<p className="stalelingo-diff-empty">
 				{ __(
 					'Nothing has changed in the source since this translation was last marked up to date.',
-					'translation-drift'
+					'stalelingo'
 				) }
 			</p>
 		);
 	}
 
 	return (
-		<div className="tdrift-diff">
+		<div className="stalelingo-diff">
 			{ fields.map( ( field ) => (
-				<section key={ field.key } className="tdrift-diff-field">
-					<Heading className="tdrift-diff-label">
+				<section key={ field.key } className="stalelingo-diff-field">
+					<Heading className="stalelingo-diff-label">
 						{ field.label }
 					</Heading>
 					{ ! field.available && (
 						<p>
 							{ __(
 								'No copy of the earlier version was stored, so only the fact that it changed is known.',
-								'translation-drift'
+								'stalelingo'
 							) }
 						</p>
 					) }
@@ -57,12 +57,12 @@ export function DiffView( { fields, headingLevel = 3 }: Props ) {
 						<p>
 							{ __(
 								'Only formatting changed (strict mode).',
-								'translation-drift'
+								'stalelingo'
 							) }
 						</p>
 					) }
 					{ field.available && field.diff !== '' && (
-						<RawHTML className="tdrift-diff-table">
+						<RawHTML className="stalelingo-diff-table">
 							{ field.diff }
 						</RawHTML>
 					) }
@@ -70,7 +70,7 @@ export function DiffView( { fields, headingLevel = 3 }: Props ) {
 						<p className="description">
 							{ __(
 								'The stored earlier version was long and has been cut short.',
-								'translation-drift'
+								'stalelingo'
 							) }
 						</p>
 					) }

@@ -2,18 +2,18 @@
 /**
  * Tests for Hasher.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
-use TranslationDrift\Domain\Hasher;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\Hasher;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\Hasher
+ * @covers \Stalelingo\Domain\Hasher
  */
 final class HasherTest extends TestCase {
 

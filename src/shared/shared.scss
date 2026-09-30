@@ -1,16 +1,16 @@
 // Shared by the dashboard and the block editor panel: diff tables and the diff modal.
 // wp_text_diff() markup; core only styles it on the revisions screen.
 
-.tdrift-diff-field {
+.stalelingo-diff-field {
 	margin: 0 0 24px;
 }
 
-.tdrift-diff-label {
+.stalelingo-diff-label {
 	margin: 0 0 8px;
 	font-size: 14px;
 }
 
-.tdrift-diff-table {
+.stalelingo-diff-table {
 	// No overflow scrolling: a scrollable region would need keyboard access. Long text wraps instead.
 	// Same layout as core's revisions.css (the icon sits in the cell's left padding), so the
 	// table looks right whether or not that stylesheet is loaded on the screen.
@@ -79,16 +79,16 @@
 	}
 }
 
-.tdrift-diff-meta {
+.stalelingo-diff-meta {
 	margin-top: 0;
 	color: #50575e;
 }
 
-.tdrift-diff-actions {
+.stalelingo-diff-actions {
 	padding-top: 16px;
 	border-top: 1px solid #dcdcde;
 }
 
-.tdrift-loading {
+.stalelingo-loading {
 	padding: 16px 0;
 }

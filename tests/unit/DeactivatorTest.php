@@ -2,18 +2,18 @@
 /**
  * Tests for Deactivator.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit;
+namespace Stalelingo\Tests\Unit;
 
 use Brain\Monkey\Functions;
-use TranslationDrift\Deactivator;
+use Stalelingo\Deactivator;
 
 /**
- * @covers \TranslationDrift\Deactivator
+ * @covers \Stalelingo\Deactivator
  */
 final class DeactivatorTest extends TestCase {
 

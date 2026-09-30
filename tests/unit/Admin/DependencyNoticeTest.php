@@ -2,21 +2,21 @@
 /**
  * Tests for DependencyNotice.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Admin;
+namespace Stalelingo\Tests\Unit\Admin;
 
 use Brain\Monkey\Functions;
-use TranslationDrift\Admin\DependencyNotice;
-use TranslationDrift\Providers\ProviderDetector;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Admin\DependencyNotice;
+use Stalelingo\Providers\ProviderDetector;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Admin\DependencyNotice
- * @covers \TranslationDrift\Admin\AdminPage::is_own_screen
+ * @covers \Stalelingo\Admin\DependencyNotice
+ * @covers \Stalelingo\Admin\AdminPage::is_own_screen
  */
 final class DependencyNoticeTest extends TestCase {
 
@@ -43,8 +43,8 @@ final class DependencyNoticeTest extends TestCase {
 		return array(
 			'plugins'         => array( 'plugins', true ),
 			'network plugins' => array( 'plugins-network', true ),
-			'dashboard'       => array( 'tools_page_translation-drift', true ),
-			'settings'        => array( 'settings_page_translation-drift-settings', true ),
+			'dashboard'       => array( 'tools_page_stalelingo', true ),
+			'settings'        => array( 'settings_page_stalelingo-settings', true ),
 			'posts list'      => array( 'edit-post', false ),
 			'wp dashboard'    => array( 'dashboard', false ),
 		);

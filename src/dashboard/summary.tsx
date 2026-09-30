@@ -33,40 +33,40 @@ export function Summary( { summary, onSelectStatus }: Props ) {
 
 	return (
 		<section
-			className="tdrift-summary"
-			aria-label={ __( 'Summary', 'translation-drift' ) }
+			className="stalelingo-summary"
+			aria-label={ __( 'Summary', 'stalelingo' ) }
 		>
-			<ul className="tdrift-summary-totals">
+			<ul className="stalelingo-summary-totals">
 				{ DRIFT_STATUSES.map( ( status ) => (
 					<li key={ status }>
 						<button
 							type="button"
-							className={ `tdrift-total tdrift-total-${ status.replace( '_', '-' ) }` }
+							className={ `stalelingo-total stalelingo-total-${ status.replace( '_', '-' ) }` }
 							onClick={ () => onSelectStatus( status ) }
 							aria-label={ sprintf(
 								/* translators: 1: number of translations. 2: status, e.g. Outdated. */
 								__(
 									'%1$d %2$s – show only these',
-									'translation-drift'
+									'stalelingo'
 								),
 								count( summary.totals, status ),
 								getStatusLabel( status )
 							) }
 						>
-							<span className="tdrift-total-count">
+							<span className="stalelingo-total-count">
 								{ count( summary.totals, status ) }
 							</span>
-							<span className="tdrift-total-label">
+							<span className="stalelingo-total-label">
 								{ getStatusLabel( status ) }
 							</span>
 						</button>
 					</li>
 				) ) }
 			</ul>
-			<div className="tdrift-summary-tables">
+			<div className="stalelingo-summary-tables">
 				<CountsTable
-					caption={ __( 'By language', 'translation-drift' ) }
-					header={ __( 'Language', 'translation-drift' ) }
+					caption={ __( 'By language', 'stalelingo' ) }
+					header={ __( 'Language', 'stalelingo' ) }
 					rows={ summary.languages
 						.filter( ( l ) => Object.keys( l.counts ).length > 0 )
 						.map( ( l ) => ( {
@@ -76,8 +76,8 @@ export function Summary( { summary, onSelectStatus }: Props ) {
 						} ) ) }
 				/>
 				<CountsTable
-					caption={ __( 'By post type', 'translation-drift' ) }
-					header={ __( 'Post type', 'translation-drift' ) }
+					caption={ __( 'By post type', 'stalelingo' ) }
+					header={ __( 'Post type', 'stalelingo' ) }
 					rows={ summary.post_types
 						.filter( ( t ) =>
 							Object.values( t.counts ).some( ( n ) => n )
@@ -105,7 +105,7 @@ function CountsTable( { caption, header, rows }: TableProps ) {
 	}
 
 	return (
-		<table className="widefat striped tdrift-counts">
+		<table className="widefat striped stalelingo-counts">
 			<caption>{ caption }</caption>
 			<thead>
 				<tr>

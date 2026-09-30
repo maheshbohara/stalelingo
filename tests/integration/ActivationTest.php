@@ -2,22 +2,22 @@
 /**
  * Activation, migrations and capability tests.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Activator;
-use TranslationDrift\Capabilities;
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Providers\ProviderDetector;
+use Stalelingo\Activator;
+use Stalelingo\Capabilities;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Database\Schema;
+use Stalelingo\Providers\ProviderDetector;
 
 /**
- * @covers \TranslationDrift\Activator
- * @covers \TranslationDrift\Database\Migrator
+ * @covers \Stalelingo\Activator
+ * @covers \Stalelingo\Database\Migrator
  */
 final class ActivationTest extends TestCase {
 
@@ -49,12 +49,12 @@ final class ActivationTest extends TestCase {
 	public function test_upgrade_from_older_schema_version_runs_migrations(): void {
 		$this->allow_real_ddl();
 		update_option( Migrator::OPTION, 0 );
-		$fired = did_action( 'tdrift_migrated' );
+		$fired = did_action( 'stalelingo_migrated' );
 
 		Migrator::maybe_upgrade();
 
 		$this->assertSame( Migrator::DB_VERSION, Migrator::installed_version() );
-		$this->assertSame( $fired + 1, did_action( 'tdrift_migrated' ) );
+		$this->assertSame( $fired + 1, did_action( 'stalelingo_migrated' ) );
 	}
 
 	public function test_upgrade_recreates_a_dropped_table(): void {

@@ -11,14 +11,14 @@ All notable changes to this project are documented here. The format follows
   - Version 1.0.0; readme FAQ for digests, WP-CLI, multisite and uninstall; changelog and upgrade notice.
   - Readme screenshots (`make screenshots`), a performance run on 5,000 posts × 3 languages (`make perf`), and a clean-install smoke test of the release zip (`make zip-smoke`, also in CI with the multisite suite).
 - Phase 6 notifications, WP-CLI, privacy and multisite:
-  - Daily or weekly email digests: each translator gets the outdated translations in their languages, and extra recipients get every language. Filter `tdrift_digest_items`.
+  - Daily or weekly email digests: each translator gets the outdated translations in their languages, and extra recipients get every language. Filter `stalelingo_digest_items`.
   - Immediate emails when a translation of a chosen post type becomes outdated.
-  - WP-CLI: `wp translation-drift report`, `mark-synced`, `baseline [--dry-run] [--force]` and `recalc`.
+  - WP-CLI: `wp stalelingo report`, `mark-synced`, `baseline [--dry-run] [--force]` and `recalc`.
   - Personal data exporters (translations a user marked, and their history) and an eraser that anonymizes the user; suggested privacy policy text.
   - Multisite: network activation sets up every site, sites created later are set up while the plugin is network-active, and a deleted site's tables are dropped.
 - Phase 5 React UI:
-  - REST API `tdrift/v1`: `status` (filters, sorting, pagination), `status/summary`, `group/{id}`, `diff/{translation_id}`, `mark-synced` (single or bulk) and `baseline`, each with a schema and a permission check.
-  - Tools → Translation Drift dashboard built on DataViews: summary counts by status, language and post type; a table of posts × languages with filters for status, language, post type, author, translator and last change; search; a bulk "Mark as up to date" action; CSV export; and a "Build baseline" prompt with progress.
+  - REST API `stalelingo/v1`: `status` (filters, sorting, pagination), `status/summary`, `group/{id}`, `diff/{translation_id}`, `mark-synced` (single or bulk) and `baseline`, each with a schema and a permission check.
+  - Tools → Stalelingo dashboard built on DataViews: summary counts by status, language and post type; a table of posts × languages with filters for status, language, post type, author, translator and last change; search; a bulk "Mark as up to date" action; CSV export; and a "Build baseline" prompt with progress.
   - Diff modal showing what changed in the source, field by field, with links to open the source and the translation.
   - Block editor panel: a translation's status with an inline diff and "Mark as up to date", and the affected translations on a source.
 - Phase 4 admin UI:
@@ -41,7 +41,7 @@ All notable changes to this project are documented here. The format follows
   - Repositories for sync points, compressed and capped snapshots, and events, with daily pruning.
   - Sync service ("mark as up to date"), drift recalculation queued on source save (Action Scheduler or WP-Cron, debounced), and a batched, idempotent baseline job that is queued on activation.
   - Translations get a sync point when created. Optional auto-clear on translation save. Deletions and language changes are handled.
-  - Hooks: `tdrift_tracked_fields`, `tdrift_tracked_meta_keys`, `tdrift_tracked_post_types`, `tdrift_normalize_value`, `tdrift_block_text_attributes`, `tdrift_block_text`, `tdrift_is_material_change`, `tdrift_source_language`, `tdrift_drift_detected`, `tdrift_marked_synced`, `tdrift_can_mark_synced`, `tdrift_batch_size` and the snapshot and event limits.
+  - Hooks: `stalelingo_tracked_fields`, `stalelingo_tracked_meta_keys`, `stalelingo_tracked_post_types`, `stalelingo_normalize_value`, `stalelingo_block_text_attributes`, `stalelingo_block_text`, `stalelingo_is_material_change`, `stalelingo_source_language`, `stalelingo_drift_detected`, `stalelingo_marked_synced`, `stalelingo_can_mark_synced`, `stalelingo_batch_size` and the snapshot and event limits.
   - Dev setup builds the baseline and edits some sources, so the site starts with in-sync, outdated and missing translations.
 
 ### Changed
@@ -59,10 +59,10 @@ All notable changes to this project are documented here. The format follows
 - Phase 1 scaffold:
   - Docker development stack (MariaDB 11, WordPress, WP-CLI, PHP tools, Node 22, Playwright, Mailpit) and a Makefile.
   - `bin/setup.sh` builds an EN/FR/ES Polylang site with translator users and seeded posts, pages and a custom post type.
-  - Main plugin file, PSR-4 autoloading, and activation that creates the `tdrift_sync`, `tdrift_snapshots` and `tdrift_events` tables through versioned `dbDelta()` migrations.
-  - `tdrift_manage` capability, granted to administrators and editors, and filterable with `tdrift_capability_roles`.
-  - Polylang and WPML detection (`tdrift_provider` filter), and one notice on the Plugins screens and the plugin's own screens when neither is active.
-  - Tools → Translation Drift screen shell. Its assets load on that screen only.
+  - Main plugin file, PSR-4 autoloading, and activation that creates the `stalelingo_sync`, `stalelingo_snapshots` and `stalelingo_events` tables through versioned `dbDelta()` migrations.
+  - `stalelingo_manage` capability, granted to administrators and editors, and filterable with `stalelingo_capability_roles`.
+  - Polylang and WPML detection (`stalelingo_provider` filter), and one notice on the Plugins screens and the plugin's own screens when neither is active.
+  - Tools → Stalelingo screen shell. Its assets load on that screen only.
   - `uninstall.php`, which honours the "delete data" setting on single sites and across a multisite network.
-  - Plugin name: "Translation Drift – Outdated Translation Tracker for Multilingual Sites". Author: Mahesh Bohara.
+  - Plugin name: "Stalelingo – Outdated Translation Tracker for Multilingual Sites". Author: Mahesh Bohara.
   - PHPCS (WordPress, WordPress-Extra, WordPress-Docs), PHPCompatibilityWP (PHP 8.1 and newer), PHPStan level 8, PHPUnit unit and integration suites, Jest, Playwright, the Plugin Check runner, a readme validator, coverage thresholds and CI.

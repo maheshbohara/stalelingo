@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Runs the official Plugin Check against the packaged plugin (dist/translation-drift),
+# Runs the official Plugin Check against the packaged plugin (dist/stalelingo),
 # i.e. exactly what ships to WordPress.org. Runs inside the `wpcli` container.
 #
 # Usage: plugin-check.sh [extra `wp plugin check` args]
 set -euo pipefail
 
 cd /var/www/html
-pkg="wp-content/plugins/translation-drift/dist/translation-drift"
+pkg="wp-content/plugins/stalelingo/dist/stalelingo"
 
-if [[ ! -f "$pkg/translation-drift.php" ]]; then
+if [[ ! -f "$pkg/stalelingo.php" ]]; then
 	echo "Package not found. Run 'make zip' first." >&2
 	exit 1
 fi
@@ -19,7 +19,7 @@ fi
 wp plugin activate plugin-check --quiet
 
 # Fails (non-zero) on any error. Warnings are printed and reviewed; pass --ignore-warnings to hide them.
-out=$(wp plugin check "$(pwd)/$pkg" --slug=translation-drift --format=json --include-experimental "$@" 2>&1) || true
+out=$(wp plugin check "$(pwd)/$pkg" --slug=stalelingo --format=json --include-experimental "$@" 2>&1) || true
 echo "$out"
 
 errors=$(printf '%s' "$out" | php -r '

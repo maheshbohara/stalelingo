@@ -2,17 +2,17 @@
 /**
  * Missing multilingual plugin notice.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Admin;
+namespace Stalelingo\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Capabilities;
-use TranslationDrift\Providers\ProviderDetector;
+use Stalelingo\Capabilities;
+use Stalelingo\Providers\ProviderDetector;
 
 /**
  * Shows one notice when neither Polylang nor WPML is active.
@@ -75,10 +75,10 @@ final class DependencyNotice {
 		}
 
 		wp_admin_notice(
-			esc_html__( 'Translation Drift needs Polylang or WPML to be active. It has nothing to track until one of them is.', 'translation-drift' ),
+			esc_html__( 'Stalelingo needs Polylang or WPML to be active. It has nothing to track until one of them is.', 'stalelingo' ),
 			array(
 				'type'               => 'warning',
-				'additional_classes' => array( 'tdrift-dependency-notice' ),
+				'additional_classes' => array( 'stalelingo-dependency-notice' ),
 			)
 		);
 	}

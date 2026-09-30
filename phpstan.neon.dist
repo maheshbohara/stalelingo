@@ -1,7 +1,7 @@
 parameters:
 	level: 8
 	paths:
-		- translation-drift.php
+		- stalelingo.php
 		- uninstall.php
 		- includes
 	bootstrapFiles:

@@ -1,25 +1,25 @@
 <?php
 /**
- * `wp translation-drift` commands.
+ * `wp stalelingo` commands.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Cli\Command;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Tests\Integration\Support\CliError;
+use Stalelingo\Cli\Command;
+use Stalelingo\Domain\Status;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Tests\Integration\Support\CliError;
 
 require_once __DIR__ . '/Support/wp-cli-stub.php';
 
 /**
- * @covers \TranslationDrift\Cli\Command
- * @covers \TranslationDrift\Services\BaselineJob
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Cli\Command
+ * @covers \Stalelingo\Services\BaselineJob
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
  */
 final class CliTest extends TestCase {
 
@@ -163,7 +163,7 @@ final class CliTest extends TestCase {
 	}
 
 	public function test_baseline_runs_every_batch(): void {
-		add_filter( 'tdrift_batch_size', static fn(): int => 2 );
+		add_filter( 'stalelingo_batch_size', static fn(): int => 2 );
 		$groups = array();
 		for ( $i = 0; $i < 3; $i++ ) {
 			$groups[] = $this->create_group( array( 'en', 'fr' ) );
@@ -171,7 +171,7 @@ final class CliTest extends TestCase {
 		$this->clear_jobs();
 
 		$this->command()->baseline( array(), array() );
-		remove_all_filters( 'tdrift_batch_size' );
+		remove_all_filters( 'stalelingo_batch_size' );
 
 		foreach ( $groups as $group ) {
 			$this->assertSame( Status::InSync, $this->status_of( $group['en'], 'fr' ) );

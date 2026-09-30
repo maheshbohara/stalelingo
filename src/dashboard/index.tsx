@@ -10,7 +10,7 @@ import { Dashboard } from './dashboard';
 import '../shared/shared.scss';
 import './index.scss';
 
-const root = document.getElementById( 'tdrift-dashboard-root' );
+const root = document.getElementById( 'stalelingo-dashboard-root' );
 
 if ( root ) {
 	createRoot( root ).render( <Dashboard /> );

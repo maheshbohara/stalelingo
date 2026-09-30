@@ -2,23 +2,23 @@
 /**
  * Tests for TrackedFields and Settings.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Services;
+namespace Stalelingo\Tests\Unit\Services;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\TrackedFields;
-use TranslationDrift\Settings;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\TrackedFields;
+use Stalelingo\Settings;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Services\TrackedFields
- * @covers \TranslationDrift\Settings
+ * @covers \Stalelingo\Services\TrackedFields
+ * @covers \Stalelingo\Settings
  */
 final class TrackedFieldsTest extends TestCase {
 
@@ -78,8 +78,8 @@ final class TrackedFieldsTest extends TestCase {
 	}
 
 	public function test_meta_and_field_filters(): void {
-		Filters\expectApplied( 'tdrift_tracked_meta_keys' )->with( array(), 'page' )->andReturn( array( 'hero_text', 7 ) );
-		Filters\expectApplied( 'tdrift_tracked_fields' )->andReturnUsing( static fn( array $fields ): array => array_merge( $fields, array( 'custom:x' ) ) );
+		Filters\expectApplied( 'stalelingo_tracked_meta_keys' )->with( array(), 'page' )->andReturn( array( 'hero_text', 7 ) );
+		Filters\expectApplied( 'stalelingo_tracked_fields' )->andReturnUsing( static fn( array $fields ): array => array_merge( $fields, array( 'custom:x' ) ) );
 
 		$this->assertSame( array( 'title', 'content', 'excerpt', 'meta:hero_text', 'custom:x' ), $this->tracked()->fields( 'page' ) );
 	}

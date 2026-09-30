@@ -2,18 +2,18 @@
 /**
  * Elementor integration.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Integrations;
+namespace Stalelingo\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\ElementorTextExtractor;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Settings;
+use Stalelingo\Domain\ElementorTextExtractor;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Settings;
 
 /**
  * Tracks the visible text of Elementor-built posts as the `elementor` field.
@@ -64,7 +64,7 @@ class Elementor {
 		 *
 		 * @param bool $enabled Default: the Elementor setting is on and Elementor is active.
 		 */
-		return (bool) apply_filters( 'tdrift_elementor_enabled', (bool) $this->settings->get( 'elementor' ) && defined( 'ELEMENTOR_VERSION' ) );
+		return (bool) apply_filters( 'stalelingo_elementor_enabled', (bool) $this->settings->get( 'elementor' ) && defined( 'ELEMENTOR_VERSION' ) );
 	}
 
 	/**
@@ -77,9 +77,9 @@ class Elementor {
 			return;
 		}
 
-		add_filter( 'tdrift_tracked_fields', array( $this, 'add_tracked_field' ) );
-		add_filter( 'tdrift_field_value', array( $this, 'field_value' ), 10, 3 );
-		add_filter( 'tdrift_pre_normalize_value', array( $this, 'normalize' ), 10, 4 );
+		add_filter( 'stalelingo_tracked_fields', array( $this, 'add_tracked_field' ) );
+		add_filter( 'stalelingo_field_value', array( $this, 'field_value' ), 10, 3 );
+		add_filter( 'stalelingo_pre_normalize_value', array( $this, 'normalize' ), 10, 4 );
 	}
 
 	/**

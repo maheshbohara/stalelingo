@@ -1,9 +1,9 @@
-// Tools → Translation Drift.
+// Tools → Stalelingo.
 
 // DataViews ships its own styles; they are bundled here, like the script.
 @use "@wordpress/dataviews/build-style/style";
 
-.tdrift-dashboard-body {
+.stalelingo-dashboard-body {
 	margin-top: 16px;
 
 	> .components-notice {
@@ -24,11 +24,11 @@
 	}
 }
 
-.tdrift-summary {
+.stalelingo-summary {
 	margin-bottom: 16px;
 }
 
-.tdrift-summary-totals {
+.stalelingo-summary-totals {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
@@ -41,7 +41,7 @@
 	}
 }
 
-.tdrift-total {
+.stalelingo-total {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -66,37 +66,37 @@
 	}
 }
 
-.tdrift-total-count {
+.stalelingo-total-count {
 	font-size: 20px;
 	font-weight: 600;
 	line-height: 1.4;
 }
 
-.tdrift-total-in-sync {
+.stalelingo-total-in-sync {
 	border-left-color: #00a32a;
 }
 
-.tdrift-total-outdated {
+.stalelingo-total-outdated {
 	border-left-color: #d63638;
 }
 
-.tdrift-total-missing {
+.stalelingo-total-missing {
 	border-left-color: #8c8f94;
 	border-left-style: dashed;
 }
 
-.tdrift-total-untracked {
+.stalelingo-total-untracked {
 	border-left-color: #dba617;
 }
 
-.tdrift-summary-tables {
+.stalelingo-summary-tables {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 16px;
 	align-items: flex-start;
 }
 
-.tdrift-counts {
+.stalelingo-counts {
 	width: auto;
 	min-width: 320px;
 
@@ -111,7 +111,7 @@
 	}
 }
 
-.tdrift-source-cell {
+.stalelingo-source-cell {
 	color: #50575e;
 	font-style: italic;
 }

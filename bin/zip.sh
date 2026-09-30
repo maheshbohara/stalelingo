@@ -2,13 +2,13 @@
 # Builds the WordPress.org package in dist/. Runs inside the `php` container
 # after `npm run build` (see `make zip`).
 #
-# Output: dist/translation-drift/ (staging, used by `make plugin-check`) and
-#         dist/translation-drift-<version>.zip
+# Output: dist/stalelingo/ (staging, used by `make plugin-check`) and
+#         dist/stalelingo-<version>.zip
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 root="$(pwd)"
-slug="translation-drift"
+slug="stalelingo"
 stage="$root/dist/$slug"
 
 if [[ ! -f build/dashboard/index.js ]]; then
@@ -24,7 +24,7 @@ mkdir -p "$stage"
 # Allowlist: only these paths ship. Anything else in the checkout (tool output,
 # scratch files, dotfolders) stays out without having to be listed anywhere.
 include=(
-	translation-drift.php
+	stalelingo.php
 	uninstall.php
 	readme.txt
 	includes

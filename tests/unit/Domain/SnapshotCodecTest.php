@@ -2,18 +2,18 @@
 /**
  * Tests for SnapshotCodec.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Domain;
+namespace Stalelingo\Tests\Unit\Domain;
 
-use TranslationDrift\Domain\SnapshotCodec;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\SnapshotCodec;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Domain\SnapshotCodec
+ * @covers \Stalelingo\Domain\SnapshotCodec
  */
 final class SnapshotCodecTest extends TestCase {
 

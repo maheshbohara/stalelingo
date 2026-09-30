@@ -2,20 +2,20 @@
 /**
  * Tests for WpmlProvider (WPML filter API mocked).
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Providers;
+namespace Stalelingo\Tests\Unit\Providers;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Providers\WpmlProvider;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Providers\WpmlProvider;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Providers\WpmlProvider
+ * @covers \Stalelingo\Providers\WpmlProvider
  */
 final class WpmlProviderTest extends TestCase {
 

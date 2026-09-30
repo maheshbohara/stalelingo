@@ -7,7 +7,7 @@ set -euo pipefail
 
 wp() { command wp --quiet "$@"; }
 
-zip=$(ls -t /dist/translation-drift-*.zip 2>/dev/null | head -1)
+zip=$(ls -t /dist/stalelingo-*.zip 2>/dev/null | head -1)
 [[ -n "$zip" ]] || { echo "No zip in dist/. Run 'make zip' first." >&2; exit 1; }
 
 echo "==> Waiting for WordPress files"
@@ -18,7 +18,7 @@ done
 
 echo "==> Fresh WordPress"
 wp db reset --yes 2>/dev/null || wp db create
-wp core install --url=http://localhost:8081 --title="Translation Drift zip smoke test" \
+wp core install --url=http://localhost:8081 --title="Stalelingo zip smoke test" \
 	--admin_user=admin --admin_password=password --admin_email=admin@example.test --skip-email
 wp rewrite structure '/%postname%/' --hard
 
@@ -31,19 +31,19 @@ wp user create translator-fr translator-fr@example.test --role=author --user_pas
 wp eval-file /tools/dev/seed.php polylang 3 post,page
 
 echo "==> Installing $(basename "$zip")"
-rm -rf wp-content/plugins/translation-drift
+rm -rf wp-content/plugins/stalelingo
 wp plugin install "$zip" --activate
-wp plugin list --name=translation-drift --fields=name,status,version
+wp plugin list --name=stalelingo --fields=name,status,version
 
 echo "==> Baseline through the plugin's own WP-CLI command"
-command wp translation-drift baseline
-command wp translation-drift report --format=count
+command wp stalelingo baseline
+command wp stalelingo report --format=count
 
 echo "==> Making one translation drift"
-source_id=$(command wp post list --post_type=post --lang=en --meta_key=_tdrift_seed --field=ID --posts_per_page=1 --orderby=ID --order=ASC)
+source_id=$(command wp post list --post_type=post --lang=en --meta_key=_stalelingo_seed --field=ID --posts_per_page=1 --orderby=ID --order=ASC)
 wp post update "$source_id" --post_title="$(command wp post get "$source_id" --field=post_title) (zip smoke)"
 command wp cron event run --due-now >/dev/null
-outdated=$(command wp translation-drift report --status=outdated --format=count)
+outdated=$(command wp stalelingo report --status=outdated --format=count)
 echo "Outdated translations after editing post $source_id: $outdated"
 [[ "$outdated" -gt 0 ]] || { echo "Editing a source did not flag its translations." >&2; exit 1; }
 

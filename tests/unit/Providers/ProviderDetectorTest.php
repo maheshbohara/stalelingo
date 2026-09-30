@@ -2,19 +2,19 @@
 /**
  * Tests for ProviderDetector.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Providers;
+namespace Stalelingo\Tests\Unit\Providers;
 
 use Brain\Monkey\Filters;
-use TranslationDrift\Providers\ProviderDetector;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Providers\ProviderDetector;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Providers\ProviderDetector
+ * @covers \Stalelingo\Providers\ProviderDetector
  */
 final class ProviderDetectorTest extends TestCase {
 
@@ -61,13 +61,13 @@ final class ProviderDetectorTest extends TestCase {
 	}
 
 	public function test_filter_can_choose_another_available_provider(): void {
-		Filters\expectApplied( 'tdrift_provider' )->once()->andReturn( ProviderDetector::WPML );
+		Filters\expectApplied( 'stalelingo_provider' )->once()->andReturn( ProviderDetector::WPML );
 
 		$this->assertSame( ProviderDetector::WPML, $this->detector( true, true )->detect() );
 	}
 
 	public function test_filter_cannot_choose_an_unavailable_provider(): void {
-		Filters\expectApplied( 'tdrift_provider' )->once()->andReturn( ProviderDetector::WPML );
+		Filters\expectApplied( 'stalelingo_provider' )->once()->andReturn( ProviderDetector::WPML );
 
 		$this->assertNull( $this->detector( false, false )->detect() );
 	}

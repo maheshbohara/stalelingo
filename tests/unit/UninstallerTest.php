@@ -2,19 +2,19 @@
 /**
  * Tests for Uninstaller.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit;
+namespace Stalelingo\Tests\Unit;
 
 use Brain\Monkey\Functions;
-use TranslationDrift\Uninstaller;
+use Stalelingo\Uninstaller;
 
 /**
- * @covers \TranslationDrift\Uninstaller
- * @covers \TranslationDrift\Deactivator
+ * @covers \Stalelingo\Uninstaller
+ * @covers \Stalelingo\Deactivator
  */
 final class UninstallerTest extends TestCase {
 
@@ -43,7 +43,7 @@ final class UninstallerTest extends TestCase {
 
 	public function test_keeps_data_when_setting_is_off(): void {
 		Functions\when( 'get_option' )->justReturn( array() );
-		Functions\expect( 'wp_unschedule_hook' )->times( count( \TranslationDrift\Deactivator::scheduled_hooks() ) );
+		Functions\expect( 'wp_unschedule_hook' )->times( count( \Stalelingo\Deactivator::scheduled_hooks() ) );
 		Functions\expect( 'delete_option' )->never();
 		$wpdb = \Mockery::mock();
 		$wpdb->expects( 'query' )->never();

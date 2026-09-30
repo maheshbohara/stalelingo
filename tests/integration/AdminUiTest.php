@@ -2,31 +2,31 @@
 /**
  * Admin UI: list table, metabox, admin-post actions, admin bar and settings.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Integration;
+namespace Stalelingo\Tests\Integration;
 
-use TranslationDrift\Admin\Actions;
-use TranslationDrift\Admin\AdminBar;
-use TranslationDrift\Admin\ListTable;
-use TranslationDrift\Admin\SettingsPage;
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Settings;
-use TranslationDrift\Tests\Integration\Support\RedirectStop;
-use TranslationDrift\Tests\Integration\Support\TestableActions;
+use Stalelingo\Admin\Actions;
+use Stalelingo\Admin\AdminBar;
+use Stalelingo\Admin\ListTable;
+use Stalelingo\Admin\SettingsPage;
+use Stalelingo\Domain\Status;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Settings;
+use Stalelingo\Tests\Integration\Support\RedirectStop;
+use Stalelingo\Tests\Integration\Support\TestableActions;
 
 /**
- * @covers \TranslationDrift\Admin\ListTable
- * @covers \TranslationDrift\Admin\Metabox
- * @covers \TranslationDrift\Admin\Actions
- * @covers \TranslationDrift\Admin\AdminBar
- * @covers \TranslationDrift\Admin\SettingsPage
- * @covers \TranslationDrift\Admin\StatusView
- * @covers \TranslationDrift\Services\Repositories\SyncRepository
+ * @covers \Stalelingo\Admin\ListTable
+ * @covers \Stalelingo\Admin\Metabox
+ * @covers \Stalelingo\Admin\Actions
+ * @covers \Stalelingo\Admin\AdminBar
+ * @covers \Stalelingo\Admin\SettingsPage
+ * @covers \Stalelingo\Admin\StatusView
+ * @covers \Stalelingo\Services\Repositories\SyncRepository
  */
 final class AdminUiTest extends TestCase {
 
@@ -47,7 +47,7 @@ final class AdminUiTest extends TestCase {
 
 	public function tear_down(): void {
 		remove_filter( 'wp_redirect', array( $this, 'capture_redirect' ) );
-		unset( $_GET['tdrift_status'], $_GET['post'], $_GET['_wpnonce'], $_REQUEST['_wpnonce'], $_POST['_wpnonce'], $_REQUEST['tdrift_force'], $_POST['tdrift_force'], $_GET['source'], $_GET['lang'] );
+		unset( $_GET['stalelingo_status'], $_GET['post'], $_GET['_wpnonce'], $_REQUEST['_wpnonce'], $_POST['_wpnonce'], $_REQUEST['stalelingo_force'], $_POST['stalelingo_force'], $_GET['source'], $_GET['lang'] );
 		delete_transient( AdminBar::CACHE_KEY );
 		parent::tear_down();
 	}
@@ -117,11 +117,12 @@ final class AdminUiTest extends TestCase {
 
 		$source = $this->render_column( $table, $group['en'] );
 
-		$this->assertStringContainsString( 'tdrift-badge-outdated', $source );
+		$this->assertStringContainsString( 'stalelingo-badge-outdated', $source );
 		$this->assertStringContainsString( 'FR: Outdated', $source, 'Screen-reader text, never color alone.' );
 		$this->assertStringContainsString( 'ES: Missing', $source );
 		$this->assertStringContainsString( 'post.php?post=' . $group['fr'] . '&#038;action=edit', $source );
 		$this->assertStringContainsString( 'action=' . Actions::CREATE_TRANSLATION, $source );
+		$this->assertStringContainsString( '_wpnonce=', $source );
 
 		$translation = $this->render_column( $table, $group['fr'] );
 		$this->assertStringContainsString( 'FR: Outdated', $translation );
@@ -149,15 +150,15 @@ final class AdminUiTest extends TestCase {
 	}
 
 	public function test_status_filter_dropdown_and_query(): void {
-		$outdated              = $this->outdated_group();
-		$in_sync               = $this->create_synced_group( array( 'en', 'fr' ) );
-		$table                 = $this->container()->list_table();
-		$_GET['tdrift_status'] = 'outdated';
+		$outdated                  = $this->outdated_group();
+		$in_sync                   = $this->create_synced_group( array( 'en', 'fr' ) );
+		$table                     = $this->container()->list_table();
+		$_GET['stalelingo_status'] = 'outdated';
 
 		ob_start();
 		$table->render_filter( 'post' );
 		$html = (string) ob_get_clean();
-		$this->assertStringContainsString( '<label class="screen-reader-text" for="tdrift-status-filter">', $html );
+		$this->assertStringContainsString( '<label class="screen-reader-text" for="stalelingo-status-filter">', $html );
 		$this->assertMatchesRegularExpression( '/<option value="outdated" selected=\'selected\'>Outdated<\/option>/', $html );
 
 		$query                   = new \WP_Query();
@@ -178,18 +179,18 @@ final class AdminUiTest extends TestCase {
 
 		$url = $this->container()->list_table()->handle_bulk_action( 'edit.php', ListTable::BULK_ACTION, array( $group['en'] ) );
 
-		$this->assertStringContainsString( 'tdrift_marked=1', $url );
-		$this->assertStringContainsString( 'tdrift_denied=0', $url );
+		$this->assertStringContainsString( 'stalelingo_marked=1', $url );
+		$this->assertStringContainsString( 'stalelingo_denied=0', $url );
 		$this->assertSame( Status::InSync, $this->status_of( $group['en'], 'fr' ) );
 	}
 
 	public function test_bulk_action_respects_permissions(): void {
 		$group = $this->outdated_group();
-		$this->as_role( 'author' ); // Can't edit other users' posts and lacks tdrift_manage.
+		$this->as_role( 'author' ); // Can't edit other users' posts and lacks stalelingo_manage.
 
 		$url = $this->container()->list_table()->handle_bulk_action( 'edit.php', ListTable::BULK_ACTION, array( $group['fr'] ) );
 
-		$this->assertStringContainsString( 'tdrift_denied=1', $url );
+		$this->assertStringContainsString( 'stalelingo_denied=1', $url );
 		$this->assertSame( Status::Outdated, $this->status_of( $group['en'], 'fr' ) );
 		$this->assertSame( 'other.php', $this->container()->list_table()->handle_bulk_action( 'other.php', 'trash', array( $group['fr'] ) ) );
 	}
@@ -230,7 +231,7 @@ final class AdminUiTest extends TestCase {
 		$this->container()->metabox()->add( 'post' );
 		$this->container()->metabox()->add( 'attachment' );
 
-		$box = $wp_meta_boxes['post']['side']['default']['tdrift-status'] ?? null;
+		$box = $wp_meta_boxes['post']['side']['default']['stalelingo-status'] ?? null;
 		$this->assertNotNull( $box );
 		$this->assertTrue( $box['args']['__back_compat_meta_box'] );
 		$this->assertArrayNotHasKey( 'attachment', (array) $wp_meta_boxes );
@@ -267,7 +268,7 @@ final class AdminUiTest extends TestCase {
 			$actions->mark_synced();
 		} catch ( RedirectStop $e ) {
 			$this->assertSame( Status::InSync, $this->status_of( $group['en'], 'fr' ) );
-			$this->assertStringContainsString( 'tdrift_marked=1', (string) $this->redirect );
+			$this->assertStringContainsString( 'stalelingo_marked=1', (string) $this->redirect );
 		}
 	}
 
@@ -318,8 +319,9 @@ final class AdminUiTest extends TestCase {
 		$group   = $this->create_synced_group( array( 'en', 'fr' ) );
 		$actions = new TestableActions( $this->container()->provider(), $this->container()->sync_service(), $this->container()->baseline(), $this->container()->permissions() );
 		$this->as_role( 'administrator' );
-		$_GET['source'] = (string) $group['en'];
-		$_GET['lang']   = 'fr';
+		$_GET['source']       = (string) $group['en'];
+		$_GET['lang']         = 'fr';
+		$_REQUEST['_wpnonce'] = wp_create_nonce( Actions::CREATE_TRANSLATION . '_' . $group['en'] . '_fr' );
 
 		try {
 			$actions->open_translation();
@@ -327,9 +329,35 @@ final class AdminUiTest extends TestCase {
 			$this->assertStringContainsString( 'post=' . $group['fr'], (string) $this->redirect );
 		}
 
-		$_GET['lang'] = 'xx';
+		$_GET['lang']         = 'xx';
+		$_REQUEST['_wpnonce'] = wp_create_nonce( Actions::CREATE_TRANSLATION . '_' . $group['en'] . '_xx' );
 		$this->expectException( \WPDieException::class );
 		$actions->open_translation();
+	}
+
+	public function test_open_translation_needs_a_nonce_and_the_create_capability(): void {
+		$group          = $this->create_synced_group( array( 'en', 'fr' ) );
+		$actions        = new TestableActions( $this->container()->provider(), $this->container()->sync_service(), $this->container()->baseline(), $this->container()->permissions() );
+		$_GET['source'] = (string) $group['en'];
+		$_GET['lang']   = 'fr';
+
+		$this->as_role( 'administrator' );
+		$_REQUEST['_wpnonce'] = 'bad';
+		try {
+			$actions->open_translation();
+			$this->fail( 'Expected wp_die for a bad nonce.' );
+		} catch ( \WPDieException $e ) {
+			$this->assertNull( $this->redirect );
+		}
+
+		$this->as_role( 'subscriber' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( Actions::CREATE_TRANSLATION . '_' . $group['en'] . '_fr' );
+		try {
+			$actions->open_translation();
+			$this->fail( 'Expected wp_die for a user who can\'t create posts.' );
+		} catch ( \WPDieException $e ) {
+			$this->assertNull( $this->redirect );
+		}
 	}
 
 	public function test_admin_bar_counter_for_managers_only(): void {
@@ -447,10 +475,10 @@ final class AdminUiTest extends TestCase {
 		$html = (string) ob_get_clean();
 
 		$this->assertMatchesRegularExpression( '/name=[\'"]option_page[\'"] value=[\'"]' . SettingsPage::GROUP . '[\'"]/', $html );
-		$this->assertStringContainsString( 'name="tdrift_settings[post_types][]"', $html );
-		$this->assertStringContainsString( '<label for="tdrift-translators-fr">', $html );
+		$this->assertStringContainsString( 'name="stalelingo_settings[post_types][]"', $html );
+		$this->assertStringContainsString( '<label for="stalelingo-translators-fr">', $html );
 		$this->assertStringContainsString( 'name="action" value="' . Actions::BUILD_BASELINE . '"', $html );
-		$this->assertSame( 'tdrift_manage', $page->capability() );
+		$this->assertSame( 'stalelingo_manage', $page->capability() );
 	}
 
 	public function test_toggling_strict_mode_does_not_flag_translations(): void {

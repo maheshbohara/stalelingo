@@ -1,5 +1,5 @@
 {
-	"name": "gettilt/translation-drift",
+	"name": "gettilt/stalelingo",
 	"description": "Outdated translation tracker for Polylang and WPML.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
@@ -26,13 +26,13 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TranslationDrift\\": "includes/"
+			"Stalelingo\\": "includes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"TranslationDrift\\Tests\\Unit\\": "tests/unit/",
-			"TranslationDrift\\Tests\\Integration\\": "tests/integration/"
+			"Stalelingo\\Tests\\Unit\\": "tests/unit/",
+			"Stalelingo\\Tests\\Integration\\": "tests/integration/"
 		}
 	},
 	"config": {

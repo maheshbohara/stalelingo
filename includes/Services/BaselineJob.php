@@ -2,17 +2,17 @@
 /**
  * Batched walks over every translation group.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Repositories\SyncRepository;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Repositories\SyncRepository;
 
 /**
  * Builds the baseline and recalculates everything, in background batches.
@@ -31,15 +31,15 @@ class BaselineJob {
 	 *
 	 * @since 1.0.0
 	 */
-	public const BASELINE_HOOK = 'tdrift_baseline_batch';
-	public const RECALC_HOOK   = 'tdrift_recalc_batch';
+	public const BASELINE_HOOK = 'stalelingo_baseline_batch';
+	public const RECALC_HOOK   = 'stalelingo_recalc_batch';
 
 	/**
 	 * Option holding the baseline progress.
 	 *
 	 * @since 1.0.0
 	 */
-	public const STATE_OPTION = 'tdrift_baseline_state';
+	public const STATE_OPTION = 'stalelingo_baseline_state';
 
 	/**
 	 * Default posts per batch.
@@ -348,7 +348,7 @@ class BaselineJob {
 		 *
 		 * @param int $size Posts per batch. Default 50.
 		 */
-		return max( 1, (int) apply_filters( 'tdrift_batch_size', self::DEFAULT_BATCH_SIZE ) );
+		return max( 1, (int) apply_filters( 'stalelingo_batch_size', self::DEFAULT_BATCH_SIZE ) );
 	}
 
 	/**

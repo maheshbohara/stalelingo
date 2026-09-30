@@ -2,12 +2,12 @@
 /**
  * Elementor text extraction.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Domain;
+namespace Stalelingo\Domain;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -121,7 +121,7 @@ final class ElementorTextExtractor {
 		 *
 		 * @param array<string, list<string>> $map Text settings keyed by widget type.
 		 */
-		$map = apply_filters( 'tdrift_elementor_text_settings', self::WIDGET_TEXT );
+		$map = apply_filters( 'stalelingo_elementor_text_settings', self::WIDGET_TEXT );
 
 		return is_array( $map ) && isset( $map[ $widget ] ) && is_array( $map[ $widget ] )
 			? array_values( array_filter( $map[ $widget ], 'is_string' ) )

@@ -1,5 +1,5 @@
 {
-	"name": "translation-drift",
+	"name": "stalelingo",
 	"version": "1.0.0",
 	"private": true,
 	"description": "Outdated translation tracker for Polylang and WPML.",

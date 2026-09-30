@@ -51,7 +51,7 @@ test( 'readme screenshots', async ( { page } ) => {
 	await runCronUntil( page, source.id, 'fr', 'outdated' );
 
 	// 1. Dashboard.
-	await page.goto( '/wp-admin/tools.php?page=translation-drift' );
+	await page.goto( '/wp-admin/tools.php?page=stalelingo' );
 	await expect( page.locator( '.dataviews-view-table' ) ).toBeVisible();
 	await page.screenshot( { path: `${ OUT }/screenshot-1.png` } );
 
@@ -79,16 +79,14 @@ test( 'readme screenshots', async ( { page } ) => {
 	await page.goto( '/wp-admin/edit.php?post_type=post&lang=en' );
 	await dismissPolylangWizard( page );
 	await expect(
-		page.locator( '.column-tdrift-status' ).first()
+		page.locator( '.column-stalelingo-status' ).first()
 	).toBeVisible();
 	await page.screenshot( { path: `${ OUT }/screenshot-4.png` } );
 
 	// 5. Settings.
-	await page.goto(
-		'/wp-admin/options-general.php?page=translation-drift-settings'
-	);
+	await page.goto( '/wp-admin/options-general.php?page=stalelingo-settings' );
 	await expect(
-		page.getByRole( 'heading', { name: 'Translation Drift settings' } )
+		page.getByRole( 'heading', { name: 'Stalelingo settings' } )
 	).toBeVisible();
 	await page.screenshot( { path: `${ OUT }/screenshot-5.png` } );
 

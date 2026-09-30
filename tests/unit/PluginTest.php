@@ -2,24 +2,24 @@
 /**
  * Tests for Plugin.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit;
+namespace Stalelingo\Tests\Unit;
 
 use Brain\Monkey\Functions;
-use TranslationDrift\Admin\AdminPage;
-use TranslationDrift\Admin\DependencyNotice;
-use TranslationDrift\Database\Migrator;
-use TranslationDrift\Plugin;
+use Stalelingo\Admin\AdminPage;
+use Stalelingo\Admin\DependencyNotice;
+use Stalelingo\Database\Migrator;
+use Stalelingo\Plugin;
 
 /**
- * @covers \TranslationDrift\Plugin
- * @covers \TranslationDrift\Admin\AdminPage::register
- * @covers \TranslationDrift\Admin\DependencyNotice::__construct
- * @covers \TranslationDrift\Admin\DependencyNotice::register
+ * @covers \Stalelingo\Plugin
+ * @covers \Stalelingo\Admin\AdminPage::register
+ * @covers \Stalelingo\Admin\DependencyNotice::__construct
+ * @covers \Stalelingo\Admin\DependencyNotice::register
  */
 final class PluginTest extends TestCase {
 
@@ -34,8 +34,8 @@ final class PluginTest extends TestCase {
 
 		Plugin::boot();
 
-		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_exporters', \TranslationDrift\Privacy::class . '->register_exporters()' ) );
-		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_erasers', \TranslationDrift\Privacy::class . '->register_erasers()' ) );
+		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_exporters', \Stalelingo\Privacy::class . '->register_exporters()' ) );
+		$this->assertNotFalse( has_filter( 'wp_privacy_personal_data_erasers', \Stalelingo\Privacy::class . '->register_erasers()' ) );
 	}
 
 	public function test_boot_registers_admin_services_in_admin(): void {

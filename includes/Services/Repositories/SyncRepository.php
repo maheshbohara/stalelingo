@@ -1,18 +1,18 @@
 <?php
 /**
- * `tdrift_sync` table access.
+ * `stalelingo_sync` table access.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services\Repositories;
+namespace Stalelingo\Services\Repositories;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Database\Schema;
-use TranslationDrift\Domain\Status;
+use Stalelingo\Database\Schema;
+use Stalelingo\Domain\Status;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- The plugin's own table; no core API exists for it, and rows change on every recalculation, so object caching would only serve stale status.
 

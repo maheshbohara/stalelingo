@@ -1,18 +1,18 @@
 <?php
 /**
- * `tdrift/v1/baseline` route.
+ * `stalelingo/v1/baseline` route.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\Permissions;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\Permissions;
 
 /**
  * Reads the baseline progress and queues a new baseline build.
@@ -55,7 +55,7 @@ class BaselineController extends Controller {
 					'permission_callback' => array( $this, 'manage_permissions_check' ),
 					'args'                => array(
 						'force' => array(
-							'description' => __( 'Also reset translations that already have a sync point, including outdated ones.', 'translation-drift' ),
+							'description' => __( 'Also reset translations that already have a sync point, including outdated ones.', 'stalelingo' ),
 							'type'        => 'boolean',
 							'default'     => false,
 						),
@@ -113,7 +113,7 @@ class BaselineController extends Controller {
 	 */
 	public static function state_schema(): array {
 		return array(
-			'description' => __( 'Baseline progress.', 'translation-drift' ),
+			'description' => __( 'Baseline progress.', 'stalelingo' ),
 			'type'        => 'object',
 			'properties'  => array(
 				'status'     => array(
@@ -137,11 +137,11 @@ class BaselineController extends Controller {
 		if ( null === $this->schema ) {
 			$this->schema = array(
 				'$schema'    => 'http://json-schema.org/draft-04/schema#',
-				'title'      => 'tdrift-baseline',
+				'title'      => 'stalelingo-baseline',
 				'type'       => 'object',
 				'properties' => array(
 					'queued' => array(
-						'description' => __( 'Whether this request queued a new build (false when one was already queued).', 'translation-drift' ),
+						'description' => __( 'Whether this request queued a new build (false when one was already queued).', 'stalelingo' ),
 						'type'        => 'boolean',
 					),
 					'state'  => self::state_schema(),

@@ -5,7 +5,7 @@
  *
  * Usage: php bin/readme-validate.php  (exit code 1 on failure)
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
@@ -14,7 +14,7 @@ declare( strict_types=1 );
 
 $root   = dirname( __DIR__ );
 $readme = (string) file_get_contents( $root . '/readme.txt' );
-$main   = (string) file_get_contents( $root . '/translation-drift.php' );
+$main   = (string) file_get_contents( $root . '/stalelingo.php' );
 $errors = array();
 
 /**
@@ -71,10 +71,10 @@ if ( null !== $header( $main, 'Tested up to' ) ) {
 
 // Version agreement.
 $versions = array(
-	'readme Stable tag' => $header( $readme, 'Stable tag' ),
-	'plugin header'     => $header( $main, 'Version' ),
-	'TDRIFT_VERSION'    => preg_match( "/define\( 'TDRIFT_VERSION', '([^']+)' \)/", $main, $m ) ? $m[1] : null,
-	'package.json'      => json_decode( (string) file_get_contents( $root . '/package.json' ), true )['version'] ?? null,
+	'readme Stable tag'  => $header( $readme, 'Stable tag' ),
+	'plugin header'      => $header( $main, 'Version' ),
+	'STALELINGO_VERSION' => preg_match( "/define\( 'STALELINGO_VERSION', '([^']+)' \)/", $main, $m ) ? $m[1] : null,
+	'package.json'       => json_decode( (string) file_get_contents( $root . '/package.json' ), true )['version'] ?? null,
 );
 if ( count( array_unique( $versions ) ) !== 1 ) {
 	$errors[] = 'Version mismatch: ' . json_encode( $versions );

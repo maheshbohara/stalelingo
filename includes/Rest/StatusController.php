@@ -1,23 +1,23 @@
 <?php
 /**
- * `tdrift/v1/status` routes.
+ * `stalelingo/v1/status` routes.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Rest;
+namespace Stalelingo\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Admin\StatusView;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\BaselineJob;
-use TranslationDrift\Services\Permissions;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Services\TrackedFields;
-use TranslationDrift\Settings;
+use Stalelingo\Admin\StatusView;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\BaselineJob;
+use Stalelingo\Services\Permissions;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Services\TrackedFields;
+use Stalelingo\Settings;
 
 /**
  * Lists sources with the status of each translation, and summary counts, for the dashboard.
@@ -145,9 +145,9 @@ class StatusController extends Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \WP_Post                                                       $item    Source post.
-	 * @param \WP_REST_Request                                               $request Request.
-	 * @param array<string, \TranslationDrift\Services\Repositories\SyncRow> $rows    Its rows.
+	 * @param \WP_Post                                                 $item    Source post.
+	 * @param \WP_REST_Request                                         $request Request.
+	 * @param array<string, \Stalelingo\Services\Repositories\SyncRow> $rows    Its rows.
 	 * @phpstan-param \WP_REST_Request<array<string, mixed>> $request
 	 * @return \WP_REST_Response
 	 */
@@ -282,24 +282,24 @@ class StatusController extends Controller {
 	public function get_collection_params(): array {
 		return array(
 			'page'           => array(
-				'description' => __( 'Page of the collection.', 'translation-drift' ),
+				'description' => __( 'Page of the collection.', 'stalelingo' ),
 				'type'        => 'integer',
 				'default'     => 1,
 				'minimum'     => 1,
 			),
 			'per_page'       => array(
-				'description' => __( 'Sources per page.', 'translation-drift' ),
+				'description' => __( 'Sources per page.', 'stalelingo' ),
 				'type'        => 'integer',
 				'default'     => 20,
 				'minimum'     => 1,
 				'maximum'     => 100,
 			),
 			'search'         => array(
-				'description' => __( 'Only sources whose title contains this text.', 'translation-drift' ),
+				'description' => __( 'Only sources whose title contains this text.', 'stalelingo' ),
 				'type'        => 'string',
 			),
 			'lang'           => array(
-				'description' => __( 'Only translations in these languages.', 'translation-drift' ),
+				'description' => __( 'Only translations in these languages.', 'stalelingo' ),
 				'type'        => 'array',
 				'items'       => array(
 					'type' => 'string',
@@ -307,7 +307,7 @@ class StatusController extends Controller {
 				),
 			),
 			'status'         => array(
-				'description' => __( 'Only sources with a translation in one of these statuses.', 'translation-drift' ),
+				'description' => __( 'Only sources with a translation in one of these statuses.', 'stalelingo' ),
 				'type'        => 'array',
 				'items'       => array(
 					'type' => 'string',
@@ -315,7 +315,7 @@ class StatusController extends Controller {
 				),
 			),
 			'post_type'      => array(
-				'description' => __( 'Only these post types.', 'translation-drift' ),
+				'description' => __( 'Only these post types.', 'stalelingo' ),
 				'type'        => 'array',
 				'items'       => array(
 					'type' => 'string',
@@ -323,33 +323,33 @@ class StatusController extends Controller {
 				),
 			),
 			'author'         => array(
-				'description' => __( 'Only sources by this author (user ID).', 'translation-drift' ),
+				'description' => __( 'Only sources by this author (user ID).', 'stalelingo' ),
 				'type'        => 'integer',
 				'minimum'     => 1,
 			),
 			'translator'     => array(
-				'description' => __( 'Only the languages assigned to this translator (user ID) in the settings.', 'translation-drift' ),
+				'description' => __( 'Only the languages assigned to this translator (user ID) in the settings.', 'stalelingo' ),
 				'type'        => 'integer',
 				'minimum'     => 1,
 			),
 			'changed_after'  => array(
-				'description' => __( 'Only sources changed at or after this time.', 'translation-drift' ),
+				'description' => __( 'Only sources changed at or after this time.', 'stalelingo' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 			),
 			'changed_before' => array(
-				'description' => __( 'Only sources changed at or before this time.', 'translation-drift' ),
+				'description' => __( 'Only sources changed at or before this time.', 'stalelingo' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 			),
 			'orderby'        => array(
-				'description' => __( 'Sort by the time the source last changed, or by title.', 'translation-drift' ),
+				'description' => __( 'Sort by the time the source last changed, or by title.', 'stalelingo' ),
 				'type'        => 'string',
 				'enum'        => array( 'modified', 'title' ),
 				'default'     => 'modified',
 			),
 			'order'          => array(
-				'description' => __( 'Sort direction.', 'translation-drift' ),
+				'description' => __( 'Sort direction.', 'stalelingo' ),
 				'type'        => 'string',
 				'enum'        => array( 'asc', 'desc' ),
 				'default'     => 'desc',
@@ -369,7 +369,7 @@ class StatusController extends Controller {
 			$this->schema = array_merge(
 				array(
 					'$schema' => 'http://json-schema.org/draft-04/schema#',
-					'title'   => 'tdrift-source',
+					'title'   => 'stalelingo-source',
 				),
 				ItemPresenter::source_schema()
 			);
@@ -393,12 +393,12 @@ class StatusController extends Controller {
 
 		return array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'tdrift-summary',
+			'title'      => 'stalelingo-summary',
 			'type'       => 'object',
 			'properties' => array(
-				'totals'     => array_merge( $counts, array( 'description' => __( 'Translations per status.', 'translation-drift' ) ) ),
+				'totals'     => array_merge( $counts, array( 'description' => __( 'Translations per status.', 'stalelingo' ) ) ),
 				'languages'  => array(
-					'description' => __( 'Languages with their counts per status.', 'translation-drift' ),
+					'description' => __( 'Languages with their counts per status.', 'stalelingo' ),
 					'type'        => 'array',
 					'items'       => array(
 						'type'       => 'object',
@@ -410,7 +410,7 @@ class StatusController extends Controller {
 					),
 				),
 				'post_types' => array(
-					'description' => __( 'Tracked post types with their counts per status.', 'translation-drift' ),
+					'description' => __( 'Tracked post types with their counts per status.', 'stalelingo' ),
 					'type'        => 'array',
 					'items'       => array(
 						'type'       => 'object',

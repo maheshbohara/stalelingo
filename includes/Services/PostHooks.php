@@ -2,21 +2,21 @@
 /**
  * WordPress hooks that keep statuses current.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Services;
+namespace Stalelingo\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-use TranslationDrift\Domain\Status;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Services\Repositories\EventRepository;
-use TranslationDrift\Services\Repositories\SnapshotRepository;
-use TranslationDrift\Services\Repositories\SyncRepository;
-use TranslationDrift\Settings;
+use Stalelingo\Domain\Status;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Services\Repositories\EventRepository;
+use Stalelingo\Services\Repositories\SnapshotRepository;
+use Stalelingo\Services\Repositories\SyncRepository;
+use Stalelingo\Settings;
 
 /**
  * Reacts to saves, deletions and language changes.
@@ -32,14 +32,14 @@ class PostHooks {
 	 *
 	 * @since 1.0.0
 	 */
-	public const RECALC_SOURCE_HOOK = 'tdrift_recalc_source';
+	public const RECALC_SOURCE_HOOK = 'stalelingo_recalc_source';
 
 	/**
 	 * Daily maintenance hook.
 	 *
 	 * @since 1.0.0
 	 */
-	public const PRUNE_HOOK = 'tdrift_prune';
+	public const PRUNE_HOOK = 'stalelingo_prune';
 
 	/**
 	 * Post statuses that are tracked.

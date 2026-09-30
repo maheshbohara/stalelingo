@@ -2,23 +2,23 @@
 /**
  * Tests for the ACF integration's tracking rules.
  *
- * @package TranslationDrift
+ * @package Stalelingo
  */
 
 declare( strict_types=1 );
 
-namespace TranslationDrift\Tests\Unit\Integrations;
+namespace Stalelingo\Tests\Unit\Integrations;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use TranslationDrift\Domain\Normalizer;
-use TranslationDrift\Integrations\Acf;
-use TranslationDrift\Providers\TranslationProvider;
-use TranslationDrift\Settings;
-use TranslationDrift\Tests\Unit\TestCase;
+use Stalelingo\Domain\Normalizer;
+use Stalelingo\Integrations\Acf;
+use Stalelingo\Providers\TranslationProvider;
+use Stalelingo\Settings;
+use Stalelingo\Tests\Unit\TestCase;
 
 /**
- * @covers \TranslationDrift\Integrations\Acf
+ * @covers \Stalelingo\Integrations\Acf
  */
 final class AcfTest extends TestCase {
 
@@ -154,7 +154,7 @@ final class AcfTest extends TestCase {
 	}
 
 	public function test_preference_filter(): void {
-		Filters\expectApplied( 'tdrift_acf_translation_preference' )->andReturn( 'ignore' );
+		Filters\expectApplied( 'stalelingo_acf_translation_preference' )->andReturn( 'ignore' );
 
 		$this->assertFalse(
 			$this->acf( 'polylang' )->is_tracked(
@@ -174,7 +174,7 @@ final class AcfTest extends TestCase {
 				'type' => 'text',
 			) : false
 		);
-		Filters\expectApplied( 'tdrift_is_acf_block' )->andReturnUsing( static fn( bool $is, string $name ): bool => 'acme/banner' === $name );
+		Filters\expectApplied( 'stalelingo_is_acf_block' )->andReturnUsing( static fn( bool $is, string $name ): bool => 'acme/banner' === $name );
 		$acf  = $this->acf( 'wpml' );
 		$data = array(
 			'heading'  => 'Hello',

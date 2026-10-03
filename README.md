@@ -2,6 +2,8 @@
 
 Stalelingo is a WordPress plugin that tells you which translations went out of date when the source post changed, and shows exactly what changed. It works with Polylang (including the free version) and WPML.
 
+It is available on WordPress.org: [wordpress.org/plugins/stalelingo](https://wordpress.org/plugins/stalelingo/).
+
 ![The Stalelingo dashboard](.wordpress-org/screenshot-1.png)
 
 ## What it does
@@ -35,11 +37,9 @@ Stalelingo is free. It has no paid version, no license key and no tracking, and 
 
 ## Installation
 
-Build the plugin zip and upload it under **Plugins → Add New → Upload Plugin**:
+Install it from the WordPress.org plugin directory: in your site's admin, go to **Plugins → Add New**, search for "Stalelingo", then install and activate it. You can also download it from [wordpress.org/plugins/stalelingo](https://wordpress.org/plugins/stalelingo/).
 
-```sh
-make zip    # writes dist/stalelingo-<version>.zip
-```
+To build the zip from this repository instead, run `make zip`, which writes `dist/stalelingo-<version>.zip`.
 
 After activating, go to **Settings → Stalelingo** and choose the post types and fields to track. Stalelingo then builds a baseline in the background and treats every existing translation as up to date.
 

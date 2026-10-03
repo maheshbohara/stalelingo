@@ -89,7 +89,8 @@ lint-php: vendor/autoload.php
 lint-js: node_modules/.package-lock.json
 	$(NODE) npm run lint
 
-phpstan: vendor/autoload.php ## PHPStan level 8
+# PHPStan resolves the require of build/*/index.asset.php, so the build has to exist.
+phpstan: vendor/autoload.php build/dashboard/index.js ## PHPStan level 8
 	$(PHP) vendor/bin/phpstan analyse --memory-limit=1G --no-progress
 
 phpcompat: vendor/autoload.php ## PHPCompatibilityWP for PHP 8.1 and newer

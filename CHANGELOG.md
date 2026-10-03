@@ -7,35 +7,35 @@ All notable changes to this project are documented here. The format follows
 ## [1.0.0] - 2026-09-28
 
 ### Added
-- Phase 7 release hardening:
+- Release hardening:
   - Version 1.0.0; readme FAQ for digests, WP-CLI, multisite and uninstall; changelog and upgrade notice.
   - Readme screenshots (`make screenshots`), a performance run on 5,000 posts × 3 languages (`make perf`), and a clean-install smoke test of the release zip (`make zip-smoke`, also in CI with the multisite suite).
-- Phase 6 notifications, WP-CLI, privacy and multisite:
+- Notifications, WP-CLI, privacy and multisite:
   - Daily or weekly email digests: each translator gets the outdated translations in their languages, and extra recipients get every language. Filter `stalelingo_digest_items`.
   - Immediate emails when a translation of a chosen post type becomes outdated.
   - WP-CLI: `wp stalelingo report`, `mark-synced`, `baseline [--dry-run] [--force]` and `recalc`.
   - Personal data exporters (translations a user marked, and their history) and an eraser that anonymizes the user; suggested privacy policy text.
   - Multisite: network activation sets up every site, sites created later are set up while the plugin is network-active, and a deleted site's tables are dropped.
-- Phase 5 React UI:
+- React UI:
   - REST API `stalelingo/v1`: `status` (filters, sorting, pagination), `status/summary`, `group/{id}`, `diff/{translation_id}`, `mark-synced` (single or bulk) and `baseline`, each with a schema and a permission check.
   - Tools → Stalelingo dashboard built on DataViews: summary counts by status, language and post type; a table of posts × languages with filters for status, language, post type, author, translator and last change; search; a bulk "Mark as up to date" action; CSV export; and a "Build baseline" prompt with progress.
   - Diff modal showing what changed in the source, field by field, with links to open the source and the translation.
   - Block editor panel: a translation's status with an inline diff and "Mark as up to date", and the affected translations on a source.
-- Phase 4 admin UI:
+- Admin UI:
   - Settings screen: post types, fields, extra custom fields, ACF and Elementor, source language, strict mode, auto-clear, translators per language, email digest options, immediate-email post types, delete data on uninstall, and a Build baseline tool.
   - Posts list: a translation status column with a labelled badge per language, a status filter, and a bulk "Mark translations as up to date" action.
   - Classic editor metabox with status, changed fields and "Mark as up to date".
   - Admin bar counter of outdated translations.
   - Strict mode can be switched on or off without flagging translations.
 
-- Phase 3 integrations:
+- Integrations:
   - WPML adapter built on WPML's public filters and actions, with WPML's add-translation link for missing translations.
   - ACF fields: fields set to "translate" or "copy once" (WPML, Polylang Pro) are tracked, and text fields when no preference is set. Only text values count, including inside groups, repeaters and flexible content.
   - ACF blocks in any namespace: text fields in block data count and layout fields don't.
   - Elementor: visible widget text is tracked, and style-only changes are ignored.
   - Dev tooling: a real-site WPML validation script, plus ACF and Elementor seed content.
 
-- Phase 2 domain core:
+- Domain core:
   - Provider interface and Polylang adapter: languages, groups, source resolution with a per-group override, and edit or create links.
   - Block-aware normalization (one line per block, visible text only unless strict mode is on), versioned SHA-256 hashing, drift evaluation and the status model (`in_sync`, `outdated`, `missing`, `untracked`).
   - Repositories for sync points, compressed and capped snapshots, and events, with daily pruning.
@@ -56,7 +56,7 @@ All notable changes to this project are documented here. The format follows
 - The daily maintenance job is scheduled on sites that activated before it existed.
 - Deactivation and uninstall now clear queued jobs that have arguments (`wp_unschedule_hook()`).
 
-- Phase 1 scaffold:
+- Scaffold:
   - Docker development stack (MariaDB 11, WordPress, WP-CLI, PHP tools, Node 22, Playwright, Mailpit) and a Makefile.
   - `bin/setup.sh` builds an EN/FR/ES Polylang site with translator users and seeded posts, pages and a custom post type.
   - Main plugin file, PSR-4 autoloading, and activation that creates the `stalelingo_sync`, `stalelingo_snapshots` and `stalelingo_events` tables through versioned `dbDelta()` migrations.

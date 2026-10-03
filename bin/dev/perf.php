@@ -3,7 +3,7 @@
  * Development only: the performance run behind `make perf`.
  *
  * Run with `wp eval-file bin/dev/perf.php` on a site seeded with `make seed`.
- * Measures, against the spec's targets:
+ * Measures, against these targets:
  *
  * - baseline: batches finish well inside a request timeout (reports the slowest batch);
  * - dashboard: the first page of `GET stalelingo/v1/status` answers in under 500 ms;

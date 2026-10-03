@@ -59,9 +59,9 @@ composer: ## Run composer, e.g. make composer ARGS="update"
 npm: ## Run npm, e.g. make npm ARGS="install foo"
 	$(NODE) npm $(ARGS)
 
+# The touch runs in the container: on Linux the container's root owns vendor/, so the host user can't touch it.
 vendor/autoload.php: composer.json
-	$(PHP) composer install --no-interaction
-	@touch $@
+	$(PHP) bash -c 'composer install --no-interaction && touch $@'
 
 node_modules/.package-lock.json: package.json
 	$(NODE) npm ci --no-audit --no-fund
